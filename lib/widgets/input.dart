@@ -3,11 +3,13 @@ import 'package:pole_paris_app/styles/color.dart';
 
 class Input extends StatelessWidget {
   final TextEditingController? controller;
+  final Function(String)? onChanged;
   final String? hint;
   final String? errorText;
   final bool? obscure;
   const Input({
     super.key,
+    this.onChanged,
     this.controller,
     this.hint,
     this.errorText,
@@ -18,6 +20,7 @@ class Input extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: TextField(
+        onChanged: onChanged,
         controller: controller,
         cursorColor: const Color(0xFF838383),
         obscureText: obscure!,
@@ -35,10 +38,12 @@ class Input extends StatelessWidget {
           ),
           errorText: errorText,
           errorStyle: const TextStyle(
-            fontSize: 16,
+            fontSize: 12,
             color: CustomColors.error,
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w700,
+            height: 0.9,
           ),
+          errorMaxLines: 2,
           contentPadding: const EdgeInsets.symmetric(
             vertical: 15,
             horizontal: 20,

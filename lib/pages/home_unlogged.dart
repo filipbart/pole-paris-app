@@ -1,36 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/screens/student/login.dart';
-import 'package:pole_paris_app/screens/teacher/login.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/logo.dart';
-
-void main() {
-  runApp(const PoleParisApp());
-}
-
-class PoleParisApp extends StatelessWidget {
-  const PoleParisApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pole Paris App',
-      theme: ThemeData(
-          primaryColor: Colors.white,
-          scaffoldBackgroundColor: Colors.white,
-          fontFamily: 'Satoshi',
-          useMaterial3: true,
-          textTheme: const TextTheme(),
-          textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: CustomColors.inputText,
-            selectionColor: Color.fromARGB(111, 128, 128, 128),
-            selectionHandleColor: CustomColors.inputText,
-          )),
-      home: const HomeUnloggedPage(),
-    );
-  }
-}
 
 class HomeUnloggedPage extends StatefulWidget {
   const HomeUnloggedPage({super.key});
@@ -92,14 +64,7 @@ class _HomeUnloggedPageState extends State<HomeUnloggedPage> {
                 ),
                 ElevatedButton(
                   style: CustomButtonStyle.secondary,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginTeacherScreen(),
-                      ),
-                    );
-                  },
+                  onPressed: () {},
                   child: const Text('INSTRUKTOR'),
                 ),
               ],

@@ -7,14 +7,14 @@ import 'package:pole_paris_app/widgets/input.dart';
 import 'package:pole_paris_app/widgets/loader.dart';
 import 'package:pole_paris_app/widgets/logo.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginTeacherScreen extends StatefulWidget {
+  const LoginTeacherScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginTeacherScreen> createState() => _LoginTeacherScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
   bool _badEmail = false;
   bool _badPassword = false;
   final emailController = TextEditingController();
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       Text(
-                        'Witamy ponownie!',
+                        'Cześć!',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       Text(
-                        'Zaloguj się',
+                        'Zaloguj się jako instruktor',
                         style: TextStyle(
                           color: CustomColors.text2,
                           fontSize: 20,
@@ -182,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     style: CustomButtonStyle.primary,
                     onPressed: _submit,
-                    child: const Text('ZALOGUJ'),
+                    child: const Text('ZALOGUJ JAKO INSTRUKTOR'),
                   ),
                 ),
                 ElevatedButton(
@@ -201,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const Padding(
                   padding: EdgeInsets.only(top: 40.0),
                   child: Text(
-                    'Nie posiadasz jeszcze konta?',
+                    'Nie masz konta instruktora?',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -217,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     onPressed: () {},
                     child: const Text(
-                      'Zarejestruj się za darmo!',
+                      'Załóż konto tutaj!',
                       style: TextStyle(
                         fontSize: 14,
                         color: CustomColors.hintText,

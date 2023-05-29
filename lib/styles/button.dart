@@ -12,7 +12,6 @@ class CustomButtonStyle {
         return CustomColors.text;
       },
     ),
-    overlayColor: const MaterialStatePropertyAll<Color>(CustomColors.text2),
     shape: MaterialStatePropertyAll<OutlinedBorder>(RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(24.0),
     )),
