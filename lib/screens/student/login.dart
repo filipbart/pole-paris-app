@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/main.dart';
+import 'package:pole_paris_app/pages/registration.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
@@ -214,8 +215,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextButton(
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
+                      foregroundColor: CustomColors.hintText,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  const RegistrationPage()));
+                    },
                     child: const Text(
                       'Zarejestruj się za darmo!',
                       style: TextStyle(

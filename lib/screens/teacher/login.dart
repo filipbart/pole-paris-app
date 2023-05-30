@@ -214,6 +214,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                   child: TextButton(
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
+                      foregroundColor: CustomColors.hintText,
                     ),
                     onPressed: () {},
                     child: const Text(
