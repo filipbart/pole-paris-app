@@ -1,4 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:pole_paris_app/main.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/input.dart';
@@ -16,7 +20,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
   bool _badPhone = false;
 
   bool _badPassword = false;
+  bool _badSecondPassword = false;
   bool _termsAccepted = false;
+  bool _errorTerms = false;
 
   final userDataController = TextEditingController();
   final emailController = TextEditingController();
@@ -24,6 +30,43 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   final passwordController = TextEditingController();
   final secondPasswordController = TextEditingController();
+  final PhoneInputFormatter _formatter = PhoneInputFormatter();
+
+  _submit() {
+    WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+    final userData = userDataController.value.text;
+    final bool userDataValid =
+        RegExp(r"^[a-zA-Z]{4,}(?: [a-zA-Z]+){0,2}$").hasMatch(userData);
+
+    final email = emailController.value.text;
+    final bool emailValid = RegExp(
+            r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+        .hasMatch(email);
+
+    final phone = phoneController.value.text.trim();
+    final bool phoneValid = RegExp(
+            r"\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$")
+        .hasMatch(phone);
+
+    final password = passwordController.value.text;
+    final secondPassword = secondPasswordController.value.text;
+
+    setState(() {
+      _badPhone = phoneValid; //|| phone.isEmpty;
+
+      _errorTerms = !_termsAccepted;
+
+      _badPassword = password.isEmpty;
+      _badSecondPassword = secondPassword.isEmpty || password != secondPassword;
+    });
+  }
+
+  @override
+  void initState() {
+    PhoneInputFormatter.replacePhoneMask(
+        countryCode: 'PL', newMask: '+00 000 000 000');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,33 +82,40 @@ class _RegistrationPageState extends State<RegistrationPage> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(bottom: 40.0),
+                  padding: EdgeInsets.only(bottom: 30.0),
                   child: Column(
                     children: [
-                      Text(
-                        'Dołącz do naszego grona!',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w500,
+                      FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          'Dołącz do naszego grona!',
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
-                      Text(
-                        'Zarejestruj się i korzystaj z usług',
-                        style: TextStyle(
-                          color: CustomColors.text2,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
+                      FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          'Zarejestruj się i korzystaj z usług',
+                          style: TextStyle(
+                            color: CustomColors.text2,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
                 Wrap(
-                  runSpacing: 10,
+                  runSpacing: 8,
                   children: [
                     const Text(
                       'Wprowadź dane',
@@ -90,6 +140,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           : null,
                       hint: 'Adres email',
                       onChanged: (text) => {},
+                      inputType: TextInputType.emailAddress,
                     ),
                     Input(
                       controller: phoneController,
@@ -97,7 +148,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ? 'Błędny numer telefonu. Spróbuj ponownie!'
                           : null,
                       hint: 'Numer telefonu',
-                      onChanged: (text) => {},
+                      onChanged: (text) {
+                        setState(() {
+                          _badPhone = text.isEmpty;
+                        });
+                      },
+                      inputType: TextInputType.number,
+                      formatter: _formatter,
                     ),
                   ],
                 ),
@@ -107,7 +164,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     bottom: 20.0,
                   ),
                   child: Wrap(
-                    runSpacing: 10,
+                    runSpacing: 8,
                     children: [
                       const Text(
                         'Ustal hasło',
@@ -136,10 +193,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         obscure: true,
                         onChanged: (text) {
                           setState(() {
-                            _badPassword = text.isEmpty;
+                            _badSecondPassword = text.isEmpty;
                           });
                         },
-                        errorText: _badPassword
+                        errorText: _badSecondPassword
                             ? 'Hasła nie pasują. Spróbuj ponownie.'
                             : null,
                       ),
@@ -151,77 +208,70 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 20.0),
-                      child: SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: Transform.scale(
-                          scale: 1.7,
-                          child: Checkbox(
-                            checkColor: Colors.white,
-                            hoverColor: CustomColors.inputText,
-                            focusColor: CustomColors.inputText,
-                            activeColor: CustomColors.inputText,
-                            side: const BorderSide(
-                              color: CustomColors.inputText,
-                              width: 1,
-                            ),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5.0))),
-                            value: _termsAccepted,
-                            onChanged: (value) {
-                              setState(() {
-                                _termsAccepted = value ?? false;
-                              });
-                            },
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Transform.scale(
+                        scale: 1.7,
+                        child: Checkbox(
+                          checkColor: Colors.white,
+                          hoverColor: CustomColors.inputText,
+                          focusColor: CustomColors.inputText,
+                          activeColor: CustomColors.inputText,
+                          side: BorderSide(
+                            color: _errorTerms
+                                ? CustomColors.error
+                                : CustomColors.inputText,
+                            width: 1,
                           ),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5.0))),
+                          value: _termsAccepted,
+                          onChanged: (value) {
+                            setState(() {
+                              _errorTerms = false;
+                              _termsAccepted = value ?? false;
+                            });
+                          },
                         ),
                       ),
                     ),
-                    Flexible(
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.start,
+                    RichText(
+                      maxLines: 2,
+                      text: TextSpan(
+                        text: 'Potwierdzam zapoznanie się\ni akceptuję ',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: _errorTerms
+                              ? CustomColors.error
+                              : CustomColors.inputText,
+                          height: 1.5,
+                        ),
                         children: [
-                          const Text(
-                            'Potwierdzam zapoznanie się i akceptuję',
+                          TextSpan(
+                            text: 'Regulamin.',
                             style: TextStyle(
                               fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: CustomColors.inputText,
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.underline,
+                              color: _errorTerms
+                                  ? CustomColors.error
+                                  : CustomColors.inputText,
                             ),
-                          ),
-                          SizedBox(
-                            height: 22,
-                            child: TextButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                foregroundColor: CustomColors.inputText,
-                              ),
-                              child: const Text(
-                                'Regulamin.',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  decoration: TextDecoration.underline,
-                                  color: CustomColors.inputText,
-                                ),
-                              ),
-                            ),
+                            recognizer: TapGestureRecognizer()..onTap = () {},
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 30.0,
-                    bottom: 50.0,
+                    bottom: 30.0,
                   ),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _submit,
                     style: CustomButtonStyle.primary,
                     child: const Text('ZAPISZ SIĘ'),
                   ),
@@ -234,7 +284,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         padding: EdgeInsets.zero,
                         foregroundColor: CustomColors.inputText,
                       ),
-                      onPressed: () {},
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomeUnloggedPage(),
+                          )),
                       child: RichText(
                         text: const TextSpan(
                           style: TextStyle(

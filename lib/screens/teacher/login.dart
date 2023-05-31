@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/main.dart';
+import 'package:pole_paris_app/pages/registration.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
@@ -118,6 +119,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                   child: Input(
                     controller: emailController,
                     hint: 'Adres email',
+                    inputType: TextInputType.emailAddress,
                     onChanged: (text) {
                       setState(() {
                         _badEmail = text.isEmpty;
@@ -216,7 +218,11 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                       padding: EdgeInsets.zero,
                       foregroundColor: CustomColors.hintText,
                     ),
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                const RegistrationPage())),
                     child: const Text(
                       'Załóż konto tutaj!',
                       style: TextStyle(

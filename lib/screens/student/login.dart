@@ -119,6 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Input(
                     controller: emailController,
                     hint: 'Adres email',
+                    inputType: TextInputType.emailAddress,
                     onChanged: (text) {
                       setState(() {
                         _badEmail = text.isEmpty;
