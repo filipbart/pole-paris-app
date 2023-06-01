@@ -100,4 +100,24 @@ class CustomButtonStyle {
       Size.fromHeight(50),
     ),
   );
+
+  static ButtonStyle primaryWithoutSize = ButtonStyle(
+    foregroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
+    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.pressed)) {
+          return CustomColors.text2;
+        }
+        return CustomColors.text;
+      },
+    ),
+    shape: MaterialStatePropertyAll<OutlinedBorder>(RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(58.0),
+    )),
+    textStyle: const MaterialStatePropertyAll<TextStyle>(TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      fontFamily: 'Satoshi',
+    )),
+  );
 }

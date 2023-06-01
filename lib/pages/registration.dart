@@ -1,11 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:pole_paris_app/main.dart';
+import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/input.dart';
+
+import '../widgets/loader.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -52,12 +54,57 @@ class _RegistrationPageState extends State<RegistrationPage> {
     final secondPassword = secondPasswordController.value.text;
 
     setState(() {
-      _badPhone = phoneValid; //|| phone.isEmpty;
+      _badUserData = userDataValid || userData.isEmpty;
+      _badEmail = emailValid || email.isEmpty;
+      _badPhone = phoneValid || phone.isEmpty;
 
       _errorTerms = !_termsAccepted;
 
       _badPassword = password.isEmpty;
       _badSecondPassword = secondPassword.isEmpty || password != secondPassword;
+    });
+
+    if (_badUserData ||
+        _badEmail ||
+        _badPhone ||
+        _errorTerms ||
+        _badPassword ||
+        _badSecondPassword) {
+      return;
+    }
+
+    showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) =>
+                const LoadingDialog(text: 'Tworzenie konta'))
+        .timeout(const Duration(seconds: 2), onTimeout: () {
+      Navigator.pop(context);
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => ConfirmScreen(
+            icon: Icons.person_2_outlined,
+            title: 'Gratulacje!',
+            text: 'Zarejestrowano pomyślnie.',
+            widgets: [
+              ElevatedButton(
+                style: CustomButtonStyle.primary,
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const HomeUnloggedPage()));
+                },
+                child: const Text('ZALOGUJ SIĘ'),
+              ),
+            ],
+          ),
+        ),
+        ModalRoute.withName('/confirm'),
+      );
     });
   }
 
@@ -86,11 +133,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
               children: [
                 const Padding(
                   padding: EdgeInsets.only(bottom: 30.0),
-                  child: Column(
-                    children: [
-                      FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: Text(
+                  child: FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Column(
+                      children: [
+                        Text(
                           'Dołącz do naszego grona!',
                           maxLines: 1,
                           style: TextStyle(
@@ -99,10 +146,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ),
-                      FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: Text(
+                        Text(
                           'Zarejestruj się i korzystaj z usług',
                           style: TextStyle(
                             color: CustomColors.text2,
@@ -110,8 +154,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Wrap(
@@ -131,7 +175,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ? 'Błędne imie i nazwisko. Spróbuj ponownie!'
                           : null,
                       hint: 'Imię i nazwisko',
-                      onChanged: (text) => {},
+                      onChanged: (text) {
+                        setState(() {
+                          _badUserData = text.isEmpty;
+                        });
+                      },
                     ),
                     Input(
                       controller: emailController,
@@ -139,7 +187,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ? 'Błędny adres email. Spróbuj ponownie!'
                           : null,
                       hint: 'Adres email',
-                      onChanged: (text) => {},
+                      onChanged: (text) {
+                        setState(() {
+                          _badEmail = text.isEmpty;
+                        });
+                      },
                       inputType: TextInputType.emailAddress,
                     ),
                     Input(

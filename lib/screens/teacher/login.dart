@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pole_paris_app/main.dart';
 import 'package:pole_paris_app/pages/registration.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
+import 'package:pole_paris_app/screens/forgot_password.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/input.dart';
@@ -164,7 +165,15 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                             horizontal: 5.0,
                           )),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const ForgotPasswordScreen(),
+                            ),
+                          );
+                        },
                         child: const Text(
                           'Przypomnij hasło.',
                           style: TextStyle(

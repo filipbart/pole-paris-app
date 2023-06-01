@@ -25,7 +25,7 @@ class ConfirmScreen extends StatelessWidget {
               gradient: RadialGradient(
                 center: Alignment(1.3, -0.7),
                 colors: [
-                  Color.fromRGBO(238, 145, 229, 0.3),
+                  Color.fromRGBO(238, 145, 229, 0.7),
                   Color.fromRGBO(255, 255, 255, 0.5),
                 ],
                 radius: 0.4,
@@ -51,8 +51,13 @@ class ConfirmScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8.0,
+                      horizontal: 50.0,
+                    ),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           title,
@@ -64,6 +69,7 @@ class ConfirmScreen extends StatelessWidget {
                         ),
                         Text(
                           text,
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
                             color: CustomColors.hintText,
                             fontWeight: FontWeight.w500,
@@ -97,16 +103,16 @@ class ConfirmScreen extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
-              height: 380,
-              width: 80,
+              height: 400,
+              width: 50,
               decoration: const BoxDecoration(
                 gradient: RadialGradient(
                   center: Alignment(-1.5, 0.5),
                   colors: [
-                    Color.fromRGBO(238, 145, 229, 0.3),
+                    Color.fromRGBO(238, 145, 229, 0.7),
                     Color.fromRGBO(255, 255, 255, 0.5),
                   ],
-                  radius: 1.3,
+                  radius: 1.6,
                 ),
               ),
             ),
