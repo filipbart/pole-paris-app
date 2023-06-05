@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/main.dart';
+import 'package:pole_paris_app/pages/main_teacher.dart';
 import 'package:pole_paris_app/pages/registration.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/screens/forgot_password.dart';
@@ -35,9 +36,9 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
       _badPassword = passwordText.isEmpty;
     });
 
-    if (_badEmail || _badPassword) {
-      return;
-    }
+    // if (_badEmail || _badPassword) {
+    //   return;
+    // }
 
     showDialog(
             barrierDismissible: false,
@@ -57,7 +58,11 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
             widgets: [
               ElevatedButton(
                 style: CustomButtonStyle.primary,
-                onPressed: () {},
+                onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            const MainPageTeacher())),
                 child: const Text('STRONA GŁÓWNA'),
               ),
             ],

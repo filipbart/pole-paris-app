@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pole_paris_app/screens/student/login.dart';
 import 'package:pole_paris_app/screens/teacher/login.dart';
 import 'package:pole_paris_app/styles/button.dart';
@@ -15,20 +17,27 @@ class PoleParisApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pole Paris App',
-      theme: ThemeData(
-          primaryColor: Colors.white,
-          scaffoldBackgroundColor: Colors.white,
-          fontFamily: 'Satoshi',
-          useMaterial3: true,
-          textTheme: const TextTheme(),
-          textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: CustomColors.inputText,
-            selectionColor: Color.fromARGB(111, 128, 128, 128),
-            selectionHandleColor: CustomColors.inputText,
-          )),
-      home: const HomeUnloggedPage(),
-    );
+        title: 'Pole Paris App',
+        theme: ThemeData(
+            primaryColor: Colors.white,
+            scaffoldBackgroundColor: Colors.white,
+            fontFamily: 'Satoshi',
+            useMaterial3: true,
+            textTheme: const TextTheme(),
+            textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: CustomColors.inputText,
+              selectionColor: Color.fromARGB(111, 128, 128, 128),
+              selectionHandleColor: CustomColors.inputText,
+            )),
+        home: const HomeUnloggedPage(),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('pl', 'PL'),
+        ]);
   }
 }
 
