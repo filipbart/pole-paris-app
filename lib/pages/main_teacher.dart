@@ -4,6 +4,7 @@ import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/logo.dart';
 import 'package:pole_paris_app/widgets/teacher/calendar.dart';
 import 'package:pole_paris_app/widgets/teacher/classes_item.dart';
+import 'package:pole_paris_app/widgets/teacher/drawer.dart';
 
 class MainPageTeacher extends StatefulWidget {
   const MainPageTeacher({super.key});
@@ -16,11 +17,14 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: ,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+      ),
+      drawer: const TeacherDrawer(),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.only(
-          top: 30,
           left: 20.0,
           right: 20.0,
           bottom: 20,
@@ -68,8 +72,8 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 40),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Wrap(
+                    runSpacing: 10,
                     children: [
                       const Padding(
                         padding: EdgeInsets.only(left: 10.0),
@@ -81,7 +85,13 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
                           ),
                         ),
                       ),
-                      const ClassesItem(),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xFFE1E1E1)),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const ClassesItem(),
+                      ),
                       const Padding(
                         padding: EdgeInsets.only(left: 10.0),
                         child: Text(
@@ -92,12 +102,23 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
                           ),
                         ),
                       ),
-                      const ClassesItem(),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xFFE1E1E1)),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const ClassesItem(),
+                      ),
                       Center(
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: TextButton(
+                          padding: const EdgeInsets.only(
+                            top: 8.0,
+                            right: 15,
+                            left: 15,
+                          ),
+                          child: ElevatedButton(
                             onPressed: () {},
+                            style: CustomButtonStyle.seeMore,
                             child: const Text(
                               'ZOBACZ WIĘCEJ',
                               style: TextStyle(
@@ -134,7 +155,7 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
               const Calendar(),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 25.0,
+                  horizontal: 15.0,
                 ),
                 child: ElevatedButton(
                   onPressed: () {},
@@ -146,6 +167,57 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
           ),
         ),
       )),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromARGB(25, 119, 119, 119),
+              blurRadius: 30,
+              blurStyle: BlurStyle.outer,
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          unselectedLabelStyle: const TextStyle(
+            color: CustomColors.buttonAdditional,
+            fontSize: 10,
+            fontFamily: 'Satoshi',
+            fontWeight: FontWeight.w500,
+          ),
+          selectedItemColor: CustomColors.text,
+          selectedLabelStyle: const TextStyle(
+            overflow: TextOverflow.visible,
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home_outlined,
+              ),
+              label: 'strona główna',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.notifications_none_rounded,
+              ),
+              label: 'powiadomienia',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person_outline_rounded,
+              ),
+              label: 'twój profil',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_outlined),
+              label: 'dodaj zajęcia',
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

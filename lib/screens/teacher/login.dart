@@ -45,7 +45,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
             context: context,
             builder: (BuildContext context) =>
                 const LoadingDialog(text: 'Logowanie'))
-        .timeout(const Duration(seconds: 2), onTimeout: () {
+        .timeout(const Duration(milliseconds: 200), onTimeout: () {
       Navigator.pop(context);
 
       Navigator.pushAndRemoveUntil(
