@@ -40,6 +40,7 @@ class TeacherDrawer extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       CircleAvatar(
+                        backgroundColor: Colors.white,
                         radius: 30,
                         backgroundImage: NetworkImage(
                             "https://img.freepik.com/darmowe-zdjecie/wewnatrz-portret-atrakcyjnej-mlodej-europejki-o-rudej-kobiecie-z-piegowata-twarza-i-wlosami-w-biala-bluzke-jej-wyglad-i-postawa-wyrazajace-pewnosc-siebie_273609-493.jpg"),

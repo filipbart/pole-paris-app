@@ -9,4 +9,5 @@ class CustomColors {
   static const Color inputText = Color(0xFF414141);
   static const Color error = Color(0xFFCE2E2E);
   static const Color buttonAdditional = Color(0xFF595959);
+  static const Color background = Color(0xFFF2F2F2);
 }

@@ -20,7 +20,7 @@ class PoleParisApp extends StatelessWidget {
         title: 'Pole Paris App',
         theme: ThemeData(
             primaryColor: Colors.white,
-            scaffoldBackgroundColor: Colors.white,
+            scaffoldBackgroundColor: const Color(0xFFF2F2F2),
             fontFamily: 'Satoshi',
             useMaterial3: true,
             textTheme: const TextTheme(),
@@ -52,6 +52,7 @@ class _HomeUnloggedPageState extends State<HomeUnloggedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(

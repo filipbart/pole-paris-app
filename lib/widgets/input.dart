@@ -10,6 +10,7 @@ class Input extends StatelessWidget {
   final bool? obscure;
   final TextInputType? inputType;
   final TextInputFormatter? formatter;
+  final bool? withBorder;
   const Input({
     super.key,
     this.onChanged,
@@ -19,6 +20,7 @@ class Input extends StatelessWidget {
     this.obscure = false,
     this.inputType = TextInputType.name,
     this.formatter,
+    this.withBorder = true,
   });
 
   @override
@@ -37,6 +39,8 @@ class Input extends StatelessWidget {
           fontWeight: FontWeight.w400,
         ),
         decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
           hintText: hint!,
           hintStyle: const TextStyle(
             fontSize: 16,
@@ -56,8 +60,8 @@ class Input extends StatelessWidget {
             horizontal: 20,
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: CustomColors.inputLine,
+            borderSide: BorderSide(
+              color: withBorder! ? CustomColors.inputLine : Colors.white,
               width: 1.0,
             ),
             borderRadius: BorderRadius.circular(10.0),

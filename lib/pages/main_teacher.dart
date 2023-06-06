@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pole_paris_app/styles/button.dart';
+import 'package:pole_paris_app/screens/teacher/add_classes.dart';
+import 'package:pole_paris_app/screens/teacher/main_screen.dart';
 import 'package:pole_paris_app/styles/color.dart';
-import 'package:pole_paris_app/widgets/logo.dart';
-import 'package:pole_paris_app/widgets/teacher/calendar.dart';
-import 'package:pole_paris_app/widgets/teacher/classes_item.dart';
 import 'package:pole_paris_app/widgets/teacher/drawer.dart';
 
 class MainPageTeacher extends StatefulWidget {
@@ -14,159 +12,35 @@ class MainPageTeacher extends StatefulWidget {
 }
 
 class _MainPageTeacherState extends State<MainPageTeacher> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _widgets = [
+    const MainScreenTeacher(),
+    Container(),
+    Container(),
+    const AddClassesScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
+        backgroundColor:
+            _selectedIndex == 0 ? Colors.white : Colors.transparent,
+        surfaceTintColor: Colors.transparent,
       ),
       drawer: const TeacherDrawer(),
       body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.only(
-          left: 20.0,
-          right: 20.0,
-          bottom: 20,
-        ),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Logo(
-                width: 180,
-              ),
-              const Text(
-                'Cześć\nMagdalena!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 32,
-                  color: CustomColors.text,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 25.0,
-                  vertical: 30.0,
-                ),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: CustomButtonStyle.primary,
-                  child: const Text('DODAJ ZAJĘCIA'),
-                ),
-              ),
-              const Text(
-                'Nadchodzące zajęcia, które prowadzisz',
-                style: TextStyle(
-                  color: CustomColors.buttonAdditional,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Divider(
-                color: Color(0xFFD6D6D6),
-                thickness: 1.2,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 40),
-                  child: Wrap(
-                    runSpacing: 10,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: Text(
-                          '16.05.2023',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xFFE1E1E1)),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const ClassesItem(),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: Text(
-                          '17.05.2023',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xFFE1E1E1)),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const ClassesItem(),
-                      ),
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8.0,
-                            right: 15,
-                            left: 15,
-                          ),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: CustomButtonStyle.seeMore,
-                            child: const Text(
-                              'ZOBACZ WIĘCEJ',
-                              style: TextStyle(
-                                color: Color(0xFF222227),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Text(
-                    'Dzisiejsza data',
-                    style: TextStyle(
-                      color: CustomColors.buttonAdditional,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              const Divider(
-                color: Color(0xFFD6D6D6),
-                thickness: 1.2,
-              ),
-              const Calendar(),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15.0,
-                ),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: CustomButtonStyle.secondary,
-                  child: const Text('WYLOGUJ'),
-                ),
-              ),
-            ],
-          ),
+          child: _widgets.elementAt(_selectedIndex),
         ),
-      )),
+      ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           boxShadow: [
@@ -182,7 +56,7 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
           backgroundColor: Colors.white,
           unselectedLabelStyle: const TextStyle(
             color: CustomColors.buttonAdditional,
-            fontSize: 10,
+            fontSize: 11,
             fontFamily: 'Satoshi',
             fontWeight: FontWeight.w500,
           ),
@@ -190,7 +64,7 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
           selectedLabelStyle: const TextStyle(
             overflow: TextOverflow.visible,
             fontWeight: FontWeight.bold,
-            fontSize: 12,
+            fontSize: 13,
           ),
           items: const [
             BottomNavigationBarItem(
@@ -216,6 +90,8 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
               label: 'dodaj zajęcia',
             ),
           ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
         ),
       ),
     );
