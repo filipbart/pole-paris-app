@@ -11,14 +11,24 @@ class MainPageTeacher extends StatefulWidget {
   State<MainPageTeacher> createState() => _MainPageTeacherState();
 }
 
+class PageWithAppBar {
+  final Widget page;
+  final String? title;
+
+  PageWithAppBar({
+    required this.page,
+    this.title,
+  });
+}
+
 class _MainPageTeacherState extends State<MainPageTeacher> {
   int _selectedIndex = 0;
 
-  final List<Widget> _widgets = [
-    const MainScreenTeacher(),
-    Container(),
-    Container(),
-    const AddClassesScreen(),
+  final List<PageWithAppBar> _widgets = [
+    PageWithAppBar(page: const MainScreenTeacher()),
+    PageWithAppBar(page: Container()),
+    PageWithAppBar(page: Container()),
+    PageWithAppBar(page: const AddClassesScreen(), title: 'Dodawanie zajęć'),
   ];
 
   void _onItemTapped(int index) {
@@ -34,11 +44,27 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
         backgroundColor:
             _selectedIndex == 0 ? Colors.white : Colors.transparent,
         surfaceTintColor: Colors.transparent,
+        title: Text(
+          _widgets.elementAt(_selectedIndex).title ?? '',
+          style: const TextStyle(
+            color: CustomColors.buttonAdditional,
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        shape: _widgets.elementAt(_selectedIndex).title != null
+            ? const Border(
+                bottom: BorderSide(
+                  width: 0.4,
+                  color: Color(0xFF838383),
+                ),
+              )
+            : null,
       ),
       drawer: const TeacherDrawer(),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: _widgets.elementAt(_selectedIndex),
+          child: _widgets.elementAt(_selectedIndex).page,
         ),
       ),
       bottomNavigationBar: Container(
@@ -56,7 +82,7 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
           backgroundColor: Colors.white,
           unselectedLabelStyle: const TextStyle(
             color: CustomColors.buttonAdditional,
-            fontSize: 11,
+            fontSize: 10,
             fontFamily: 'Satoshi',
             fontWeight: FontWeight.w500,
           ),
@@ -64,7 +90,7 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
           selectedLabelStyle: const TextStyle(
             overflow: TextOverflow.visible,
             fontWeight: FontWeight.bold,
-            fontSize: 13,
+            fontSize: 12,
           ),
           items: const [
             BottomNavigationBarItem(

@@ -1,26 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pole_paris_app/styles/color.dart';
 
-class Input extends StatelessWidget {
+class LargeInput extends StatelessWidget {
   final TextEditingController? controller;
   final Function(String)? onChanged;
   final String? hint;
   final String? errorText;
-  final bool? obscure;
-  final TextInputType? inputType;
-  final TextInputFormatter? formatter;
-  final bool? withBorder;
-  const Input({
+  const LargeInput({
     super.key,
     this.onChanged,
     this.controller,
     this.hint,
     this.errorText,
-    this.obscure = false,
-    this.inputType = TextInputType.name,
-    this.formatter,
-    this.withBorder = true,
   });
 
   @override
@@ -29,10 +20,9 @@ class Input extends StatelessWidget {
       child: TextField(
         onChanged: onChanged,
         controller: controller,
-        keyboardType: inputType,
+        keyboardType: TextInputType.text,
+        maxLines: 6,
         cursorColor: const Color(0xFF838383),
-        obscureText: obscure!,
-        inputFormatters: [if (formatter != null) formatter!],
         style: const TextStyle(
           fontSize: 16,
           color: CustomColors.inputText,
@@ -60,8 +50,8 @@ class Input extends StatelessWidget {
             horizontal: 20,
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: withBorder! ? CustomColors.inputLine : Colors.white,
+            borderSide: const BorderSide(
+              color: CustomColors.inputLine,
               width: 1.0,
             ),
             borderRadius: BorderRadius.circular(10.0),

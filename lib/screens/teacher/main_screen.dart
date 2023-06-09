@@ -13,6 +13,13 @@ class MainScreenTeacher extends StatefulWidget {
 }
 
 class _MainScreenTeacherState extends State<MainScreenTeacher> {
+  static List<DateTime> days = [
+    DateTime.now(),
+    DateTime.now().add(const Duration(days: 2)),
+    DateTime.now().add(const Duration(days: 4)),
+    DateTime.now().add(const Duration(days: 5)),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -145,7 +152,18 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
               color: Color(0xFFD6D6D6),
               thickness: 1.2,
             ),
-            const Calendar(),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 30.0,
+                left: 10,
+                right: 10,
+                bottom: 60,
+              ),
+              child: Calendar(
+                firstDay: DateTime.now().subtract(const Duration(days: 30)),
+                classDays: days,
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 15.0,

@@ -5,7 +5,16 @@ import 'package:pole_paris_app/styles/color.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatefulWidget {
-  const Calendar({super.key});
+  final DateTime firstDay;
+  final List<DateTime>? classDays;
+  final Function(DateTime, DateTime)? onDateChanged;
+
+  const Calendar({
+    super.key,
+    required this.firstDay,
+    this.classDays,
+    this.onDateChanged,
+  });
 
   static TextStyle daysStyle = GoogleFonts.lato(
     color: CustomColors.text,
@@ -24,31 +33,21 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
-  List<DateTime> days = [
-    DateTime.now(),
-    DateTime.now().add(const Duration(days: 2)),
-    DateTime.now().add(const Duration(days: 4)),
-    DateTime.now().add(const Duration(days: 5)),
-  ];
+  DateTime _focusedDay = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 30.0,
-        left: 10,
-        right: 10,
-        bottom: 60,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: const Color(0xFFE1E1E1)),
+        borderRadius: BorderRadius.circular(20),
       ),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: const Color(0xFFE1E1E1)),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: TableCalendar(
-          calendarBuilders: CalendarBuilders(
-            defaultBuilder: (context, day, focusedDay) {
-              for (DateTime classes in days) {
+      child: TableCalendar(
+        calendarBuilders: CalendarBuilders(
+          defaultBuilder: (context, day, focusedDay) {
+            if (widget.classDays != null) {
+              for (DateTime classes in widget.classDays!) {
                 if (classes.isSameDate(day)) {
                   return Container(
                     margin: const EdgeInsets.all(6),
@@ -67,53 +66,71 @@ class _CalendarState extends State<Calendar> {
                   );
                 }
               }
-              return null;
-            },
-          ),
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          firstDay: DateTime.now().subtract(const Duration(days: 30)),
-          lastDay: DateTime.now().add(const Duration(days: 30)),
-          focusedDay: DateTime.now(),
-          headerStyle: HeaderStyle(
-              headerPadding: const EdgeInsets.only(bottom: 12),
-              titleCentered: true,
-              formatButtonVisible: false,
-              leftChevronVisible: false,
-              rightChevronVisible: false,
-              headerMargin: const EdgeInsets.symmetric(vertical: 12),
-              titleTextStyle: GoogleFonts.lato(
-                fontSize: 15.5,
-                color: const Color(0xFF828282),
-                fontWeight: FontWeight.w400,
-              ),
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    width: 0.77,
-                    color: Color(0xFFBDBDBD),
-                  ),
-                ),
-              )),
-          daysOfWeekHeight: 25,
-          daysOfWeekStyle: DaysOfWeekStyle(
-            weekdayStyle: Calendar.weekDaysStyle,
-            weekendStyle: Calendar.weekDaysStyle,
-          ),
-          calendarStyle: CalendarStyle(
-            tablePadding: const EdgeInsets.symmetric(horizontal: 15),
-            outsideDaysVisible: false,
-            weekNumberTextStyle: Calendar.daysStyle,
-            rangeEndTextStyle: Calendar.daysStyle,
-            rangeStartTextStyle: Calendar.daysStyle,
-            todayDecoration: const BoxDecoration(
-              color: CustomColors.text2,
-              shape: BoxShape.circle,
-            ),
-            weekendTextStyle: Calendar.daysStyle,
-            defaultTextStyle: Calendar.daysStyle,
-          ),
-          locale: 'pl_PL',
+            }
+            return null;
+          },
         ),
+        selectedDayPredicate: (day) {
+          return _focusedDay.isSameDate(day);
+        },
+        onDaySelected: (selectedDay, focusedDay) {
+          if (widget.onDateChanged != null) {
+            widget.onDateChanged!(selectedDay, focusedDay);
+            if (_focusedDay.isSameDate(selectedDay) == false) {
+              setState(() {
+                _focusedDay = selectedDay;
+              });
+            }
+          }
+        },
+        startingDayOfWeek: StartingDayOfWeek.monday,
+        firstDay: widget.firstDay,
+        lastDay: DateTime.now().add(const Duration(days: 30)),
+        focusedDay: _focusedDay,
+        headerStyle: HeaderStyle(
+            headerPadding: const EdgeInsets.only(bottom: 12),
+            titleCentered: true,
+            formatButtonVisible: false,
+            leftChevronVisible: false,
+            rightChevronVisible: false,
+            headerMargin: const EdgeInsets.symmetric(vertical: 12),
+            titleTextStyle: GoogleFonts.lato(
+              fontSize: 15.5,
+              color: const Color(0xFF828282),
+              fontWeight: FontWeight.w400,
+            ),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  width: 0.77,
+                  color: Color(0xFFBDBDBD),
+                ),
+              ),
+            )),
+        daysOfWeekHeight: 25,
+        daysOfWeekStyle: DaysOfWeekStyle(
+          weekdayStyle: Calendar.weekDaysStyle,
+          weekendStyle: Calendar.weekDaysStyle,
+        ),
+        calendarStyle: CalendarStyle(
+          tablePadding: const EdgeInsets.symmetric(horizontal: 15),
+          outsideDaysVisible: false,
+          weekNumberTextStyle: Calendar.daysStyle,
+          rangeEndTextStyle: Calendar.daysStyle,
+          rangeStartTextStyle: Calendar.daysStyle,
+          selectedDecoration: const BoxDecoration(
+            color: CustomColors.text2,
+            shape: BoxShape.circle,
+          ),
+          isTodayHighlighted: widget.onDateChanged == null,
+          todayDecoration: const BoxDecoration(
+            color: CustomColors.text2,
+            shape: BoxShape.circle,
+          ),
+          weekendTextStyle: Calendar.daysStyle,
+          defaultTextStyle: Calendar.daysStyle,
+        ),
+        locale: 'pl_PL',
       ),
     );
   }

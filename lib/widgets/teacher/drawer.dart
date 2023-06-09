@@ -107,6 +107,18 @@ class TeacherDrawer extends StatelessWidget {
                         width: 1,
                       ))),
                       child: ListTile(
+                        title: const Text('Twoje zajęcia'),
+                        titleTextStyle: titleStyle,
+                      ),
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                        color: Color(0xFFD6D6D6),
+                        width: 1,
+                      ))),
+                      child: ListTile(
                         title: const Text('Profil instruktora'),
                         titleTextStyle: titleStyle,
                       ),

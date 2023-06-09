@@ -108,7 +108,7 @@ class ConfirmScreen extends StatelessWidget {
               width: 60,
               decoration: const BoxDecoration(
                 gradient: RadialGradient(
-                  center: Alignment(-1.9, 0.5),
+                  center: Alignment(-2, 0.5),
                   colors: [
                     Color.fromRGBO(238, 145, 229, 0.7),
                     Color.fromRGBO(255, 255, 255, 0.5),
