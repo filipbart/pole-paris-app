@@ -35,6 +35,7 @@ class PoleParisApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
+        initialRoute: '/',
         supportedLocales: const [
           Locale('pl', 'PL'),
         ]);

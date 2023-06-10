@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pole_paris_app/screens/teacher/add_classes.dart';
-import 'package:pole_paris_app/screens/teacher/main_screen.dart';
 import 'package:pole_paris_app/styles/color.dart';
+import 'package:pole_paris_app/widgets/tab_navigator.dart';
 import 'package:pole_paris_app/widgets/teacher/drawer.dart';
 
 class MainPageTeacher extends StatefulWidget {
@@ -11,61 +10,43 @@ class MainPageTeacher extends StatefulWidget {
   State<MainPageTeacher> createState() => _MainPageTeacherState();
 }
 
-class PageWithAppBar {
-  final Widget page;
-  final String? title;
-
-  PageWithAppBar({
-    required this.page,
-    this.title,
-  });
-}
-
 class _MainPageTeacherState extends State<MainPageTeacher> {
+  final _navigatorKeys = [
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+  ];
   int _selectedIndex = 0;
 
-  final List<PageWithAppBar> _widgets = [
-    PageWithAppBar(page: const MainScreenTeacher()),
-    PageWithAppBar(page: Container()),
-    PageWithAppBar(page: Container()),
-    PageWithAppBar(page: const AddClassesScreen(), title: 'Dodawanie zajęć'),
-  ];
-
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == _selectedIndex) {
+      _navigatorKeys[index].currentState!.popUntil((route) => route.isFirst);
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor:
-            _selectedIndex == 0 ? Colors.white : Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        title: Text(
-          _widgets.elementAt(_selectedIndex).title ?? '',
-          style: const TextStyle(
-            color: CustomColors.buttonAdditional,
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        shape: _widgets.elementAt(_selectedIndex).title != null
-            ? const Border(
-                bottom: BorderSide(
-                  width: 0.4,
-                  color: Color(0xFF838383),
-                ),
-              )
-            : null,
-      ),
+      appBar: _selectedIndex == 0
+          ? AppBar(
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.transparent,
+            )
+          : null,
       drawer: const TeacherDrawer(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: _widgets.elementAt(_selectedIndex).page,
-        ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          _buildNavigator(0),
+          _buildNavigator(1),
+          _buildNavigator(2),
+          _buildNavigator(3),
+        ],
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
@@ -120,6 +101,13 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
           onTap: _onItemTapped,
         ),
       ),
+    );
+  }
+
+  Widget _buildNavigator(int index) {
+    return TabNavigator(
+      navigatorKey: _navigatorKeys[index],
+      selectedIndex: index,
     );
   }
 }
