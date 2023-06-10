@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
+import 'package:provider/provider.dart';
 
 class TeacherDrawer extends StatelessWidget {
   const TeacherDrawer({super.key});
@@ -95,9 +97,13 @@ class TeacherDrawer extends StatelessWidget {
                         width: 1,
                       ))),
                       child: ListTile(
-                        title: const Text('Dodaj zajęcia'),
-                        titleTextStyle: titleStyle,
-                      ),
+                          title: const Text('Dodaj zajęcia'),
+                          titleTextStyle: titleStyle,
+                          onTap: () {
+                            Navigator.pop(context);
+                            Provider.of<TabIndex>(context, listen: false)
+                                .changeIndex(3);
+                          }),
                     ),
                     Container(
                       decoration: const BoxDecoration(

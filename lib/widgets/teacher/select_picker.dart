@@ -6,13 +6,17 @@ class SelectPicker extends StatefulWidget {
   final List<String> items;
   final double selectWidth;
   final double dropDownWidth;
-  final ValueChanged<String?> onChanged;
+  final ValueChanged<dynamic> onChanged;
+  final String? errorText;
+  final bool? errorBorder;
   const SelectPicker({
     super.key,
     required this.items,
     required this.selectWidth,
     required this.dropDownWidth,
     required this.onChanged,
+    this.errorText,
+    this.errorBorder,
   });
 
   @override
@@ -74,6 +78,15 @@ class _SelectPickerState extends State<SelectPicker> {
             icon: Icon(_open ? Icons.arrow_drop_up : Icons.arrow_drop_down),
           ),
           decoration: InputDecoration(
+            errorText: widget.errorText,
+            errorStyle: const TextStyle(
+              fontSize: 12,
+              color: CustomColors.error,
+              fontWeight: FontWeight.w700,
+              height: 0.9,
+            ),
+            errorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent)),
             isDense: true,
             contentPadding: EdgeInsets.zero,
             enabledBorder: OutlineInputBorder(
@@ -82,12 +95,6 @@ class _SelectPickerState extends State<SelectPicker> {
           ),
           isExpanded: true,
           hint: dropdownChooseHint,
-          validator: (value) {
-            if (value == null) {
-              return 'Wybierz godzinę.';
-            }
-            return null;
-          },
           onMenuStateChange: (isOpen) {
             setState(() {
               _open = isOpen;
@@ -99,8 +106,13 @@ class _SelectPickerState extends State<SelectPicker> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                  color:
-                      _open ? CustomColors.inputText : const Color(0xFFE1E1E1)),
+                  color: _open
+                      ? CustomColors.inputText
+                      : ((widget.errorText != null ||
+                              (widget.errorBorder != null &&
+                                  widget.errorBorder!))
+                          ? CustomColors.error
+                          : const Color(0xFFE1E1E1))),
               color: Colors.white,
             ),
           ),

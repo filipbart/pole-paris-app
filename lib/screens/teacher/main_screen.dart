@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/logo.dart';
 import 'package:pole_paris_app/widgets/teacher/calendar.dart';
 import 'package:pole_paris_app/widgets/teacher/classes_item.dart';
+import 'package:provider/provider.dart';
 
 class MainScreenTeacher extends StatefulWidget {
   const MainScreenTeacher({super.key});
@@ -53,7 +55,10 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
                     vertical: 30.0,
                   ),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<TabIndex>(context, listen: false)
+                          .changeIndex(3);
+                    },
                     style: CustomButtonStyle.primary,
                     child: const Text('DODAJ ZAJĘCIA'),
                   ),

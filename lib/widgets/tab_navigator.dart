@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pole_paris_app/screens/teacher/add_classes.dart';
+import 'package:pole_paris_app/screens/teacher/add_class.dart';
 import 'package:pole_paris_app/screens/teacher/main_screen.dart';
 
 class TabNavigator extends StatelessWidget {
@@ -15,7 +15,7 @@ class TabNavigator extends StatelessWidget {
     const MainScreenTeacher(),
     Container(),
     Container(),
-    const AddClassesScreen(),
+    const AddClassScreen(),
   ];
 
   @override
