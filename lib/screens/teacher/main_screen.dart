@@ -1,7 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/levels.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
+import 'package:pole_paris_app/screens/teacher/classes_list.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/logo.dart';
@@ -18,6 +21,7 @@ class MainScreenTeacher extends StatefulWidget {
 }
 
 class _MainScreenTeacherState extends State<MainScreenTeacher> {
+  late Map<String, List<Class>>? mappedClasses;
   static List<Class> classes = [
     Class(
       name: 'HIGH HEELS',
@@ -25,14 +29,6 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
       hourSince: '09:30',
       hourTo: '10:30',
       level: Level.primary,
-      description: 'Jakiś tam opis',
-    ),
-    Class(
-      name: 'HIGH HEELS',
-      date: DateTime.now(),
-      hourSince: '14:30',
-      hourTo: '15:30',
-      level: Level.advanced,
       description: 'Jakiś tam opis',
     ),
     Class(
@@ -51,6 +47,15 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
     DateTime.now().add(const Duration(days: 4)),
     DateTime.now().add(const Duration(days: 5)),
   ];
+
+  @override
+  void initState() {
+    classes.sortBy((element) => element.date);
+    mappedClasses =
+        groupBy(classes, (p0) => DateFormat('dd.MM.yyyy').format(p0.date));
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,46 +119,15 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 40),
+                      padding: const EdgeInsets.symmetric(vertical: 30),
                       child: Wrap(
                         runSpacing: 10,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              '16.05.2023',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xFFE1E1E1)),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: ClassItem(classItem: classes[0]),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              '17.05.2023',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xFFE1E1E1)),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: ClassItem(classItem: classes[1]),
-                          ),
+                          ..._upcomingClasses(mappedClasses!.entries.first.key,
+                              mappedClasses!.entries.first.value),
+                          if (mappedClasses!.entries.first.value.length == 1)
+                            ..._upcomingClasses(mappedClasses!.entries.last.key,
+                                mappedClasses!.entries.last.value),
                           Center(
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -162,7 +136,12 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
                                 left: 15,
                               ),
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ClassesScreenTeacher(),
+                                    )),
                                 style: CustomButtonStyle.seeMore,
                                 child: const Text(
                                   'ZOBACZ WIĘCEJ',
@@ -227,5 +206,35 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
         ),
       ),
     );
+  }
+
+  List<Widget> _upcomingClasses(String date, List<Class> classes) {
+    return <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(left: 10.0),
+        child: Text(
+          date,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+      Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: const Color(0xFFE1E1E1)),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: ClassItem(classItem: classes.first),
+      ),
+      if (classes.length != 1)
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xFFE1E1E1)),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: ClassItem(classItem: classes.last),
+        ),
+    ];
   }
 }
