@@ -8,7 +8,7 @@ class Class {
   final String hourTo;
   final Level level;
   final String description;
-  final XFile image;
+  late XFile? image;
 
   Class({
     required this.name,
@@ -17,7 +17,7 @@ class Class {
     required this.hourTo,
     required this.level,
     required this.description,
-    required this.image,
+    this.image,
   });
   //late creator;
 }

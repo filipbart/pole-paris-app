@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/teacher/tab_navigator.dart';
-import 'package:pole_paris_app/widgets/teacher/drawer.dart';
-
 import 'package:provider/provider.dart';
 
 class MainPageTeacher extends StatefulWidget {
@@ -27,13 +25,6 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
       create: (_) => TabIndex(),
       child: Consumer<TabIndex>(
         builder: (context, value, child) => Scaffold(
-          appBar: value.selectedIndex == 0
-              ? AppBar(
-                  backgroundColor: Colors.white,
-                  surfaceTintColor: Colors.transparent,
-                )
-              : null,
-          drawer: const TeacherDrawer(),
           body: IndexedStack(
             index: value.selectedIndex,
             children: [

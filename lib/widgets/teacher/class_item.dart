@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pole_paris_app/models/class.dart';
+import 'package:pole_paris_app/models/levels.dart';
 import 'package:pole_paris_app/styles/color.dart';
 
-class ClassesItem extends StatelessWidget {
-  const ClassesItem({super.key});
+class ClassItem extends StatelessWidget {
+  final Class classItem;
+  const ClassItem({super.key, required this.classItem});
 
   static TextStyle hourStyle = const TextStyle(
     color: CustomColors.text2,
@@ -34,11 +37,11 @@ class ClassesItem extends StatelessWidget {
               direction: Axis.vertical,
               children: [
                 Text(
-                  '09:30',
+                  classItem.hourSince,
                   style: hourStyle,
                 ),
                 Text(
-                  '10:30',
+                  classItem.hourTo,
                   style: hourStyle,
                 )
               ],
@@ -47,14 +50,14 @@ class ClassesItem extends StatelessWidget {
               thickness: 1.5,
               color: Color(0xFF838383),
             ),
-            const Wrap(
+            Wrap(
               spacing: -3,
               crossAxisAlignment: WrapCrossAlignment.start,
               direction: Axis.vertical,
               children: [
                 Text(
-                  'HIGH HEELS',
-                  style: TextStyle(
+                  classItem.name,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
@@ -63,14 +66,14 @@ class ClassesItem extends StatelessWidget {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   spacing: 3,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.star_border_rounded,
                       color: CustomColors.text2,
                       size: 15,
                     ),
                     Text(
-                      'początkujący',
-                      style: TextStyle(
+                      classItem.level.description,
+                      style: const TextStyle(
                         color: CustomColors.text2,
                         fontWeight: FontWeight.w500,
                         fontSize: 14,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
+import 'package:pole_paris_app/screens/teacher/classes_list.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/app_bar.dart';
@@ -151,7 +152,11 @@ class ProfileScreenTeacher extends StatelessWidget {
                         child: const Text('Dodaj zajęcia'),
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ClassesScreenTeacher())),
                         style: CustomButtonStyle.whiteProfiles,
                         child: const Text('Twoje zajęcia'),
                       ),

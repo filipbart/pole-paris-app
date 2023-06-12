@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
+import 'package:pole_paris_app/screens/teacher/classes_list.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/circle_avatar.dart';
@@ -111,6 +112,14 @@ class TeacherDrawer extends StatelessWidget {
                       child: ListTile(
                         title: const Text('Twoje zajęcia'),
                         titleTextStyle: titleStyle,
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ClassesScreenTeacher()));
+                        },
                       ),
                     ),
                     Container(
