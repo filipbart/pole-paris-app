@@ -237,7 +237,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                const RegistrationPage())),
+                                const RegistrationPage(teacher: true))),
                     child: const Text(
                       'Załóż konto tutaj!',
                       style: TextStyle(

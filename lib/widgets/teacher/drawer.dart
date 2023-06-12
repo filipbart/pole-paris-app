@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
+import 'package:pole_paris_app/widgets/circle_avatar.dart';
 import 'package:provider/provider.dart';
 
 class TeacherDrawer extends StatelessWidget {
@@ -41,12 +42,7 @@ class TeacherDrawer extends StatelessWidget {
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 30,
-                        backgroundImage: NetworkImage(
-                            "https://img.freepik.com/darmowe-zdjecie/wewnatrz-portret-atrakcyjnej-mlodej-europejki-o-rudej-kobiecie-z-piegowata-twarza-i-wlosami-w-biala-bluzke-jej-wyglad-i-postawa-wyrazajace-pewnosc-siebie_273609-493.jpg"),
-                      ),
+                      UserPicture(radius: 30),
                       FittedBox(
                         fit: BoxFit.fitWidth,
                         child: Wrap(

@@ -10,7 +10,8 @@ import 'package:pole_paris_app/widgets/input.dart';
 import '../widgets/loader.dart';
 
 class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+  final bool teacher;
+  const RegistrationPage({super.key, this.teacher = false});
 
   @override
   State<RegistrationPage> createState() => _RegistrationPageState();
@@ -74,20 +75,26 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
 
     showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) =>
-                const LoadingDialog(text: 'Tworzenie konta'))
-        .timeout(const Duration(seconds: 2), onTimeout: () {
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => LoadingDialog(
+            text: widget.teacher
+                ? 'Wysyłanie prośby o\u{00A0}rejestracje jako instruktor'
+                : 'Tworzenie konta')).timeout(const Duration(milliseconds: 200),
+        onTimeout: () {
       Navigator.pop(context);
 
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute<void>(
           builder: (BuildContext context) => ConfirmScreen(
-            icon: Icons.person_2_outlined,
-            title: 'Gratulacje!',
-            text: 'Zarejestrowano pomyślnie.',
+            icon: widget.teacher
+                ? Icons.celebration_rounded
+                : Icons.person_2_outlined,
+            title: widget.teacher ? 'Udało się!' : 'Gratulacje!',
+            text: widget.teacher
+                ? '''Twoja prośba o rejestracje jako instruktor zostałą przekazana do Pole Paris Studio.\n\nPo weryfikacji dostaniesz od nas wiadomość na adres e-mail'''
+                : 'Zarejestrowano pomyślnie.',
             widgets: [
               ElevatedButton(
                 style: CustomButtonStyle.primary,
@@ -98,7 +105,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           builder: (BuildContext context) =>
                               const HomeUnloggedPage()));
                 },
-                child: const Text('ZALOGUJ SIĘ'),
+                child: Text(
+                  widget.teacher ? 'POWRÓT DO STRONY STARTOWEJ' : 'ZALOGUJ SIĘ',
+                  style: widget.teacher ? const TextStyle(fontSize: 15) : null,
+                ),
               ),
             ],
           ),
@@ -132,24 +142,28 @@ class _RegistrationPageState extends State<RegistrationPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 30.0),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30.0),
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
                     child: Column(
                       children: [
                         Text(
-                          'Dołącz do naszego grona!',
+                          widget.teacher
+                              ? 'Cześć!'
+                              : 'Dołącz do naszego grona!',
                           maxLines: 1,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         Text(
-                          'Zarejestruj się i korzystaj z usług',
-                          style: TextStyle(
+                          widget.teacher
+                              ? 'Dołącz do grona instruktorów'
+                              : 'Zarejestruj się i korzystaj z usług',
+                          style: const TextStyle(
                             color: CustomColors.text2,
                             fontSize: 17,
                             fontWeight: FontWeight.bold,

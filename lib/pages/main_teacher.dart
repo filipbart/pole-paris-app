@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/styles/color.dart';
-import 'package:pole_paris_app/widgets/tab_navigator.dart';
+import 'package:pole_paris_app/widgets/teacher/tab_navigator.dart';
 import 'package:pole_paris_app/widgets/teacher/drawer.dart';
 
 import 'package:provider/provider.dart';

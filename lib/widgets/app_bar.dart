@@ -4,13 +4,20 @@ import 'package:pole_paris_app/styles/color.dart';
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final AppBar appBar;
-  const BaseAppBar({super.key, required this.title, required this.appBar});
+  final bool withDrawer;
+  const BaseAppBar({
+    super.key,
+    required this.title,
+    required this.appBar,
+    this.withDrawer = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
+      leading: !withDrawer ? Container() : null,
       title: Text(
         title,
         style: const TextStyle(

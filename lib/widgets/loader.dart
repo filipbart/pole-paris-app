@@ -19,29 +19,34 @@ class LoadingDialog extends StatelessWidget {
         onWillPop: () => Future.value(false),
         child: Dialog(
           backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
           insetPadding: const EdgeInsets.all(90),
-          child: SizedBox(
-            height: 180,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 15.0),
-                  child: CurvedCircularProgressIndicator.adaptive(
-                    backgroundColor: Colors.transparent,
-                    strokeWidth: 5.0,
-                    valueColor: AlwaysStoppedAnimation(CustomColors.text2),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: SizedBox(
+              height: 180,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 15.0),
+                    child: CurvedCircularProgressIndicator.adaptive(
+                      backgroundColor: Colors.transparent,
+                      strokeWidth: 5.0,
+                      valueColor: AlwaysStoppedAnimation(CustomColors.text2),
+                    ),
                   ),
-                ),
-                Text(
-                  text,
-                  style: const TextStyle(
-                    color: CustomColors.buttonAdditional,
-                    fontWeight: FontWeight.bold,
+                  Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: CustomColors.buttonAdditional,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

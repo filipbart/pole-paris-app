@@ -9,6 +9,7 @@ import 'package:pole_paris_app/screens/teacher/add_class.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/app_bar.dart';
+import 'package:pole_paris_app/widgets/circle_avatar.dart';
 import 'package:pole_paris_app/widgets/loader.dart';
 import 'package:pole_paris_app/widgets/teacher/class_field_label.dart';
 
@@ -82,12 +83,7 @@ class _AddClassSummaryState extends State<AddClassSummary> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(left: 10.0, right: 20.0),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 40,
-                        backgroundImage: NetworkImage(
-                            "https://img.freepik.com/darmowe-zdjecie/wewnatrz-portret-atrakcyjnej-mlodej-europejki-o-rudej-kobiecie-z-piegowata-twarza-i-wlosami-w-biala-bluzke-jej-wyglad-i-postawa-wyrazajace-pewnosc-siebie_273609-493.jpg"),
-                      ),
+                      child: UserPicture(radius: 40),
                     ),
                     FittedBox(
                       fit: BoxFit.fitWidth,
