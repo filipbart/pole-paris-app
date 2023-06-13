@@ -11,6 +11,7 @@ class Input extends StatelessWidget {
   final TextInputType? inputType;
   final TextInputFormatter? formatter;
   final bool? withBorder;
+  final Icon? suffixIcon;
   const Input({
     super.key,
     this.onChanged,
@@ -21,6 +22,7 @@ class Input extends StatelessWidget {
     this.inputType = TextInputType.name,
     this.formatter,
     this.withBorder = true,
+    this.suffixIcon,
   });
 
   @override
@@ -81,6 +83,7 @@ class Input extends StatelessWidget {
             borderSide: const BorderSide(color: CustomColors.error, width: 1.0),
             borderRadius: BorderRadius.circular(10.0),
           ),
+          suffixIcon: suffixIcon,
         ),
       ),
     );
