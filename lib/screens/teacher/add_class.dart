@@ -412,6 +412,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                     : ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
                                         child: Image.file(File(_image!.path),
+                                            fit: BoxFit.cover,
                                             width: 120,
                                             height: 120,
                                             errorBuilder: (context, error,
@@ -421,7 +422,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                                         'Nieprawidłowe zdjęcie'))),
                                       ),
                                 SizedBox(
-                                  width: 120,
+                                  width: 140,
                                   child: ElevatedButton(
                                     onPressed: () {
                                       setState(() {
