@@ -16,7 +16,7 @@ import 'package:pole_paris_app/widgets/input.dart';
 import 'package:pole_paris_app/widgets/large_input.dart';
 import 'package:pole_paris_app/widgets/teacher/add_picture_button.dart';
 import 'package:pole_paris_app/widgets/teacher/calendar.dart';
-import 'package:pole_paris_app/widgets/teacher/drawer.dart';
+import 'package:pole_paris_app/widgets/drawer.dart';
 import 'package:pole_paris_app/widgets/teacher/select_picker.dart';
 import 'package:provider/provider.dart';
 
