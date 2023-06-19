@@ -13,14 +13,14 @@ import 'package:pole_paris_app/widgets/teacher/class_item.dart';
 import 'package:pole_paris_app/widgets/drawer.dart';
 import 'package:provider/provider.dart';
 
-class MainScreenTeacher extends StatefulWidget {
-  const MainScreenTeacher({super.key});
+class MainScreenStudent extends StatefulWidget {
+  const MainScreenStudent({super.key});
 
   @override
-  State<MainScreenTeacher> createState() => _MainScreenTeacherState();
+  State<MainScreenStudent> createState() => _MainScreenStudentState();
 }
 
-class _MainScreenTeacherState extends State<MainScreenTeacher> {
+class _MainScreenStudentState extends State<MainScreenStudent> {
   late Map<String, List<Class>>? mappedClasses;
   static List<Class> classes = [
     Class(
@@ -44,15 +44,18 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
   ];
 
   late List<DrawerListTileItem> drawerItems = [
-    DrawerListTileItem('Dodaj zajęcia', () {
+    DrawerListTileItem('Zapisz się na zajęcia', () {
       Navigator.pop(context);
       Provider.of<TabIndex>(context, listen: false).changeIndex(3);
     }),
+    DrawerListTileItem('Wykup karnet', () {}),
     DrawerListTileItem('Twoje zajęcia', () {}),
-    DrawerListTileItem('Profil instruktora', () {
+    DrawerListTileItem('Profil', () {
       Navigator.pop(context);
       Provider.of<TabIndex>(context, listen: false).changeIndex(2);
     }),
+    DrawerListTileItem('O nas', () {}),
+    DrawerListTileItem('Kontakt', () {}),
     DrawerListTileItem('Ustawienia', () {}),
   ];
 
@@ -81,7 +84,6 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
         surfaceTintColor: Colors.transparent,
       ),
       drawer: BaseDrawer(
-        teacher: true,
         drawerListTileItems: drawerItems,
       ),
       body: SafeArea(
@@ -101,7 +103,7 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
                     width: 180,
                   ),
                   const Text(
-                    'Cześć\nMagdalena!',
+                    'Witaj ponownie\nAleksandra!',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 32,
@@ -120,15 +122,21 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
                             .changeIndex(3);
                       },
                       style: CustomButtonStyle.primary,
-                      child: const Text('DODAJ ZAJĘCIA'),
+                      child: const Text('ZAPISZ SIĘ NA ZAJĘCIA'),
                     ),
                   ),
-                  const Text(
-                    'Nadchodzące zajęcia, które prowadzisz',
-                    style: TextStyle(
-                      color: CustomColors.buttonAdditional,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  const Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Nadchodzące zajęcia',
+                        style: TextStyle(
+                          color: CustomColors.buttonAdditional,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   const Divider(
@@ -177,10 +185,66 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
                       ),
                     ),
                   ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 15.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Twoje karnety',
+                        style: TextStyle(
+                          color: CustomColors.buttonAdditional,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Divider(
+                    color: Color(0xFFD6D6D6),
+                    thickness: 1.2,
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 30),
+                      child: Wrap(
+                        runSpacing: 10,
+                        children: [
+                          Text('TODO'),
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 8.0,
+                                right: 15,
+                                left: 15,
+                              ),
+                              child: ElevatedButton(
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ClassesScreenTeacher(),
+                                    )),
+                                style: CustomButtonStyle.seeMore,
+                                child: const Text(
+                                  'ZOBACZ WIĘCEJ',
+                                  style: TextStyle(
+                                    color: Color(0xFF222227),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 10.0),
+                      padding: EdgeInsets.only(left: 15.0),
                       child: Text(
                         'Dzisiejsza data',
                         style: TextStyle(
@@ -244,7 +308,7 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
           border: Border.all(color: const Color(0xFFE1E1E1)),
           borderRadius: BorderRadius.circular(20),
         ),
-        child: ClassItem(classItem: classes.first),
+        child: ClassItem(classItem: classes.first, forStudent: true),
       ),
       if (classes.length != 1)
         Container(
@@ -252,7 +316,7 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
             border: Border.all(color: const Color(0xFFE1E1E1)),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: ClassItem(classItem: classes.last),
+          child: ClassItem(classItem: classes.last, forStudent: true),
         ),
     ];
   }

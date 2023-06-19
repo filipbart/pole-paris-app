@@ -9,7 +9,9 @@ import 'package:pole_paris_app/styles/text.dart';
 class ClassItem extends StatelessWidget {
   final Class classItem;
   final bool? withBorder;
-  const ClassItem({super.key, required this.classItem, this.withBorder});
+  final bool? forStudent;
+  const ClassItem(
+      {super.key, required this.classItem, this.withBorder, this.forStudent});
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +89,18 @@ class ClassItem extends StatelessWidget {
                         ),
                       ],
                     ),
+                    if (forStudent ?? false)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2.0),
+                        child: Text(
+                          classItem.teacher,
+                          style: const TextStyle(
+                            color: CustomColors.hintText,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
                 const Spacer(

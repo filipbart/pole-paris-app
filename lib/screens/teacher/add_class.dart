@@ -132,6 +132,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
       hourTo: hourTo!,
       level: level!,
       description: desc,
+      teacher: 'Anna',
       image: _image!,
     );
 
@@ -149,7 +150,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
         title: 'Dodawanie zajęć',
         appBar: AppBar(),
       ),
-      drawer: TeacherDrawer(
+      drawer: BaseDrawer(
         teacher: true,
         drawerListTileItems: drawerItems,
       ),

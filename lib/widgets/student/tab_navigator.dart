@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pole_paris_app/screens/teacher/add_class.dart';
-import 'package:pole_paris_app/screens/teacher/main_screen.dart';
-import 'package:pole_paris_app/screens/teacher/profile.dart';
+import 'package:pole_paris_app/screens/student/main_screen.dart';
 
-class TabNavigatorTeacher extends StatelessWidget {
-  const TabNavigatorTeacher({
+class TabNavigatorStudent extends StatelessWidget {
+  const TabNavigatorStudent({
     super.key,
     required this.navigatorKey,
     required this.selectedIndex,
@@ -13,10 +11,10 @@ class TabNavigatorTeacher extends StatelessWidget {
   final int selectedIndex;
 
   static final List<Widget> pages = [
-    const MainScreenTeacher(),
+    const MainScreenStudent(),
     Container(),
-    const ProfileScreenTeacher(),
-    const AddClassScreen(),
+    Container(),
+    Container(),
   ];
 
   @override

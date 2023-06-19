@@ -10,10 +10,10 @@ class DrawerListTileItem {
   DrawerListTileItem(this.title, this.onTap);
 }
 
-class TeacherDrawer extends StatelessWidget {
+class BaseDrawer extends StatelessWidget {
   final bool? teacher;
   final List<DrawerListTileItem> drawerListTileItems;
-  const TeacherDrawer({
+  const BaseDrawer({
     super.key,
     this.teacher = false,
     required this.drawerListTileItems,
@@ -95,7 +95,9 @@ class TeacherDrawer extends StatelessWidget {
                 ),
               ),
               Expanded(
+                flex: 4,
                 child: ListView(
+                  physics: const NeverScrollableScrollPhysics(),
                   children: drawerListTileItems
                       .map(
                         (e) => Container(

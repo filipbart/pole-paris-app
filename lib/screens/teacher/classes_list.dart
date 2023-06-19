@@ -25,6 +25,7 @@ class _ClassesScreenTeacherState extends State<ClassesScreenTeacher> {
       hourTo: '10:30',
       level: Level.primary,
       description: 'Jakiś tam opis',
+      teacher: 'Anna',
     ),
     Class(
       name: 'HIGH HEELS',
@@ -33,6 +34,7 @@ class _ClassesScreenTeacherState extends State<ClassesScreenTeacher> {
       hourTo: '15:30',
       level: Level.advanced,
       description: 'Jakiś tam opis',
+      teacher: 'Magdalena',
     ),
     Class(
       name: 'HIGH HEELS',
@@ -41,6 +43,7 @@ class _ClassesScreenTeacherState extends State<ClassesScreenTeacher> {
       hourTo: '15:30',
       level: Level.advanced,
       description: 'Jakiś tam opis',
+      teacher: 'Magdalena',
     ),
     Class(
       name: 'HIGH HEELS',
@@ -49,6 +52,7 @@ class _ClassesScreenTeacherState extends State<ClassesScreenTeacher> {
       hourTo: '17:30',
       level: Level.advanced,
       description: 'Jakiś tam opis',
+      teacher: 'Anna',
     ),
   ];
 

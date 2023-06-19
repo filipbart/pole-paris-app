@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/main.dart';
+import 'package:pole_paris_app/pages/main_student.dart';
 import 'package:pole_paris_app/pages/registration.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/screens/forgot_password.dart';
@@ -35,16 +36,16 @@ class _LoginScreenState extends State<LoginScreen> {
       _badPassword = passwordText.isEmpty;
     });
 
-    if (_badEmail || _badPassword) {
-      return;
-    }
+    // if (_badEmail || _badPassword) {
+    //   return;
+    // }
 
     showDialog(
             barrierDismissible: false,
             context: context,
             builder: (BuildContext context) =>
                 const LoadingDialog(text: 'Logowanie'))
-        .timeout(const Duration(seconds: 2), onTimeout: () {
+        .timeout(const Duration(seconds: 1), onTimeout: () {
       Navigator.pop(context);
 
       Navigator.pushAndRemoveUntil(
@@ -57,7 +58,11 @@ class _LoginScreenState extends State<LoginScreen> {
             widgets: [
               ElevatedButton(
                 style: CustomButtonStyle.primary,
-                onPressed: () {},
+                onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            const MainPageStudent())),
                 child: const Text('STRONA GŁÓWNA'),
               ),
             ],

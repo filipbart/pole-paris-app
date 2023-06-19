@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/styles/color.dart';
-import 'package:pole_paris_app/widgets/teacher/tab_navigator.dart';
+import 'package:pole_paris_app/widgets/student/tab_navigator.dart';
 import 'package:provider/provider.dart';
 
-class MainPageTeacher extends StatefulWidget {
-  const MainPageTeacher({super.key});
+class MainPageStudent extends StatefulWidget {
+  const MainPageStudent({super.key});
 
   @override
-  State<MainPageTeacher> createState() => _MainPageTeacherState();
+  State<MainPageStudent> createState() => _MainPageStudentState();
 }
 
-class _MainPageTeacherState extends State<MainPageTeacher> {
+class _MainPageStudentState extends State<MainPageStudent> {
   final _navigatorKeys = [
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
@@ -80,7 +80,7 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.calendar_month_outlined),
-                  label: 'dodaj zajęcia',
+                  label: 'zapisz się',
                 ),
               ],
               currentIndex: value.selectedIndex,
@@ -101,7 +101,7 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
   }
 
   Widget _buildNavigator(int index) {
-    return TabNavigatorTeacher(
+    return TabNavigatorStudent(
       navigatorKey: _navigatorKeys[index],
       selectedIndex: index,
     );
