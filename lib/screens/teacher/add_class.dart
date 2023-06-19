@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:pole_paris_app/extensions/dateTime.dart';
 import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/levels.dart';
+import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/screens/teacher/add_class_summary.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
@@ -17,6 +18,7 @@ import 'package:pole_paris_app/widgets/teacher/add_picture_button.dart';
 import 'package:pole_paris_app/widgets/teacher/calendar.dart';
 import 'package:pole_paris_app/widgets/teacher/drawer.dart';
 import 'package:pole_paris_app/widgets/teacher/select_picker.dart';
+import 'package:provider/provider.dart';
 
 class AddClassScreen extends StatefulWidget {
   const AddClassScreen({super.key});
@@ -46,6 +48,19 @@ class _AddClassScreenState extends State<AddClassScreen> {
     '13:30',
     '14:00',
     '14:30',
+  ];
+
+  late List<DrawerListTileItem> drawerItems = [
+    DrawerListTileItem('Dodaj zajęcia', () {
+      Navigator.pop(context);
+      Provider.of<TabIndex>(context, listen: false).changeIndex(3);
+    }),
+    DrawerListTileItem('Twoje zajęcia', () {}),
+    DrawerListTileItem('Profil instruktora', () {
+      Navigator.pop(context);
+      Provider.of<TabIndex>(context, listen: false).changeIndex(2);
+    }),
+    DrawerListTileItem('Ustawienia', () {}),
   ];
 
   XFile? _image;
@@ -134,7 +149,10 @@ class _AddClassScreenState extends State<AddClassScreen> {
         title: 'Dodawanie zajęć',
         appBar: AppBar(),
       ),
-      drawer: const TeacherDrawer(),
+      drawer: TeacherDrawer(
+        teacher: true,
+        drawerListTileItems: drawerItems,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

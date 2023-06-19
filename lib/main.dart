@@ -16,6 +16,7 @@ class PoleParisApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage('assets/img/logo.png'), context);
     return MaterialApp(
         title: 'Pole Paris App',
         theme: ThemeData(

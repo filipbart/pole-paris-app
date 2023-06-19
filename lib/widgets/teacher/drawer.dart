@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:pole_paris_app/providers/tab_index.dart';
-import 'package:pole_paris_app/screens/teacher/classes_list.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/circle_avatar.dart';
-import 'package:provider/provider.dart';
+
+class DrawerListTileItem {
+  final String title;
+  final Function()? onTap;
+
+  DrawerListTileItem(this.title, this.onTap);
+}
 
 class TeacherDrawer extends StatelessWidget {
-  const TeacherDrawer({super.key});
+  final bool? teacher;
+  final List<DrawerListTileItem> drawerListTileItems;
+  const TeacherDrawer({
+    super.key,
+    this.teacher = false,
+    required this.drawerListTileItems,
+  });
 
   static TextStyle titleStyle = const TextStyle(
     color: Colors.black,
@@ -40,16 +50,16 @@ class TeacherDrawer extends StatelessWidget {
                     ),
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      UserPicture(radius: 30),
+                      const UserPicture(radius: 30),
                       FittedBox(
                         fit: BoxFit.fitWidth,
                         child: Wrap(
                           direction: Axis.vertical,
                           children: [
-                            Text(
+                            const Text(
                               'Magdalena Kowalska',
                               style: TextStyle(
                                 fontFamily: 'Satoshi',
@@ -58,7 +68,7 @@ class TeacherDrawer extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Text(
+                            const Text(
                               'magdalena@gmail.com',
                               style: TextStyle(
                                 fontFamily: 'Satoshi',
@@ -67,15 +77,16 @@ class TeacherDrawer extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            Text(
-                              'instruktor',
-                              style: TextStyle(
-                                fontFamily: 'Satoshi',
-                                color: CustomColors.text2,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                            if (teacher ?? false)
+                              const Text(
+                                'instruktor',
+                                style: TextStyle(
+                                  fontFamily: 'Satoshi',
+                                  color: CustomColors.text2,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),
@@ -85,68 +96,24 @@ class TeacherDrawer extends StatelessWidget {
               ),
               Expanded(
                 child: ListView(
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                        color: Color(0xFFD6D6D6),
-                        width: 1,
-                      ))),
-                      child: ListTile(
-                          title: const Text('Dodaj zajęcia'),
-                          titleTextStyle: titleStyle,
-                          onTap: () {
-                            Navigator.pop(context);
-                            Provider.of<TabIndex>(context, listen: false)
-                                .changeIndex(3);
-                          }),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                        color: Color(0xFFD6D6D6),
-                        width: 1,
-                      ))),
-                      child: ListTile(
-                        title: const Text('Twoje zajęcia'),
-                        titleTextStyle: titleStyle,
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ClassesScreenTeacher()));
-                        },
-                      ),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                        color: Color(0xFFD6D6D6),
-                        width: 1,
-                      ))),
-                      child: ListTile(
-                        title: const Text('Profil instruktora'),
-                        titleTextStyle: titleStyle,
-                      ),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                        color: Color(0xFFD6D6D6),
-                        width: 1,
-                      ))),
-                      child: ListTile(
-                        title: const Text('Ustawienia'),
-                        titleTextStyle: titleStyle,
-                      ),
-                    ),
-                  ],
+                  children: drawerListTileItems
+                      .map(
+                        (e) => Container(
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                            color: Color(0xFFD6D6D6),
+                            width: 1,
+                          ))),
+                          child: ListTile(
+                            title: Text(e.title),
+                            titleTextStyle: titleStyle,
+                            splashColor: CustomColors.text2,
+                            onTap: e.onTap,
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
               Expanded(child: Container()),

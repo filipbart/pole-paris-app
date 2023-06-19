@@ -41,6 +41,19 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
     ),
   ];
 
+  late List<DrawerListTileItem> drawerItems = [
+    DrawerListTileItem('Dodaj zajęcia', () {
+      Navigator.pop(context);
+      Provider.of<TabIndex>(context, listen: false).changeIndex(3);
+    }),
+    DrawerListTileItem('Twoje zajęcia', () {}),
+    DrawerListTileItem('Profil instruktora', () {
+      Navigator.pop(context);
+      Provider.of<TabIndex>(context, listen: false).changeIndex(2);
+    }),
+    DrawerListTileItem('Ustawienia', () {}),
+  ];
+
   static List<DateTime> days = [
     DateTime.now(),
     DateTime.now().add(const Duration(days: 2)),
@@ -59,12 +72,16 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage('assets/img/logo.png'), context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
       ),
-      drawer: const TeacherDrawer(),
+      drawer: TeacherDrawer(
+        teacher: true,
+        drawerListTileItems: drawerItems,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
