@@ -12,6 +12,7 @@ class Input extends StatelessWidget {
   final TextInputFormatter? formatter;
   final bool? withBorder;
   final Icon? suffixIcon;
+  final String? labelText;
   const Input({
     super.key,
     this.onChanged,
@@ -23,6 +24,7 @@ class Input extends StatelessWidget {
     this.formatter,
     this.withBorder = true,
     this.suffixIcon,
+    this.labelText,
   });
 
   @override
@@ -63,7 +65,7 @@ class Input extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: withBorder! ? CustomColors.inputLine : Colors.white,
+              color: withBorder! ? CustomColors.line : Colors.white,
               width: 1.0,
             ),
             borderRadius: BorderRadius.circular(10.0),
@@ -84,6 +86,12 @@ class Input extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0),
           ),
           suffixIcon: suffixIcon,
+          labelText: labelText,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelStyle: const TextStyle(
+            color: CustomColors.buttonAdditional,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
     );

@@ -407,7 +407,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                       _noImage = _image == null;
                                     });
                                   },
-                                  icon: Icons.insert_photo_outlined,
+                                  icon: Icons.add_photo_alternate_outlined,
                                   label: 'Wybierz z biblioteki',
                                 ),
                                 AddPictureButton(
@@ -419,7 +419,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                       _noImage = _image == null;
                                     });
                                   },
-                                  icon: Icons.camera_alt_outlined,
+                                  icon: Icons.add_a_photo_outlined,
                                   label: 'Zrób zdjęcie',
                                 ),
                               ]

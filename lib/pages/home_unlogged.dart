@@ -45,7 +45,7 @@ class _HomeUnloggedPageState extends State<HomeUnloggedPage> {
                   padding: EdgeInsets.symmetric(vertical: 35.0),
                   child: Divider(
                     thickness: 1.0,
-                    color: CustomColors.lines,
+                    color: CustomColors.line,
                   ),
                 ),
                 ElevatedButton(

@@ -51,7 +51,7 @@ class LargeInput extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(
-              color: CustomColors.inputLine,
+              color: CustomColors.line,
               width: 1.0,
             ),
             borderRadius: BorderRadius.circular(10.0),

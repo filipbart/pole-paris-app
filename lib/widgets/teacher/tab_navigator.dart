@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/screens/teacher/add_class.dart';
 import 'package:pole_paris_app/screens/teacher/main_screen.dart';
-import 'package:pole_paris_app/screens/teacher/profile.dart';
+import 'package:pole_paris_app/screens/profile.dart';
 
 class TabNavigatorTeacher extends StatelessWidget {
   const TabNavigatorTeacher({
@@ -15,7 +15,7 @@ class TabNavigatorTeacher extends StatelessWidget {
   static final List<Widget> pages = [
     const MainScreenTeacher(),
     Container(),
-    const ProfileScreenTeacher(),
+    const ProfileScreen(teacher: true),
     const AddClassScreen(),
   ];
 

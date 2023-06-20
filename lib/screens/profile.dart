@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
+import 'package:pole_paris_app/screens/edit_profile.dart';
 import 'package:pole_paris_app/screens/teacher/classes_list.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
@@ -7,14 +8,15 @@ import 'package:pole_paris_app/widgets/app_bar.dart';
 import 'package:pole_paris_app/widgets/circle_avatar.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreenTeacher extends StatelessWidget {
-  const ProfileScreenTeacher({super.key});
+class ProfileScreen extends StatelessWidget {
+  final bool teacher;
+  const ProfileScreen({super.key, this.teacher = false});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBar(
-        title: 'Profil instruktora',
+        title: teacher ? 'Profil instruktora' : 'Profil',
         appBar: AppBar(),
         withDrawer: false,
       ),
@@ -43,17 +45,17 @@ class ProfileScreenTeacher extends StatelessWidget {
                         ),
                         child: Wrap(
                           children: [
-                            const Row(
+                            Row(
                               children: [
-                                UserPicture(radius: 50),
+                                const UserPicture(radius: 50),
                                 Expanded(
                                   child: Padding(
-                                    padding: EdgeInsets.only(left: 15.0),
+                                    padding: const EdgeInsets.only(left: 15.0),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
+                                        const Text(
                                           'Magdalena Kowalska',
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
@@ -62,14 +64,15 @@ class ProfileScreenTeacher extends StatelessWidget {
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
-                                        Text(
-                                          'instruktor',
-                                          style: TextStyle(
-                                            color: CustomColors.text2,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
+                                        if (teacher)
+                                          const Text(
+                                            'instruktor',
+                                            style: TextStyle(
+                                              color: CustomColors.text2,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
-                                        ),
                                       ],
                                     ),
                                   ),
@@ -144,14 +147,15 @@ class ProfileScreenTeacher extends StatelessWidget {
                     child: Wrap(
                       runSpacing: 15,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            Provider.of<TabIndex>(context, listen: false)
-                                .changeIndex(3);
-                          },
-                          style: CustomButtonStyle.primary,
-                          child: const Text('Dodaj zajęcia'),
-                        ),
+                        if (teacher)
+                          ElevatedButton(
+                            onPressed: () {
+                              Provider.of<TabIndex>(context, listen: false)
+                                  .changeIndex(3);
+                            },
+                            style: CustomButtonStyle.primary,
+                            child: const Text('Dodaj zajęcia'),
+                          ),
                         ElevatedButton(
                           onPressed: () => Navigator.push(
                               context,
@@ -161,8 +165,18 @@ class ProfileScreenTeacher extends StatelessWidget {
                           style: CustomButtonStyle.whiteProfiles,
                           child: const Text('Twoje zajęcia'),
                         ),
+                        if (teacher == false)
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: CustomButtonStyle.whiteProfiles,
+                            child: const Text('Twoje karnety'),
+                          ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const EditProfileScreen())),
                           style: CustomButtonStyle.whiteProfiles,
                           child: const Text('Edytuj profil'),
                         ),

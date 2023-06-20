@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:pole_paris_app/styles/color.dart';
 
 class AddPictureButton extends StatefulWidget {
   final Function() onPressed;
   final IconData icon;
   final String label;
+  final bool circle;
   const AddPictureButton({
     super.key,
     required this.onPressed,
     required this.icon,
     required this.label,
+    this.circle = false,
   });
 
   @override
@@ -33,27 +36,14 @@ class _AddPictureButtonState extends State<AddPictureButton> {
             height: 120,
             decoration: BoxDecoration(
               color: const Color(0xFFC4C4C4),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(widget.circle ? 75 : 20),
             ),
-            child: Stack(
-              children: [
-                Center(
-                    child: Icon(
-                  widget.icon,
-                  color: const Color(0xFF545454),
-                  size: 54,
-                )),
-                const Padding(
-                  padding: EdgeInsets.only(top: 8.0, right: 12.0),
-                  child: Align(
-                      alignment: Alignment.topRight,
-                      child: Icon(
-                        Icons.add,
-                        color: Color(0xFF545454),
-                      )),
-                ),
-              ],
-            ),
+            child: Center(
+                child: Icon(
+              widget.icon,
+              color: CustomColors.hintText,
+              size: 54,
+            )),
           ),
         ),
         Text(widget.label),

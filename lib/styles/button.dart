@@ -240,7 +240,7 @@ class CustomButtonStyle {
     )),
     textStyle: MaterialStatePropertyAll<TextStyle>(GoogleFonts.inter(
       fontSize: 16,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       color: CustomColors.inputText,
     )),
     minimumSize: const MaterialStatePropertyAll<Size>(

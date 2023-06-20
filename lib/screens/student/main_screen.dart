@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/levels.dart';
+import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/screens/teacher/classes_list.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/logo.dart';
+import 'package:pole_paris_app/widgets/student/carnet.dart';
 import 'package:pole_paris_app/widgets/teacher/calendar.dart';
 import 'package:pole_paris_app/widgets/teacher/class_item.dart';
 import 'package:pole_paris_app/widgets/drawer.dart';
@@ -206,15 +208,30 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 30),
+                      padding: const EdgeInsets.only(top: 20, bottom: 30),
                       child: Wrap(
-                        runSpacing: 10,
+                        runSpacing: 15,
                         children: [
-                          Text('TODO'),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: CustomColors.line),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const UserCarnet(
+                                membership: Membership.premium),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: CustomColors.line),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child:
+                                const UserCarnet(membership: Membership.base),
+                          ),
                           Center(
                             child: Padding(
                               padding: const EdgeInsets.only(
-                                top: 8.0,
+                                top: 10.0,
                                 right: 15,
                                 left: 15,
                               ),
