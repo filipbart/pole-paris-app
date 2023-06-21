@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pole_paris_app/screens/student/about.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/app_bar.dart';
@@ -263,9 +264,12 @@ class ContactScreen extends StatelessWidget {
                 child: SizedBox(
                   width: 180,
                   child: ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('O STUDIO'),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AboutUsScreen())),
                     style: CustomButtonStyle.whiteProfilesWithoutSize,
+                    child: const Text('O STUDIO'),
                   ),
                 ),
               ),

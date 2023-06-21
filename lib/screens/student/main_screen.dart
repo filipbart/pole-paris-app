@@ -5,6 +5,7 @@ import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/levels.dart';
 import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
+import 'package:pole_paris_app/screens/student/about.dart';
 import 'package:pole_paris_app/screens/student/contact.dart';
 import 'package:pole_paris_app/screens/teacher/classes_list.dart';
 import 'package:pole_paris_app/styles/button.dart';
@@ -57,7 +58,14 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
       Navigator.pop(context);
       Provider.of<TabIndex>(context, listen: false).changeIndex(2);
     }),
-    DrawerListTileItem('O nas', () {}),
+    DrawerListTileItem(
+      'O nas',
+      () {
+        Navigator.pop(context);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const AboutUsScreen()));
+      },
+    ),
     DrawerListTileItem(
         'Kontakt',
         () => Navigator.push(context,
