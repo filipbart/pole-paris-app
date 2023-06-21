@@ -95,7 +95,6 @@ class BaseDrawer extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 4,
                 child: ListView(
                   physics: const NeverScrollableScrollPhysics(),
                   children: drawerListTileItems
@@ -118,7 +117,6 @@ class BaseDrawer extends StatelessWidget {
                       .toList(),
                 ),
               ),
-              Expanded(child: Container()),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(

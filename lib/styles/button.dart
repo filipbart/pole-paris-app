@@ -247,4 +247,27 @@ class CustomButtonStyle {
       Size.fromHeight(50),
     ),
   );
+
+  static ButtonStyle whiteProfilesWithoutSize = ButtonStyle(
+    foregroundColor: MaterialStateProperty.resolveWith<Color>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.pressed)) {
+          return CustomColors.text2;
+        }
+        return CustomColors.inputText;
+      },
+    ),
+    overlayColor: const MaterialStatePropertyAll<Color>(Colors.white),
+    backgroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
+    surfaceTintColor: const MaterialStatePropertyAll<Color>(Colors.white),
+    elevation: const MaterialStatePropertyAll<double>(2),
+    shape: MaterialStatePropertyAll<OutlinedBorder>(RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(24.0),
+    )),
+    textStyle: MaterialStatePropertyAll<TextStyle>(GoogleFonts.inter(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: CustomColors.inputText,
+    )),
+  );
 }

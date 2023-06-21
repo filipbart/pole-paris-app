@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
+import 'package:pole_paris_app/screens/profile.dart';
 import 'package:pole_paris_app/screens/teacher/add_class.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
@@ -106,7 +107,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             builder: (BuildContext context) =>
                 const LoadingDialog(text: 'Zapisywanie zmian'))
         .timeout(const Duration(milliseconds: 200), onTimeout: () {
-      Navigator.pop(context);
+      Navigator.of(context, rootNavigator: true).pop();
 
       Navigator.pushAndRemoveUntil(
         context,
@@ -118,7 +119,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             widgets: [
               ElevatedButton(
                 style: CustomButtonStyle.primary,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileScreen(),
+                      ));
+                },
                 child: const Text('POWRÓT DO PROFILU'),
               ),
             ],
