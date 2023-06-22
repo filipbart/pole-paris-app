@@ -5,18 +5,20 @@ import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/levels.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/styles/button.dart';
+import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/app_bar.dart';
 import 'package:pole_paris_app/widgets/teacher/class_item.dart';
 import 'package:provider/provider.dart';
 
-class ClassesScreenTeacher extends StatefulWidget {
-  const ClassesScreenTeacher({super.key});
+class ClassesListScreen extends StatefulWidget {
+  final bool forStudent;
+  const ClassesListScreen({super.key, required this.forStudent});
 
   @override
-  State<ClassesScreenTeacher> createState() => _ClassesScreenTeacherState();
+  State<ClassesListScreen> createState() => _ClassesListScreenState();
 }
 
-class _ClassesScreenTeacherState extends State<ClassesScreenTeacher> {
+class _ClassesListScreenState extends State<ClassesListScreen> {
   static List<Class> classes = [
     Class(
       name: 'HIGH HEELS',
@@ -63,15 +65,29 @@ class _ClassesScreenTeacherState extends State<ClassesScreenTeacher> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBar(
-        title: 'Zajęcia, które prowadzisz',
+        title:
+            widget.forStudent ? 'Twoje zajęcia' : 'Zajęcia, które prowadzisz',
         appBar: AppBar(),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),
             child: Column(
               children: [
+                if (widget.forStudent)
+                  const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      'Czas wypisania z zajęć to 10 godzin przed zajęciami, w przypadku późniejszego wypisania zajęcia przepadają.',
+                      style: TextStyle(
+                        color: CustomColors.hintText,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ...dates.entries
                     .map((dateClass) =>
                         titleWithClassList(dateClass.key, dateClass.value))
@@ -96,7 +112,9 @@ class _ClassesScreenTeacherState extends State<ClassesScreenTeacher> {
                                 .changeIndex(3);
                           },
                           style: CustomButtonStyle.primary,
-                          child: const Text('DODAJ NOWE ZAJĘCIA'),
+                          child: Text(widget.forStudent
+                              ? 'ZAPISZ SIĘ NA ZAJĘCIA'
+                              : 'DODAJ NOWE ZAJĘCIA'),
                         ),
                       ),
                     ],
@@ -133,7 +151,8 @@ class _ClassesScreenTeacherState extends State<ClassesScreenTeacher> {
             ...classes
                 .map((classItem) => Padding(
                       padding: const EdgeInsets.only(bottom: 15.0),
-                      child: ClassItem(classItem: classItem),
+                      child: ClassItem(
+                          classItem: classItem, forStudent: widget.forStudent),
                     ))
                 .toList(),
           ],

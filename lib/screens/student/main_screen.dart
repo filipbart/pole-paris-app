@@ -6,8 +6,9 @@ import 'package:pole_paris_app/models/levels.dart';
 import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/screens/student/about.dart';
+import 'package:pole_paris_app/screens/classes_list.dart';
 import 'package:pole_paris_app/screens/student/contact.dart';
-import 'package:pole_paris_app/screens/teacher/classes_list.dart';
+
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/logo.dart';
@@ -53,7 +54,13 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
       Provider.of<TabIndex>(context, listen: false).changeIndex(3);
     }),
     DrawerListTileItem('Wykup karnet', () {}),
-    DrawerListTileItem('Twoje zajęcia', () {}),
+    DrawerListTileItem('Twoje zajęcia', () {
+      Navigator.pop(context);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const ClassesListScreen(forStudent: true)));
+    }),
     DrawerListTileItem('Profil', () {
       Navigator.pop(context);
       Provider.of<TabIndex>(context, listen: false).changeIndex(2);
@@ -181,7 +188,8 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const ClassesScreenTeacher(),
+                                          const ClassesListScreen(
+                                              forStudent: true),
                                     )),
                                 style: CustomButtonStyle.seeMore,
                                 child: const Text(
@@ -252,7 +260,8 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const ClassesScreenTeacher(),
+                                          const ClassesListScreen(
+                                              forStudent: true),
                                     )),
                                 style: CustomButtonStyle.seeMore,
                                 child: const Text(

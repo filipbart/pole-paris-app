@@ -19,8 +19,10 @@ class ClassItem extends StatelessWidget {
       transitionDuration: const Duration(milliseconds: 500),
       closedShape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      openBuilder: (context, closedContainer) =>
-          ClassDetailsTeacherScreen(classDetails: classItem),
+      openBuilder: (context, closedContainer) => ClassDetailsScreen(
+        classDetails: classItem,
+        forStudent: forStudent ?? false,
+      ),
       closedBuilder: (context, openContainer) => InkWell(
         onTap: () => openContainer(),
         child: Container(
@@ -55,8 +57,8 @@ class ClassItem extends StatelessWidget {
                   ],
                 ),
                 const VerticalDivider(
-                  thickness: 1.5,
-                  color: Color(0xFF838383),
+                  thickness: 1,
+                  color: Color(0xFFE1E1E1),
                 ),
                 Wrap(
                   spacing: -3,

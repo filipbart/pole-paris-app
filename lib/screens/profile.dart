@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
+import 'package:pole_paris_app/screens/classes_list.dart';
 import 'package:pole_paris_app/screens/edit_profile.dart';
-import 'package:pole_paris_app/screens/teacher/classes_list.dart';
+
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/app_bar.dart';
@@ -160,8 +161,8 @@ class ProfileScreen extends StatelessWidget {
                           onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ClassesScreenTeacher())),
+                                  builder: (context) => const ClassesListScreen(
+                                      forStudent: true))),
                           style: CustomButtonStyle.whiteProfiles,
                           child: const Text('Twoje zajęcia'),
                         ),

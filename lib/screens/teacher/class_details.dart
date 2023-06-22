@@ -6,9 +6,11 @@ import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/app_bar.dart';
 import 'package:pole_paris_app/widgets/teacher/class_base_info.dart';
 
-class ClassDetailsTeacherScreen extends StatelessWidget {
+class ClassDetailsScreen extends StatelessWidget {
+  final bool forStudent;
   final Class classDetails;
-  const ClassDetailsTeacherScreen({super.key, required this.classDetails});
+  const ClassDetailsScreen(
+      {super.key, required this.classDetails, required this.forStudent});
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +74,37 @@ class ClassDetailsTeacherScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                              if (forStudent)
+                                const Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 5.0),
+                                      child: Icon(
+                                        Icons.person_2_outlined,
+                                        color: CustomColors.inputText,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Anna Kowalska',
+                                      style: TextStyle(
+                                        color: CustomColors.inputText,
+                                        fontFamily: 'Satoshi',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               const Row(
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(right: 5.0),
-                                    child: Icon(Icons.place_outlined),
+                                    child: Icon(
+                                      Icons.place_outlined,
+                                      color: CustomColors.inputText,
+                                    ),
                                   ),
                                   Text(
-                                    'Lublin',
+                                    'Świdnik',
                                     style: TextStyle(
                                       color: CustomColors.inputText,
                                       fontFamily: 'Satoshi',
@@ -87,7 +112,7 @@ class ClassDetailsTeacherScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -126,18 +151,33 @@ class ClassDetailsTeacherScreen extends StatelessWidget {
                 child: Wrap(
                   runSpacing: 15,
                   children: [
-                    ElevatedButton(
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ClassStudentsScreen(
-                                    classDetails: classDetails))),
-                        style: CustomButtonStyle.primary,
-                        child: const Text('LISTA KURSANTÓW')),
-                    ElevatedButton(
-                        onPressed: () {},
-                        style: CustomButtonStyle.secondaryTransparent,
-                        child: const Text('EDYTUJ'))
+                    if (forStudent) ...[
+                      ElevatedButton(
+                          onPressed: () {},
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => )),
+                          style: CustomButtonStyle.primary,
+                          child: const Text('WYPISZ SIĘ')),
+                      ElevatedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: CustomButtonStyle.secondaryTransparent,
+                          child: const Text('POWRÓT')),
+                    ] else ...[
+                      ElevatedButton(
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ClassStudentsScreen(
+                                      classDetails: classDetails))),
+                          style: CustomButtonStyle.primary,
+                          child: const Text('LISTA KURSANTÓW')),
+                      ElevatedButton(
+                          onPressed: () {},
+                          style: CustomButtonStyle.secondaryTransparent,
+                          child: const Text('EDYTUJ')),
+                    ]
                   ],
                 ),
               ),

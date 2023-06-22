@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/levels.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
-import 'package:pole_paris_app/screens/teacher/classes_list.dart';
+import 'package:pole_paris_app/screens/classes_list.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/logo.dart';
@@ -159,7 +159,8 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const ClassesScreenTeacher(),
+                                          const ClassesListScreen(
+                                              forStudent: false),
                                     )),
                                 style: CustomButtonStyle.seeMore,
                                 child: const Text(

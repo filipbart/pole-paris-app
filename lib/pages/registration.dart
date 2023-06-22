@@ -130,14 +130,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 30,
-            left: 45.0,
-            right: 45.0,
-            bottom: 15,
-          ),
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 30,
+              left: 45.0,
+              right: 45.0,
+              bottom: 15,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.stretch,
