@@ -11,12 +11,14 @@ import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/screens/teacher/add_class_summary.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
-import 'package:pole_paris_app/widgets/app_bar.dart';
+import 'package:pole_paris_app/widgets/base/app_bar.dart';
+import 'package:pole_paris_app/widgets/base/drawer.dart';
+
 import 'package:pole_paris_app/widgets/input.dart';
 import 'package:pole_paris_app/widgets/large_input.dart';
 import 'package:pole_paris_app/widgets/teacher/add_picture_button.dart';
 import 'package:pole_paris_app/widgets/teacher/calendar.dart';
-import 'package:pole_paris_app/widgets/drawer.dart';
+
 import 'package:pole_paris_app/widgets/teacher/select_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -116,14 +118,14 @@ class _AddClassScreenState extends State<AddClassScreen> {
       _noImage = _image == null;
     });
 
-    if (_badName ||
-        _badDesc ||
-        _nullSince ||
-        _nullTo ||
-        _nullLevel ||
-        _noImage) {
-      return;
-    }
+    // if (_badName ||
+    //     _badDesc ||
+    //     _nullSince ||
+    //     _nullTo ||
+    //     _nullLevel ||
+    //     _noImage) {
+    //   return;
+    // }
 
     final newClass = Class(
       name: name,

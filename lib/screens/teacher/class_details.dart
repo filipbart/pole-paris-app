@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/models/class.dart';
+import 'package:pole_paris_app/screens/student/opt_out.dart';
 import 'package:pole_paris_app/screens/teacher/class_students.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
-import 'package:pole_paris_app/widgets/app_bar.dart';
+import 'package:pole_paris_app/widgets/base/app_bar.dart';
+
 import 'package:pole_paris_app/widgets/teacher/class_base_info.dart';
+
+TextStyle dataStyle = const TextStyle(
+  color: Color(0xFF404040),
+  fontFamily: 'Satoshi',
+  fontSize: 14,
+  fontWeight: FontWeight.w500,
+);
 
 class ClassDetailsScreen extends StatelessWidget {
   final bool forStudent;
@@ -75,9 +84,9 @@ class ClassDetailsScreen extends StatelessWidget {
                                 ],
                               ),
                               if (forStudent)
-                                const Row(
+                                Row(
                                   children: [
-                                    Padding(
+                                    const Padding(
                                       padding: EdgeInsets.only(right: 5.0),
                                       child: Icon(
                                         Icons.person_2_outlined,
@@ -86,17 +95,13 @@ class ClassDetailsScreen extends StatelessWidget {
                                     ),
                                     Text(
                                       'Anna Kowalska',
-                                      style: TextStyle(
-                                        color: CustomColors.inputText,
-                                        fontFamily: 'Satoshi',
-                                        fontSize: 14,
-                                      ),
+                                      style: dataStyle,
                                     ),
                                   ],
                                 ),
-                              const Row(
+                              Row(
                                 children: [
-                                  Padding(
+                                  const Padding(
                                     padding: EdgeInsets.only(right: 5.0),
                                     child: Icon(
                                       Icons.place_outlined,
@@ -105,11 +110,7 @@ class ClassDetailsScreen extends StatelessWidget {
                                   ),
                                   Text(
                                     'Świdnik',
-                                    style: TextStyle(
-                                      color: CustomColors.inputText,
-                                      fontFamily: 'Satoshi',
-                                      fontSize: 14,
-                                    ),
+                                    style: dataStyle,
                                   ),
                                 ],
                               ),
@@ -153,11 +154,11 @@ class ClassDetailsScreen extends StatelessWidget {
                   children: [
                     if (forStudent) ...[
                       ElevatedButton(
-                          onPressed: () {},
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => )),
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OptOutScreen(
+                                      classDetails: classDetails))),
                           style: CustomButtonStyle.primary,
                           child: const Text('WYPISZ SIĘ')),
                       ElevatedButton(

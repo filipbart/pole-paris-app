@@ -4,8 +4,8 @@ import 'package:pole_paris_app/pages/registration.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
+import 'package:pole_paris_app/widgets/base/loader.dart';
 import 'package:pole_paris_app/widgets/input.dart';
-import 'package:pole_paris_app/widgets/loader.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -56,8 +56,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const HomeUnloggedPage()));
+                          builder: (BuildContext context) => const MainPage()));
                 },
                 child: const Text('POWRÓT DO LOGOWANIA'),
               ),

@@ -8,9 +8,11 @@ import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/screens/teacher/add_class.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
-import 'package:pole_paris_app/widgets/app_bar.dart';
+import 'package:pole_paris_app/widgets/base/app_bar.dart';
+import 'package:pole_paris_app/widgets/base/loader.dart';
+
 import 'package:pole_paris_app/widgets/circle_avatar.dart';
-import 'package:pole_paris_app/widgets/loader.dart';
+
 import 'package:pole_paris_app/widgets/teacher/class_field_label.dart';
 
 class AddClassSummary extends StatefulWidget {

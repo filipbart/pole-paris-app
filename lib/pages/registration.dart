@@ -5,9 +5,8 @@ import 'package:pole_paris_app/main.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
+import 'package:pole_paris_app/widgets/base/loader.dart';
 import 'package:pole_paris_app/widgets/input.dart';
-
-import '../widgets/loader.dart';
 
 class RegistrationPage extends StatefulWidget {
   final bool teacher;
@@ -102,8 +101,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const HomeUnloggedPage()));
+                          builder: (BuildContext context) => const MainPage()));
                 },
                 child: Text(
                   widget.teacher ? 'POWRÓT DO STRONY STARTOWEJ' : 'ZALOGUJ SIĘ',
@@ -354,7 +352,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const HomeUnloggedPage(),
+                            builder: (context) => const MainPage(),
                           )),
                       child: RichText(
                         text: const TextSpan(

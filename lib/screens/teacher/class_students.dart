@@ -3,7 +3,8 @@ import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/models/user.dart';
 import 'package:pole_paris_app/styles/color.dart';
-import 'package:pole_paris_app/widgets/app_bar.dart';
+import 'package:pole_paris_app/widgets/base/app_bar.dart';
+
 import 'package:pole_paris_app/widgets/circle_avatar.dart';
 import 'package:pole_paris_app/widgets/input.dart';
 import 'package:pole_paris_app/widgets/teacher/class_base_info.dart';

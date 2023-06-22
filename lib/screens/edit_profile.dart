@@ -8,9 +8,11 @@ import 'package:pole_paris_app/screens/profile.dart';
 import 'package:pole_paris_app/screens/teacher/add_class.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
-import 'package:pole_paris_app/widgets/app_bar.dart';
+import 'package:pole_paris_app/widgets/base/app_bar.dart';
+import 'package:pole_paris_app/widgets/base/loader.dart';
+
 import 'package:pole_paris_app/widgets/input.dart';
-import 'package:pole_paris_app/widgets/loader.dart';
+
 import 'package:pole_paris_app/widgets/teacher/add_picture_button.dart';
 
 class EditProfileScreen extends StatefulWidget {

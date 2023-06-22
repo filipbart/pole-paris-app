@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pole_paris_app/screens/student/about.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
-import 'package:pole_paris_app/widgets/app_bar.dart';
-import 'package:pole_paris_app/widgets/logo.dart';
+import 'package:pole_paris_app/widgets/base/app_bar.dart';
+import 'package:pole_paris_app/widgets/base/logo.dart';
 
 class RPSCustomPainter extends CustomPainter {
   @override

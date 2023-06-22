@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'package:pole_paris_app/screens/student/login.dart';
 import 'package:pole_paris_app/screens/teacher/login.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
-import 'package:pole_paris_app/widgets/logo.dart';
+import 'package:pole_paris_app/widgets/base/logo.dart';
 
 void main() {
   runApp(const PoleParisApp());
@@ -30,7 +31,7 @@ class PoleParisApp extends StatelessWidget {
               selectionColor: Color.fromARGB(111, 128, 128, 128),
               selectionHandleColor: CustomColors.inputText,
             )),
-        home: const HomeUnloggedPage(),
+        home: const MainPage(),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
@@ -43,14 +44,14 @@ class PoleParisApp extends StatelessWidget {
   }
 }
 
-class HomeUnloggedPage extends StatefulWidget {
-  const HomeUnloggedPage({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<HomeUnloggedPage> createState() => _HomeUnloggedPageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _HomeUnloggedPageState extends State<HomeUnloggedPage> {
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +91,7 @@ class _HomeUnloggedPageState extends State<HomeUnloggedPage> {
                 ElevatedButton(
                   style: CustomButtonStyle.primary,
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const LoginScreen(),

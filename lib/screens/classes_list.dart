@@ -6,7 +6,8 @@ import 'package:pole_paris_app/models/levels.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
-import 'package:pole_paris_app/widgets/app_bar.dart';
+import 'package:pole_paris_app/widgets/base/app_bar.dart';
+
 import 'package:pole_paris_app/widgets/teacher/class_item.dart';
 import 'package:provider/provider.dart';
 

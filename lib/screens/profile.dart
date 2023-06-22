@@ -5,7 +5,8 @@ import 'package:pole_paris_app/screens/edit_profile.dart';
 
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
-import 'package:pole_paris_app/widgets/app_bar.dart';
+import 'package:pole_paris_app/widgets/base/app_bar.dart';
+
 import 'package:pole_paris_app/widgets/circle_avatar.dart';
 import 'package:provider/provider.dart';
 

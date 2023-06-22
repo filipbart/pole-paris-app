@@ -6,9 +6,9 @@ import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/screens/forgot_password.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
+import 'package:pole_paris_app/widgets/base/loader.dart';
+import 'package:pole_paris_app/widgets/base/logo.dart';
 import 'package:pole_paris_app/widgets/input.dart';
-import 'package:pole_paris_app/widgets/loader.dart';
-import 'package:pole_paris_app/widgets/logo.dart';
 
 class LoginTeacherScreen extends StatefulWidget {
   const LoginTeacherScreen({super.key});
@@ -208,8 +208,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute<void>(
-                          builder: (BuildContext context) =>
-                              const HomeUnloggedPage()),
+                          builder: (BuildContext context) => const MainPage()),
                       ModalRoute.withName('/unlogged'),
                     );
                   },
