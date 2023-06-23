@@ -24,27 +24,27 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
         fullName: 'Aleksandra Nowa',
         email: 'aleksandra@gmail.com',
         phone: '+48366638794',
-        membership: Membership.singleUse),
+        membership: MembershipType.singleUse),
     User(
         fullName: 'Marta Marciniak',
         email: 'marta@gmail.com',
         phone: '+48366638794',
-        membership: Membership.premium),
+        membership: MembershipType.premium),
     User(
         fullName: 'Liliana Krupa',
         email: 'liliana@gmail.com',
         phone: '+48366638794',
-        membership: Membership.base),
+        membership: MembershipType.base),
     User(
         fullName: 'Bogumiła Piotrowska',
         email: 'bogumila@gmail.com',
         phone: '+48366638794',
-        membership: Membership.premium),
+        membership: MembershipType.premium),
     User(
         fullName: 'Bogumiła Piotrowska',
         email: 'bogumila@gmail.com',
         phone: '+48366638794',
-        membership: Membership.premium),
+        membership: MembershipType.premium),
   ];
 
   final searchController = TextEditingController();

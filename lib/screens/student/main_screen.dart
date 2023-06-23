@@ -240,15 +240,15 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: const UserCarnet(
-                                membership: Membership.premium),
+                                membership: MembershipType.premium),
                           ),
                           Container(
                             decoration: BoxDecoration(
                               border: Border.all(color: CustomColors.line),
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child:
-                                const UserCarnet(membership: Membership.base),
+                            child: const UserCarnet(
+                                membership: MembershipType.base),
                           ),
                           Center(
                             child: Padding(

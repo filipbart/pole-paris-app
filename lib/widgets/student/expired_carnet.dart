@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pole_paris_app/models/membership.dart';
-import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 
-class UserCarnet extends StatelessWidget {
+class UserExpiredCarnet extends StatelessWidget {
   final MembershipType membership;
-  final bool showButton;
-  const UserCarnet({
+  const UserExpiredCarnet({
     super.key,
     required this.membership,
-    this.showButton = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.white),
+        border: Border.all(color: const Color(0xFFC4C4C4)),
         borderRadius: BorderRadius.circular(20),
       ),
       height: 110,
@@ -35,7 +31,7 @@ class UserCarnet extends StatelessWidget {
                 Text(
                   membership.description,
                   style: const TextStyle(
-                    color: CustomColors.text2,
+                    color: CustomColors.hintText,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -61,12 +57,6 @@ class UserCarnet extends StatelessWidget {
                 ),
               ],
             ),
-            if (showButton)
-              ElevatedButton(
-                onPressed: () {},
-                style: CustomButtonStyle.primaryWithoutSize,
-                child: const Text('UŻYJ'),
-              ),
           ],
         ),
       ),

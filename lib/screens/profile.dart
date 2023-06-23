@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/screens/classes_list.dart';
 import 'package:pole_paris_app/screens/edit_profile.dart';
+import 'package:pole_paris_app/screens/student/carnet_list.dart';
 
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
@@ -169,7 +170,11 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         if (teacher == false)
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CarnetListScreen())),
                             style: CustomButtonStyle.whiteProfiles,
                             child: const Text('Twoje karnety'),
                           ),

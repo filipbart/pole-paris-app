@@ -4,7 +4,7 @@ class User {
   final String fullName;
   final String email;
   final String phone;
-  final Membership membership;
+  final MembershipType membership;
   late String? picture;
 
   User({

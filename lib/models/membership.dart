@@ -1,22 +1,30 @@
 import 'package:flutter/foundation.dart';
 
-enum Membership {
+enum MembershipType {
   base,
   singleUse,
   premium,
 }
 
-extension MembershipExtension on Membership {
+extension MembershipExtension on MembershipType {
   String get name => describeEnum(this);
   String get description {
     switch (this) {
-      case Membership.singleUse:
+      case MembershipType.singleUse:
         return 'Karnet jednorazowy';
-      case Membership.premium:
+      case MembershipType.premium:
         return 'Karnet premium';
-      case Membership.base:
+      case MembershipType.base:
       default:
         return 'Karnet podstawowy';
     }
   }
+}
+
+class Membership {
+  final MembershipType type;
+  final DateTime expirationDate;
+  final int leftEntries;
+
+  Membership(this.type, this.expirationDate, this.leftEntries);
 }

@@ -168,7 +168,7 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
                                       'Aby skorzystać z zajęć',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        color: Color(0xFF808080),
+                                        color: CustomColors.hintText,
                                         fontSize: 16,
                                         fontFamily: 'Satoshi',
                                         fontWeight: FontWeight.w500,
