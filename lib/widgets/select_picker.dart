@@ -6,9 +6,10 @@ class SelectPicker extends StatefulWidget {
   final List<String> items;
   final double selectWidth;
   final double dropDownWidth;
-  final ValueChanged<dynamic> onChanged;
+  final ValueChanged<String?> onChanged;
   final String? errorText;
   final bool? errorBorder;
+  final String hintText;
   const SelectPicker({
     super.key,
     required this.items,
@@ -17,22 +18,16 @@ class SelectPicker extends StatefulWidget {
     required this.onChanged,
     this.errorText,
     this.errorBorder,
+    this.hintText = 'Wybierz',
   });
 
   @override
   State<SelectPicker> createState() => _SelectPickerState();
 }
 
-Widget dropdownChooseHint = const Text('Wybierz',
-    style: TextStyle(
-      color: CustomColors.hintText,
-      fontSize: 12,
-      fontWeight: FontWeight.w400,
-      fontFamily: 'Satoshi',
-    ));
-
 class _SelectPickerState extends State<SelectPicker> {
   bool _open = false;
+  String? _value;
 
   List<DropdownMenuItem<String>> _addDividersAfterItems(List<String> items) {
     List<DropdownMenuItem<String>> result = [];
@@ -40,6 +35,7 @@ class _SelectPickerState extends State<SelectPicker> {
       result.addAll(
         [
           DropdownMenuItem<String>(
+            enabled: item != 'Wybierz...' || _value != null,
             value: item,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -94,7 +90,15 @@ class _SelectPickerState extends State<SelectPicker> {
             ),
           ),
           isExpanded: true,
-          hint: dropdownChooseHint,
+          hint: Text(
+            widget.hintText,
+            style: const TextStyle(
+              color: CustomColors.hintText,
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'Satoshi',
+            ),
+          ),
           onMenuStateChange: (isOpen) {
             setState(() {
               _open = isOpen;
@@ -131,7 +135,14 @@ class _SelectPickerState extends State<SelectPicker> {
             height: 25,
           ),
           items: _addDividersAfterItems(widget.items),
-          onChanged: widget.onChanged,
+          onChanged: (value) {
+            if (value == 'Wybierz...') value = null;
+            setState(() {
+              _value = value;
+            });
+            widget.onChanged(value);
+          },
+          value: _value,
         ),
       ),
     );

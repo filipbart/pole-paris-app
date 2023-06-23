@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/screens/alerts.dart';
 import 'package:pole_paris_app/screens/profile.dart';
+import 'package:pole_paris_app/screens/student/available_classes_list.dart';
 import 'package:pole_paris_app/screens/student/main_screen.dart';
 
 class TabNavigatorStudent extends StatelessWidget {
@@ -16,7 +17,7 @@ class TabNavigatorStudent extends StatelessWidget {
     const MainScreenStudent(),
     const AlertsScreen(),
     const ProfileScreen(),
-    Container(),
+    const AvailableClassesList(),
   ];
 
   @override

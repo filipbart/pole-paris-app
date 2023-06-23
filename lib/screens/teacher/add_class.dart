@@ -19,7 +19,7 @@ import 'package:pole_paris_app/widgets/large_input.dart';
 import 'package:pole_paris_app/widgets/teacher/add_picture_button.dart';
 import 'package:pole_paris_app/widgets/teacher/calendar.dart';
 
-import 'package:pole_paris_app/widgets/teacher/select_picker.dart';
+import 'package:pole_paris_app/widgets/select_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddClassScreen extends StatefulWidget {
@@ -362,7 +362,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                           : null,
                       onChanged: (value) {
                         setState(() {
-                          level = LevelHelper.enumValueByDesc(value);
+                          level = LevelHelper.enumValueByDesc(value!);
                           _nullLevel = false;
                         });
                       },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/alert_item.dart';
 import 'package:pole_paris_app/widgets/base/app_bar.dart';
 
@@ -66,7 +67,7 @@ Grupa <b>Pole Paris Studio</b>
                           child: Text(
                             'Nie masz więcej powiadomień.',
                             style: TextStyle(
-                              color: Color(0xFF808080),
+                              color: CustomColors.hintText,
                               fontSize: 16,
                               fontFamily: 'Satoshi',
                               fontWeight: FontWeight.w500,
