@@ -239,16 +239,22 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                               border: Border.all(color: CustomColors.line),
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: const UserCarnet(
-                                membership: MembershipType.premium),
+                            child: UserCarnet(
+                                membership: Membership(
+                                    MembershipType.premium,
+                                    DateTime.now().add(const Duration(days: 3)),
+                                    4)),
                           ),
                           Container(
                             decoration: BoxDecoration(
                               border: Border.all(color: CustomColors.line),
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: const UserCarnet(
-                                membership: MembershipType.base),
+                            child: UserCarnet(
+                                membership: Membership(
+                                    MembershipType.premium,
+                                    DateTime.now().add(const Duration(days: 3)),
+                                    4)),
                           ),
                           Center(
                             child: Padding(

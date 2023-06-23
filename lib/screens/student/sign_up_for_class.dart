@@ -5,76 +5,24 @@ import 'package:pole_paris_app/screens/teacher/class_details.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/picture_background_app_bar.dart';
-import 'package:pole_paris_app/widgets/student/carnet.dart';
 import 'package:pole_paris_app/widgets/teacher/class_base_info.dart';
 
-class AvailableClassDetails extends StatefulWidget {
+class SignUpForClassScreen extends StatelessWidget {
   final Class classDetails;
-  const AvailableClassDetails({super.key, required this.classDetails});
+  final Membership membership;
+  const SignUpForClassScreen({
+    super.key,
+    required this.classDetails,
+    required this.membership,
+  });
 
-  @override
-  State<AvailableClassDetails> createState() => _AvailableClassDetailsState();
-}
-
-class _AvailableClassDetailsState extends State<AvailableClassDetails> {
-  List<Membership> memberships = [
-    Membership(
-        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
-    Membership(
-        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
-    Membership(
-        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
-  ];
-
-  _chooseCarnet() {
-    showModalBottomSheet<Membership>(
-      context: context,
-      builder: (context) => Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.7,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-        ),
-        child: Column(
-          children: [
-            const Text('Wybierz karnet'),
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  children: [
-                    ...memberships
-                        .map(
-                          (e) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-                            child: UserCarnet(
-                              membership: e,
-                              onPressed: () {
-                                Navigator.of(context).pop(e);
-                              },
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ).then((value) {
-      Membership? result = value;
-      print(result?.type);
-    });
-  }
+  _submit() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: PictureBackgroundAppBar(
-        title: 'Szczegóły zajęć',
+        title: 'Zapisujesz się na',
         appBar: AppBar(),
       ),
       body: Container(
@@ -123,8 +71,8 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
                                   left: 30,
                                   right: 30,
                                 ),
-                                child: ClassBaseInfo(
-                                    classDetails: widget.classDetails),
+                                child:
+                                    ClassBaseInfo(classDetails: classDetails),
                               ),
                             ),
                             Padding(
@@ -188,7 +136,7 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
                                     padding:
                                         EdgeInsets.symmetric(vertical: 10.0),
                                     child: Text(
-                                      'Opis zajęć',
+                                      'Korzystasz z karnetu',
                                       style: TextStyle(
                                         color: Color(0xFF1A1A1A),
                                         fontSize: 16,
@@ -197,35 +145,16 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(
-                                    height: 100,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.vertical,
-                                      child: Text(
-                                        '''Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc congue gravida augue, a sagittis quam dapibus in. Morbi sodales consequat tempor. Nulla nec nisi in metus vehicula condimentum. Cras pretium ex arcu, bibendum efficitur lectus dignissim congue. In sit amet orci ac neque maximus suscipit. Mauris tempus nisi ante, ac eleifend libero aliquet non. Morbi ligula nisl, posuere vitae malesuada quis, rutrum non nisl. Donec dapibus ex velit. Suspendisse suscipit aliquam consequat. Duis vulputate ligula enim, in auctor metus feugiat a. Phasellus sit amet nulla id felis vulputate porta id a nisl. Praesent aliquam vestibulum viverra. In dapibus enim quis tellus aliquam, eget gravida lorem consequat.''',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const Divider(
-                                    color: Color(0xFFABABAB),
-                                    thickness: 0.5,
-                                    height: 20,
-                                  ),
-                                  const Center(
-                                    child: Text(
-                                      'Aby skorzystać z zajęć',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: CustomColors.hintText,
-                                        fontSize: 16,
-                                        fontFamily: 'Satoshi',
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
+                                  Container(
+                                    child: Row(children: [
+                                      Column(
+                                        children: [
+                                          Text(membership.type.description),
+                                          Text(
+                                              '${membership.leftEntries} wejście'),
+                                        ],
+                                      )
+                                    ]),
                                   )
                                 ],
                               ),
@@ -236,9 +165,9 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             ElevatedButton(
-                              onPressed: _chooseCarnet,
+                              onPressed: _submit,
                               style: CustomButtonStyle.primary,
-                              child: const Text('WYBIERZ KARNET'),
+                              child: const Text('ZAPISZ SIĘ'),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 10.0),

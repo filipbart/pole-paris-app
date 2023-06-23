@@ -5,12 +5,12 @@ import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 
 class UserCarnet extends StatelessWidget {
-  final MembershipType membership;
-  final bool showButton;
+  final Membership membership;
+  final Function()? onPressed;
   const UserCarnet({
     super.key,
     required this.membership,
-    this.showButton = false,
+    this.onPressed,
   });
 
   @override
@@ -33,16 +33,16 @@ class UserCarnet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  membership.description,
+                  membership.type.description,
                   style: const TextStyle(
                     color: CustomColors.text2,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Text(
-                  '4 wejścia',
-                  style: TextStyle(
+                Text(
+                  '${membership.leftEntries} wejścia',
+                  style: const TextStyle(
                     color: CustomColors.inputText,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -51,7 +51,7 @@ class UserCarnet extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
                   child: Text(
-                    'Ważny do ${DateFormat('dd.MM.yyyy').format(DateTime.now())}',
+                    'Ważny do ${DateFormat('dd.MM.yyyy').format(membership.expirationDate)}',
                     style: const TextStyle(
                       color: CustomColors.hintText,
                       fontSize: 14,
@@ -61,9 +61,9 @@ class UserCarnet extends StatelessWidget {
                 ),
               ],
             ),
-            if (showButton)
+            if (onPressed != null)
               ElevatedButton(
-                onPressed: () {},
+                onPressed: onPressed,
                 style: CustomButtonStyle.primaryWithoutSize,
                 child: const Text('UŻYJ'),
               ),

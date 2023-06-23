@@ -1,5 +1,13 @@
 import 'package:flutter/foundation.dart';
 
+class Membership {
+  final MembershipType type;
+  final DateTime expirationDate;
+  final int leftEntries;
+
+  Membership(this.type, this.expirationDate, this.leftEntries);
+}
+
 enum MembershipType {
   base,
   singleUse,
@@ -19,12 +27,4 @@ extension MembershipExtension on MembershipType {
         return 'Karnet podstawowy';
     }
   }
-}
-
-class Membership {
-  final MembershipType type;
-  final DateTime expirationDate;
-  final int leftEntries;
-
-  Membership(this.type, this.expirationDate, this.leftEntries);
 }

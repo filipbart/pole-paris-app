@@ -15,6 +15,14 @@ class CarnetListScreen extends StatefulWidget {
 }
 
 class _CarnetListScreenState extends State<CarnetListScreen> {
+  List<Membership> memberships = [
+    Membership(
+        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
+    Membership(
+        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
+    Membership(
+        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
+  ];
   final searchController = TextEditingController();
 
   @override
@@ -45,12 +53,13 @@ class _CarnetListScreenState extends State<CarnetListScreen> {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20, horizontal: 20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(left: 8.0),
                         child: Text(
                           'Aktywne karnety',
@@ -62,15 +71,16 @@ class _CarnetListScreenState extends State<CarnetListScreen> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5.0),
-                        child: UserCarnet(membership: MembershipType.singleUse),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5.0),
-                        child: UserCarnet(membership: MembershipType.premium),
-                      ),
-                      Padding(
+                      ...memberships
+                          .map(
+                            (e) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 5.0),
+                              child: UserCarnet(membership: e),
+                            ),
+                          )
+                          .toList(),
+                      const Padding(
                         padding:
                             EdgeInsets.only(top: 10, left: 8.0, bottom: 10),
                         child: Text(
@@ -83,7 +93,7 @@ class _CarnetListScreenState extends State<CarnetListScreen> {
                           ),
                         ),
                       ),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.symmetric(vertical: 5.0),
                         child: UserExpiredCarnet(
                             membership: MembershipType.singleUse),
