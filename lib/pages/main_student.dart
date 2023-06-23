@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pole_paris_app/navigator_keys.dart';
 import 'package:pole_paris_app/providers/tab_index.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/student/tab_navigator.dart';
@@ -87,7 +86,7 @@ class _MainPageStudentState extends State<MainPageStudent> {
               currentIndex: value.selectedIndex,
               onTap: (index) {
                 if (index == value.selectedIndex) {
-                  NavigatorKeys.getKeyByIndex(index)
+                  _navigatorKeys[index]
                       .currentState!
                       .popUntil((route) => route.isFirst);
                 } else {
@@ -103,7 +102,7 @@ class _MainPageStudentState extends State<MainPageStudent> {
 
   Widget _buildNavigator(int index) {
     return TabNavigatorStudent(
-      navigatorKey: NavigatorKeys.getKeyByIndex(index),
+      navigatorKey: _navigatorKeys[index],
       selectedIndex: index,
     );
   }

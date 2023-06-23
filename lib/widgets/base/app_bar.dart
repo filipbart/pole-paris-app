@@ -17,13 +17,15 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
-      leading: !withDrawer ? Container() : null,
-      title: Text(
-        title,
-        style: const TextStyle(
-          color: CustomColors.buttonAdditional,
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
+      title: Padding(
+        padding: EdgeInsets.only(left: withDrawer ? 0.0 : 10.0),
+        child: Text(
+          title,
+          style: const TextStyle(
+            color: CustomColors.buttonAdditional,
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       shape: const Border(
