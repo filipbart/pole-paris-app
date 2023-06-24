@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/membership.dart';
+import 'package:pole_paris_app/screens/student/sign_up_for_class.dart';
 import 'package:pole_paris_app/screens/teacher/class_details.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
@@ -24,6 +25,10 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
         MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
     Membership(
         MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
+    Membership(
+        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
+    Membership(
+        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
   ];
 
   _chooseCarnet() {
@@ -36,28 +41,61 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
           borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Wybierz karnet'),
-            SingleChildScrollView(
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Center(
+                child: Container(
+                  width: 62,
+                  height: 4,
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFFC4C4C4),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.50),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 15.0, left: 20, bottom: 10),
+              child: Text(
+                'Wybierz karnet',
+                style: TextStyle(
+                  color: Color(0xFF404040),
+                  fontSize: 16,
+                  fontFamily: 'Satoshi',
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  children: [
-                    ...memberships
-                        .map(
-                          (e) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-                            child: UserCarnet(
-                              membership: e,
-                              onPressed: () {
-                                Navigator.of(context).pop(e);
-                              },
-                            ),
+                child: memberships.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: memberships.length,
+                        itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: UserCarnet(
+                            membership: memberships[index],
+                            onPressed: () {
+                              Navigator.of(context).pop(memberships[index]);
+                            },
                           ),
-                        )
-                        .toList(),
-                  ],
-                ),
+                        ),
+                      )
+                    : const Center(
+                        child: Text(
+                        'Brak dostępnych karnetów',
+                        style: TextStyle(
+                          color: CustomColors.hintText,
+                          fontSize: 16,
+                          fontFamily: 'Satoshi',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )),
               ),
             ),
           ],
@@ -65,7 +103,11 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
       ),
     ).then((value) {
       Membership? result = value;
-      print(result?.type);
+      if (result != null) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => SignUpForClassScreen(
+                classDetails: widget.classDetails, membership: result)));
+      }
     });
   }
 

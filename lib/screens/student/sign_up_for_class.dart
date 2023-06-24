@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/screens/teacher/class_details.dart';
@@ -21,6 +22,7 @@ class SignUpForClassScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: PictureBackgroundAppBar(
         title: 'Zapisujesz się na',
         appBar: AppBar(),
@@ -55,6 +57,7 @@ class SignUpForClassScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                               height: 100,
@@ -132,31 +135,94 @@ class SignUpForClassScreen extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 10.0),
-                                    child: Text(
-                                      'Korzystasz z karnetu',
-                                      style: TextStyle(
-                                        color: Color(0xFF1A1A1A),
-                                        fontSize: 16,
-                                        fontFamily: 'Satoshi',
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Row(children: [
-                                      Column(
-                                        children: [
-                                          Text(membership.type.description),
-                                          Text(
-                                              '${membership.leftEntries} wejście'),
-                                        ],
-                                      )
-                                    ]),
-                                  )
                                 ],
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 10),
+                              child: Text(
+                                'Korzystasz z karnetu',
+                                style: TextStyle(
+                                  color: Color(0xFF1A1A1A),
+                                  fontSize: 16,
+                                  fontFamily: 'Satoshi',
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 90,
+                              decoration: ShapeDecoration(
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  side: const BorderSide(
+                                      width: 0.50, color: Color(0xFFE1E1E1)),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 20.0, horizontal: 30),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          membership.type.description,
+                                          style: const TextStyle(
+                                            color: Color(0xFFEE90E4),
+                                            fontSize: 16,
+                                            fontFamily: 'Satoshi',
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${membership.leftEntries} wejście',
+                                          style: const TextStyle(
+                                            color: Color(0xFF404040),
+                                            fontSize: 14,
+                                            fontFamily: 'Satoshi',
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Ważny do',
+                                          style: TextStyle(
+                                            color: Color(0xFF404040),
+                                            fontSize: 14,
+                                            fontFamily: 'Satoshi',
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        Text(
+                                          DateFormat('dd.MM.yyyy').format(
+                                              membership.expirationDate),
+                                          style: const TextStyle(
+                                            color: Color(0xFF404040),
+                                            fontSize: 14,
+                                            fontFamily: 'Satoshi',
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
