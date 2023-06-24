@@ -38,6 +38,7 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
         width: double.infinity,
         height: MediaQuery.of(context).size.height * 0.7,
         decoration: const BoxDecoration(
+          color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
         ),
         child: Column(
@@ -78,24 +79,32 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
                         itemCount: memberships.length,
                         itemBuilder: (context, index) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5.0),
-                          child: UserCarnet(
-                            membership: memberships[index],
-                            onPressed: () {
-                              Navigator.of(context).pop(memberships[index]);
-                            },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: Color(0xFFE1E1E1),
+                                )),
+                            child: UserCarnet(
+                              membership: memberships[index],
+                              onPressed: () {
+                                Navigator.of(context).pop(memberships[index]);
+                              },
+                            ),
                           ),
                         ),
                       )
                     : const Center(
                         child: Text(
-                        'Brak dostępnych karnetów',
-                        style: TextStyle(
-                          color: CustomColors.hintText,
-                          fontSize: 16,
-                          fontFamily: 'Satoshi',
-                          fontWeight: FontWeight.w500,
+                          'Brak dostępnych karnetów',
+                          style: TextStyle(
+                            color: CustomColors.hintText,
+                            fontSize: 16,
+                            fontFamily: 'Satoshi',
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      )),
+                      ),
               ),
             ),
           ],
@@ -135,7 +144,7 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
             children: [
               Flexible(flex: 1, child: Container()),
               Flexible(
-                flex: 5,
+                flex: 8,
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
@@ -144,7 +153,7 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 35),
+                        vertical: 15.0, horizontal: 35),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -274,23 +283,26 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
                             ),
                           ],
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            ElevatedButton(
-                              onPressed: _chooseCarnet,
-                              style: CustomButtonStyle.primary,
-                              child: const Text('WYBIERZ KARNET'),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                style: CustomButtonStyle.secondary,
-                                child: const Text('ANULUJ'),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                onPressed: _chooseCarnet,
+                                style: CustomButtonStyle.primary,
+                                child: const Text('WYBIERZ KARNET'),
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: CustomButtonStyle.secondary,
+                                  child: const Text('ANULUJ'),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

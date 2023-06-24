@@ -40,7 +40,7 @@ class AvailableClassItem extends StatelessWidget {
                     top: 20.0,
                     bottom: 20.0,
                     left: 10,
-                    right: 30,
+                    right: 10,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
