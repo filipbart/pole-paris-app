@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-enum Level { primary, advanced, all }
+enum Level { primary, base, intermediate, all }
 
 extension LevelExtension on Level {
   String get name => describeEnum(this);
@@ -8,8 +8,10 @@ extension LevelExtension on Level {
     switch (this) {
       case Level.primary:
         return 'Początkujący';
-      case Level.advanced:
-        return 'Zaawansowany';
+      case Level.base:
+        return 'Podstawowy';
+      case Level.intermediate:
+        return 'Średniozaawansowany';
       case Level.all:
       default:
         return 'Wszystkie poziomy';
@@ -22,8 +24,10 @@ class LevelHelper {
     switch (description) {
       case 'Początkujący':
         return Level.primary;
-      case 'Zaawansowany':
-        return Level.advanced;
+      case 'Podstawowy':
+        return Level.base;
+      case 'Średniozaawansowany':
+        return Level.intermediate;
       case 'Wszystkie poziomy':
       default:
         return Level.all;

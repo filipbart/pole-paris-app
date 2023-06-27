@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 import 'package:pole_paris_app/screens/alerts.dart';
+import 'package:pole_paris_app/styles/color.dart';
 
 class AlertItem extends StatefulWidget {
   final Alert alert;
@@ -100,57 +101,73 @@ class _AlertItemState extends State<AlertItem> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      splashColor: Colors.transparent,
-      onTap: _showDetails,
-      child: Container(
-        height: 110,
+    return Dismissible(
+      direction: DismissDirection.endToStart,
+      key: ValueKey(widget.alert),
+      background: Container(
+        alignment: Alignment.centerRight,
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.alert.title,
-                style: const TextStyle(
-                  color: Color(0xFF404040),
-                  fontSize: 16,
-                  fontFamily: 'Satoshi',
-                  fontWeight: FontWeight.w700,
+            color: CustomColors.error, borderRadius: BorderRadius.circular(10)),
+        child: const Padding(
+          padding: EdgeInsets.only(right: 8.0),
+          child: Icon(
+            Icons.delete_outline_rounded,
+            size: 30,
+          ),
+        ),
+      ),
+      child: InkWell(
+        splashColor: Colors.transparent,
+        onTap: _showDetails,
+        child: Container(
+          height: 110,
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.alert.title,
+                  style: const TextStyle(
+                    color: Color(0xFF404040),
+                    fontSize: 16,
+                    fontFamily: 'Satoshi',
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              Row(
-                children: [
-                  Flexible(
-                    child: Text(
-                      widget.alert.content,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Color(0xFF828282),
-                        fontSize: 16,
-                        fontFamily: 'Satoshi',
-                        fontWeight: FontWeight.w400,
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        widget.alert.content,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Color(0xFF828282),
+                          fontSize: 16,
+                          fontFamily: 'Satoshi',
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: AnimatedRotation(
-                      turns: turns,
-                      duration: const Duration(milliseconds: 100),
-                      child: const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 40,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: AnimatedRotation(
+                        turns: turns,
+                        duration: const Duration(milliseconds: 100),
+                        child: const Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 40,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -44,7 +44,7 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
       date: DateTime.now().add(const Duration(days: 1)),
       hourSince: '14:30',
       hourTo: '15:30',
-      level: Level.advanced,
+      level: Level.intermediate,
       description: 'Jakiś tam opis',
       teacher: 'Anna',
     ),

@@ -56,7 +56,7 @@ class _AvailableClassesListState extends State<AvailableClassesList> {
       description: '',
       hourSince: '14:30',
       hourTo: '15:30',
-      level: Level.advanced,
+      level: Level.intermediate,
       name: 'HIGH HEELS',
       teacher: 'Renata',
     ),
@@ -73,16 +73,14 @@ class _AvailableClassesListState extends State<AvailableClassesList> {
   ];
 
   _filterList() {
-    print('filter');
     var tempFilteredList = classes;
-    print(tempFilteredList);
+
     if (_date != null) {
       tempFilteredList = tempFilteredList
           .where((element) => element.date.isSameDate(_date!))
           .toList();
     }
 
-    print(_level);
     if (_level != null && _level! != Level.all) {
       tempFilteredList =
           tempFilteredList.where((element) => element.level == _level).toList();

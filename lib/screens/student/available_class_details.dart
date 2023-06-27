@@ -83,7 +83,7 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: Color(0xFFE1E1E1),
+                                  color: const Color(0xFFE1E1E1),
                                 )),
                             child: UserCarnet(
                               membership: memberships[index],

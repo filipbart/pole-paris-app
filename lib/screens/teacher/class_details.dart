@@ -109,7 +109,7 @@ class ClassDetailsScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    'Świdnik',
+                                    'Pole Room', //TODO lub stretching & fitness room
                                     style: dataStyle,
                                   ),
                                 ],
