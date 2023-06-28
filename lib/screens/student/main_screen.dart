@@ -123,7 +123,7 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Logo(
-                    width: 180,
+                    width: 220,
                   ),
                   const Text(
                     'Witaj ponownie\nAleksandra!',
