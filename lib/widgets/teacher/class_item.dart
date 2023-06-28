@@ -36,8 +36,8 @@ class ClassItem extends StatelessWidget {
             padding: const EdgeInsets.only(
               top: 20.0,
               bottom: 20.0,
-              left: 40,
-              right: 30,
+              left: 30,
+              right: 10,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -60,53 +60,57 @@ class ClassItem extends StatelessWidget {
                   thickness: 1,
                   color: Color(0xFFE1E1E1),
                 ),
-                Wrap(
-                  spacing: -3,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  direction: Axis.vertical,
-                  children: [
-                    Text(
-                      classItem.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 3,
-                      children: [
-                        const Icon(
-                          Icons.star_border_rounded,
-                          color: CustomColors.text2,
-                          size: 15,
+                Flexible(
+                  flex: 6,
+                  child: Wrap(
+                    spacing: -3,
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    direction: Axis.vertical,
+                    children: [
+                      Text(
+                        classItem.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
                         ),
-                        Text(
-                          classItem.level.description,
-                          style: const TextStyle(
+                      ),
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 3,
+                        children: [
+                          const Icon(
+                            Icons.star_border_rounded,
                             color: CustomColors.text2,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
+                            size: 15,
                           ),
-                        ),
-                      ],
-                    ),
-                    if (forStudent ?? false)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2.0),
-                        child: Text(
-                          classItem.teacher,
-                          style: const TextStyle(
-                            color: CustomColors.hintText,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                          Text(
+                            classItem.level.description,
+                            style: const TextStyle(
+                              color: CustomColors.text2,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                  ],
+                      if (forStudent ?? false)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2.0),
+                          child: Text(
+                            classItem.teacher,
+                            style: const TextStyle(
+                              color: CustomColors.hintText,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
                 const Spacer(
-                  flex: 3,
+                  flex: 4,
                 ),
                 const Icon(
                   Icons.arrow_forward_ios_rounded,

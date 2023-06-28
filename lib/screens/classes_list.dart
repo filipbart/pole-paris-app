@@ -53,7 +53,7 @@ class _ClassesListScreenState extends State<ClassesListScreen> {
       date: DateTime.now().add(const Duration(days: 1)),
       hourSince: '16:30',
       hourTo: '17:30',
-      level: Level.intermediate,
+      level: Level.all,
       description: 'Jakiś tam opis',
       teacher: 'Anna',
     ),
