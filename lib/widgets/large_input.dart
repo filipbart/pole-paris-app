@@ -3,22 +3,20 @@ import 'package:pole_paris_app/styles/color.dart';
 
 class LargeInput extends StatelessWidget {
   final TextEditingController? controller;
-  final Function(String)? onChanged;
+  final String? Function(String?)? validator;
   final String? hint;
-  final String? errorText;
   const LargeInput({
     super.key,
-    this.onChanged,
+    this.validator,
     this.controller,
     this.hint,
-    this.errorText,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: TextField(
-        onChanged: onChanged,
+      child: TextFormField(
+        validator: validator,
         controller: controller,
         keyboardType: TextInputType.text,
         maxLines: 6,
@@ -37,7 +35,6 @@ class LargeInput extends StatelessWidget {
             color: CustomColors.hintText,
             fontWeight: FontWeight.w300,
           ),
-          errorText: errorText,
           errorStyle: const TextStyle(
             fontSize: 12,
             color: CustomColors.error,

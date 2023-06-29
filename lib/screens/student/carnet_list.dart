@@ -15,14 +15,7 @@ class CarnetListScreen extends StatefulWidget {
 }
 
 class _CarnetListScreenState extends State<CarnetListScreen> {
-  List<Membership> memberships = [
-    Membership(
-        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
-    Membership(
-        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
-    Membership(
-        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
-  ];
+  List<Membership> memberships = [];
   final searchController = TextEditingController();
 
   @override

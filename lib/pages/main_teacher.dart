@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pole_paris_app/providers/tab_index.dart';
+import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/teacher/tab_navigator.dart';
-import 'package:provider/provider.dart';
 
 class MainPageTeacher extends StatefulWidget {
+  static const id = 'main_teacher';
   const MainPageTeacher({super.key});
 
   @override
@@ -21,12 +21,12 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TabIndex>(
-      create: (_) => TabIndex(),
-      child: Consumer<TabIndex>(
-        builder: (context, value, child) => Scaffold(
+    return BlocProvider(
+      create: (_) => TabIndexBloc(),
+      child: BlocBuilder<TabIndexBloc, TabIndexState>(
+        builder: (context, state) => Scaffold(
           body: IndexedStack(
-            index: value.selectedIndex,
+            index: state.selectedIndex,
             children: [
               _buildNavigator(0),
               _buildNavigator(1),
@@ -83,14 +83,14 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
                   label: 'dodaj zajęcia',
                 ),
               ],
-              currentIndex: value.selectedIndex,
+              currentIndex: state.selectedIndex,
               onTap: (index) {
-                if (index == value.selectedIndex) {
+                if (index == state.selectedIndex) {
                   _navigatorKeys[index]
                       .currentState!
                       .popUntil((route) => route.isFirst);
                 } else {
-                  value.changeIndex(index);
+                  context.read<TabIndexBloc>().add(ChangeTab(newIndex: index));
                 }
               },
             ),

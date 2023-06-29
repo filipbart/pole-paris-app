@@ -251,7 +251,7 @@ class _AddClassSummaryState extends State<AddClassSummary> {
                   height: null,
                   widget: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.file(File(widget.newClass.image!.path),
+                    child: Image.file(File(widget.newClass.picture),
                         width: 300,
                         errorBuilder: (context, error, stackTrace) =>
                             const Center(child: Text('Nieprawidłowe zdjęcie'))),

@@ -4,36 +4,39 @@ import 'package:pole_paris_app/styles/color.dart';
 
 class Input extends StatelessWidget {
   final TextEditingController? controller;
-  final Function(String)? onChanged;
+  final String? Function(String?)? validator;
   final String? hint;
-  final String? errorText;
   final bool? obscure;
+  final String? errorText;
   final TextInputType? inputType;
   final TextInputFormatter? formatter;
   final bool? withBorder;
   final Icon? suffixIcon;
   final String? labelText;
+  final Function(String)? onChanged;
   const Input({
     super.key,
-    this.onChanged,
+    this.validator,
     this.controller,
     this.hint,
-    this.errorText,
     this.obscure = false,
+    this.errorText,
     this.inputType = TextInputType.name,
     this.formatter,
     this.withBorder = true,
     this.suffixIcon,
     this.labelText,
+    this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: TextField(
-        onChanged: onChanged,
+      child: TextFormField(
         controller: controller,
         keyboardType: inputType,
+        validator: validator,
+        onChanged: onChanged,
         cursorColor: const Color(0xFF838383),
         obscureText: obscure!,
         inputFormatters: [if (formatter != null) formatter!],

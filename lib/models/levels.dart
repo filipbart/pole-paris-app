@@ -1,6 +1,16 @@
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-enum Level { primary, base, intermediate, all }
+enum Level {
+  @JsonValue("primary")
+  primary,
+  @JsonValue("base")
+  base,
+  @JsonValue("intermediate")
+  intermediate,
+  @JsonValue("all")
+  all,
+}
 
 extension LevelExtension on Level {
   String get name => describeEnum(this);

@@ -18,18 +18,7 @@ class AvailableClassDetails extends StatefulWidget {
 }
 
 class _AvailableClassDetailsState extends State<AvailableClassDetails> {
-  List<Membership> memberships = [
-    Membership(
-        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
-    Membership(
-        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
-    Membership(
-        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
-    Membership(
-        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
-    Membership(
-        MembershipType.premium, DateTime.now().add(const Duration(days: 3)), 4),
-  ];
+  List<Membership> memberships = [];
 
   _chooseCarnet() {
     showModalBottomSheet<Membership>(

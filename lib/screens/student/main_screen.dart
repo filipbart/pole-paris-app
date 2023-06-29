@@ -1,24 +1,21 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/models/class.dart';
-import 'package:pole_paris_app/models/levels.dart';
 import 'package:pole_paris_app/models/membership.dart';
-import 'package:pole_paris_app/providers/tab_index.dart';
+import 'package:pole_paris_app/pages/home_unlogged.dart';
 import 'package:pole_paris_app/screens/student/about.dart';
 import 'package:pole_paris_app/screens/classes_list.dart';
 import 'package:pole_paris_app/screens/student/contact.dart';
-
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/drawer.dart';
 import 'package:pole_paris_app/widgets/base/logo.dart';
-
 import 'package:pole_paris_app/widgets/student/carnet.dart';
 import 'package:pole_paris_app/widgets/teacher/calendar.dart';
 import 'package:pole_paris_app/widgets/teacher/class_item.dart';
-
-import 'package:provider/provider.dart';
 
 class MainScreenStudent extends StatefulWidget {
   const MainScreenStudent({super.key});
@@ -30,30 +27,43 @@ class MainScreenStudent extends StatefulWidget {
 class _MainScreenStudentState extends State<MainScreenStudent> {
   late Map<String, List<Class>>? mappedClasses;
   static List<Class> classes = [
-    Class(
-      name: 'HIGH HEELS',
-      date: DateTime.now(),
-      hourSince: '09:30',
-      hourTo: '10:30',
-      level: Level.primary,
-      description: 'Jakiś tam opis',
-      teacher: 'Magdalena',
-    ),
-    Class(
-      name: 'HIGH HEELS',
-      date: DateTime.now().add(const Duration(days: 1)),
-      hourSince: '14:30',
-      hourTo: '15:30',
-      level: Level.intermediate,
-      description: 'Jakiś tam opis',
-      teacher: 'Anna',
-    ),
+    // Class(
+    //   name: 'Test',
+    //   date: DateTime.now(),
+    //   hourSince: '09:30',
+    //   hourTo: '10:30',
+    //   level: Level.base,
+    //   places: 5,
+    //   description: 'Test',
+    //   picture: '',
+    //   teacher: User(
+    //     classes: [],
+    //     dateCreatedUtc: DateTime.now(),
+    //     email: 'email@email.com',
+    //     fullName: 'Magdalena Jakaś',
+    //     id: 1,
+    //     memberships: [],
+    //     phoneNumber: '+48111222333',
+    //     role: Role.instructor,
+    //   ),
+    //   memberships: [
+    //     Membership(
+    //       id: 1,
+    //       type: MembershipType.base,
+    //       expirationDate: DateTime.now(),
+    //       classes: [],
+    //       dateCreatedUtc: DateTime.now(),
+    //     ),
+    //   ],
+    //   id: 1,
+    //   dateCreatedUtc: DateTime.now(),
+    // ),
   ];
 
   late List<DrawerListTileItem> drawerItems = [
     DrawerListTileItem('Zapisz się na zajęcia', () {
       Navigator.pop(context);
-      Provider.of<TabIndex>(context, listen: false).changeIndex(3);
+      context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 3));
     }),
     DrawerListTileItem('Wykup karnet', () {}),
     DrawerListTileItem('Twoje zajęcia', () {
@@ -65,7 +75,7 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
     }),
     DrawerListTileItem('Profil', () {
       Navigator.pop(context);
-      Provider.of<TabIndex>(context, listen: false).changeIndex(2);
+      context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 2));
     }),
     DrawerListTileItem(
       'O nas',
@@ -141,8 +151,9 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                     ),
                     child: ElevatedButton(
                       onPressed: () {
-                        Provider.of<TabIndex>(context, listen: false)
-                            .changeIndex(3);
+                        context
+                            .read<TabIndexBloc>()
+                            .add(const ChangeTab(newIndex: 3));
                       },
                       style: CustomButtonStyle.primary,
                       child: const Text('ZAPISZ SIĘ NA ZAJĘCIA'),
@@ -173,11 +184,26 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                       child: Wrap(
                         runSpacing: 10,
                         children: [
-                          ..._upcomingClasses(mappedClasses!.entries.first.key,
-                              mappedClasses!.entries.first.value),
-                          if (mappedClasses!.entries.first.value.length == 1)
-                            ..._upcomingClasses(mappedClasses!.entries.last.key,
-                                mappedClasses!.entries.last.value),
+                          if (mappedClasses != null &&
+                              mappedClasses!.isNotEmpty) ...[
+                            ..._upcomingClasses(
+                                mappedClasses!.entries.first.key,
+                                mappedClasses!.entries.first.value),
+                            if (mappedClasses!.entries.first.value.length == 1)
+                              ..._upcomingClasses(
+                                  mappedClasses!.entries.last.key,
+                                  mappedClasses!.entries.last.value),
+                          ] else
+                            const Center(
+                                child: Text(
+                              'Brak zajęć',
+                              style: TextStyle(
+                                color: CustomColors.hintText,
+                                fontSize: 16,
+                                fontFamily: 'Satoshi',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )),
                           Center(
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -234,16 +260,22 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                       child: Wrap(
                         runSpacing: 15,
                         children: [
+                          //TODO obsługa kiedy brak; do buildera
                           Container(
                             decoration: BoxDecoration(
                               border: Border.all(color: CustomColors.line),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: UserCarnet(
-                                membership: Membership(
-                                    MembershipType.premium,
-                                    DateTime.now().add(const Duration(days: 3)),
-                                    4)),
+                              membership: Membership(
+                                dateCreatedUtc: DateTime.now(),
+                                id: '12334',
+                                type: MembershipType.base,
+                                classes: [],
+                                expirationDate:
+                                    DateTime.now().add(const Duration(days: 1)),
+                              ),
+                            ),
                           ),
                           Container(
                             decoration: BoxDecoration(
@@ -251,10 +283,15 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: UserCarnet(
-                                membership: Membership(
-                                    MembershipType.premium,
-                                    DateTime.now().add(const Duration(days: 3)),
-                                    4)),
+                              membership: Membership(
+                                dateCreatedUtc: DateTime.now(),
+                                id: '123',
+                                type: MembershipType.premium,
+                                classes: [],
+                                expirationDate:
+                                    DateTime.now().add(const Duration(days: 1)),
+                              ),
+                            ),
                           ),
                           Center(
                             child: Padding(
@@ -323,7 +360,12 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                       horizontal: 15.0,
                     ),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        GetStorage().remove('token');
+                        Navigator.of(context).pop();
+                        Navigator.of(context, rootNavigator: true)
+                            .pushReplacementNamed(HomeUnloggedPage.id);
+                      },
                       style: CustomButtonStyle.secondary,
                       child: const Text('WYLOGUJ'),
                     ),

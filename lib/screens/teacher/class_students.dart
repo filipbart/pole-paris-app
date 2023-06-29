@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/models/class.dart';
-import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/models/user.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/app_bar.dart';
@@ -19,33 +18,7 @@ class ClassStudentsScreen extends StatefulWidget {
 
 class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
   late List<User> _filteredList;
-  final List<User> students = [
-    User(
-        fullName: 'Aleksandra Nowa',
-        email: 'aleksandra@gmail.com',
-        phone: '+48366638794',
-        membership: MembershipType.singleUse),
-    User(
-        fullName: 'Marta Marciniak',
-        email: 'marta@gmail.com',
-        phone: '+48366638794',
-        membership: MembershipType.premium),
-    User(
-        fullName: 'Liliana Krupa',
-        email: 'liliana@gmail.com',
-        phone: '+48366638794',
-        membership: MembershipType.base),
-    User(
-        fullName: 'Bogumiła Piotrowska',
-        email: 'bogumila@gmail.com',
-        phone: '+48366638794',
-        membership: MembershipType.premium),
-    User(
-        fullName: 'Bogumiła Piotrowska',
-        email: 'bogumila@gmail.com',
-        phone: '+48366638794',
-        membership: MembershipType.premium),
-  ];
+  final List<User> students = [];
 
   final searchController = TextEditingController();
 
@@ -183,7 +156,7 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: Text(
-                              student.phone.replaceAllMapped(
+                              student.phoneNumber.replaceAllMapped(
                                   RegExp(r'(\d{2})(\d{3})(\d{3})(\d{3})'),
                                   (Match m) =>
                                       "${m[1]} ${m[2]} ${m[3]} ${m[4]}"),
@@ -196,7 +169,7 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10, top: 8.0),
-                            child: Text(student.membership.description,
+                            child: Text('student.membership.description',
                                 style: const TextStyle(
                                   color: CustomColors.inputText,
                                   fontSize: 14,

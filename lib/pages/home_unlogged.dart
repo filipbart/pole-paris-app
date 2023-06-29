@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/screens/student/login.dart';
+import 'package:pole_paris_app/screens/teacher/login.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/logo.dart';
 
 class HomeUnloggedPage extends StatefulWidget {
   const HomeUnloggedPage({super.key});
+  static const id = 'home_unlogged';
 
   @override
   State<HomeUnloggedPage> createState() => _HomeUnloggedPageState();
@@ -50,14 +52,8 @@ class _HomeUnloggedPageState extends State<HomeUnloggedPage> {
                 ),
                 ElevatedButton(
                   style: CustomButtonStyle.primary,
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                    );
-                  },
+                  onPressed: () => Navigator.of(context)
+                      .pushReplacementNamed(LoginScreen.id),
                   child: const Text('KURSANT'),
                 ),
                 const SizedBox(
@@ -65,7 +61,8 @@ class _HomeUnloggedPageState extends State<HomeUnloggedPage> {
                 ),
                 ElevatedButton(
                   style: CustomButtonStyle.secondary,
-                  onPressed: () {},
+                  onPressed: () => Navigator.of(context)
+                      .pushReplacementNamed(LoginTeacherScreen.id),
                   child: const Text('INSTRUKTOR'),
                 ),
               ],

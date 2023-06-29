@@ -1,26 +1,20 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/extensions/dateTime.dart';
-import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/levels.dart';
-import 'package:pole_paris_app/providers/tab_index.dart';
-import 'package:pole_paris_app/screens/teacher/add_class_summary.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/app_bar.dart';
 import 'package:pole_paris_app/widgets/base/drawer.dart';
-
 import 'package:pole_paris_app/widgets/input.dart';
 import 'package:pole_paris_app/widgets/large_input.dart';
 import 'package:pole_paris_app/widgets/teacher/add_picture_button.dart';
 import 'package:pole_paris_app/widgets/teacher/calendar.dart';
-
 import 'package:pole_paris_app/widgets/select_picker.dart';
-import 'package:provider/provider.dart';
 
 class AddClassScreen extends StatefulWidget {
   const AddClassScreen({super.key});
@@ -37,6 +31,7 @@ TextStyle inputLabels = const TextStyle(
 );
 
 class _AddClassScreenState extends State<AddClassScreen> {
+  final _formKey = GlobalKey<FormState>();
   final List<String> hours = [
     '09:00',
     '09:30',
@@ -55,12 +50,12 @@ class _AddClassScreenState extends State<AddClassScreen> {
   late List<DrawerListTileItem> drawerItems = [
     DrawerListTileItem('Dodaj zajęcia', () {
       Navigator.pop(context);
-      Provider.of<TabIndex>(context, listen: false).changeIndex(3);
+      context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 3));
     }),
     DrawerListTileItem('Twoje zajęcia', () {}),
     DrawerListTileItem('Profil instruktora', () {
       Navigator.pop(context);
-      Provider.of<TabIndex>(context, listen: false).changeIndex(2);
+      context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 2));
     }),
     DrawerListTileItem('Ustawienia', () {}),
   ];
@@ -71,8 +66,6 @@ class _AddClassScreenState extends State<AddClassScreen> {
   Level? level;
   dynamic _pickImageError;
 
-  bool _badName = false;
-  bool _badDesc = false;
   bool _nullSince = false;
   bool _nullTo = false;
   bool _nullLevel = false;
@@ -81,8 +74,24 @@ class _AddClassScreenState extends State<AddClassScreen> {
   DateTime _focusedDay = DateTime.now();
 
   final ImagePicker _picker = ImagePicker();
-  final nameController = TextEditingController();
-  final descController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _descController = TextEditingController();
+
+  String? _validateName(String? text) {
+    if (text == null || text.isEmpty) {
+      return 'Nie podano nazwy. Wprowadź nazwę.';
+    }
+
+    return null;
+  }
+
+  String? _validateDesc(String? text) {
+    if (text == null || text.isEmpty) {
+      return 'Nie podano opisu. Wprowadź opis.';
+    }
+
+    return null;
+  }
 
   Future<void> _onImageButtonPressed(ImageSource source,
       {required BuildContext context}) async {
@@ -103,14 +112,12 @@ class _AddClassScreenState extends State<AddClassScreen> {
   }
 
   _submit() {
-    final name = nameController.value.text;
-    final desc = descController.value.text;
+    final validForm = _formKey.currentState!.validate();
+
     final sinceIndex = hours.indexOf(hourSince ?? '');
     final toIndex = hours.indexOf(hourTo ?? '');
 
     setState(() {
-      _badName = name.isEmpty;
-      _badDesc = desc.isEmpty;
       _nullSince =
           hourSince == null || (sinceIndex > toIndex || sinceIndex == -1);
       _nullTo = hourTo == null || (sinceIndex > toIndex || toIndex == -1);
@@ -118,31 +125,26 @@ class _AddClassScreenState extends State<AddClassScreen> {
       _noImage = _image == null;
     });
 
-    // if (_badName ||
-    //     _badDesc ||
-    //     _nullSince ||
-    //     _nullTo ||
-    //     _nullLevel ||
-    //     _noImage) {
-    //   return;
-    // }
+    if (validForm == false || _nullSince || _nullTo || _nullLevel || _noImage) {
+      return;
+    }
 
-    final newClass = Class(
-      name: name,
-      date: _focusedDay,
-      hourSince: hourSince!,
-      hourTo: hourTo!,
-      level: level!,
-      description: desc,
-      teacher: 'Anna',
-      image: _image!,
-    );
+    // final newClass = Class(
+    //   name: name,
+    //   date: _focusedDay,
+    //   hourSince: hourSince!,
+    //   hourTo: hourTo!,
+    //   level: level!,
+    //   description: desc,
+    //   teacher: 'Anna', dateCreatedUtc: DateTime.now().toUtc(),
+    //   //picture: _image!,
+    // );
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => AddClassSummary(newClass: newClass)),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //       builder: (context) => AddClassSummary(newClass: newClass)),
+    // );
   }
 
   @override
@@ -156,184 +158,162 @@ class _AddClassScreenState extends State<AddClassScreen> {
         teacher: true,
         drawerListTileItems: drawerItems,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 40,
-                  right: 30.0,
-                  left: 30.0,
-                ),
-                child: Column(
-                  children: [
-                    Wrap(
-                      runSpacing: 10,
-                      children: [
-                        Text(
-                          'Nazwa zajęć',
-                          style: inputLabels,
-                        ),
-                        Input(
-                          controller: nameController,
-                          hint: 'Wprowadź nazwę',
-                          inputType: TextInputType.emailAddress,
-                          onChanged: (text) {
-                            setState(() {
-                              _badName = text.isEmpty;
-                            });
-                          },
-                          errorText: _badName
-                              ? 'Nie podano nazwy. Wprowadź nazwę.'
-                              : null,
-                          withBorder: false,
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Wrap(
+      body: Form(
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 40,
+                    right: 30.0,
+                    left: 30.0,
+                  ),
+                  child: Column(
+                    children: [
+                      Wrap(
                         runSpacing: 10,
                         children: [
                           Text(
-                            'Wybierz datę',
+                            'Nazwa zajęć',
                             style: inputLabels,
                           ),
-                          Calendar(
-                            firstDay: DateTime.now(),
-                            onDateChanged:
-                                (DateTime selectedDay, DateTime focusedDay) {
-                              if (_focusedDay.isSameDate(selectedDay) ==
-                                  false) {
-                                setState(() {
-                                  _focusedDay = selectedDay;
-                                });
-                              }
-                            },
+                          Input(
+                            controller: _nameController,
+                            hint: 'Wprowadź nazwę',
+                            inputType: TextInputType.emailAddress,
+                            validator: _validateName,
+                            withBorder: false,
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Wrap(
+                          runSpacing: 10,
+                          children: [
+                            Text(
+                              'Wybierz datę',
+                              style: inputLabels,
+                            ),
+                            Calendar(
+                              firstDay: DateTime.now(),
+                              onDateChanged:
+                                  (DateTime selectedDay, DateTime focusedDay) {
+                                if (_focusedDay.isSameDate(selectedDay) ==
+                                    false) {
+                                  setState(() {
+                                    _focusedDay = selectedDay;
+                                  });
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Container(
+                    height: 50,
+                    color: Colors.white,
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Wybrana data',
+                            style: TextStyle(
+                              color: CustomColors.inputText,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Satoshi',
+                            ),
+                          ),
+                          Text(
+                            DateFormat('dd.MM.yyyy').format(_focusedDay),
+                            style: const TextStyle(
+                              color: CustomColors.text,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Satoshi',
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Container(
-                  height: 50,
-                  color: Colors.white,
-                  width: MediaQuery.of(context).size.width,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Wybrana data',
-                          style: TextStyle(
-                            color: CustomColors.inputText,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'Satoshi',
-                          ),
-                        ),
-                        Text(
-                          DateFormat('dd.MM.yyyy').format(_focusedDay),
-                          style: const TextStyle(
-                            color: CustomColors.text,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'Satoshi',
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(30),
-                child: Wrap(
-                  runSpacing: 10,
-                  children: [
-                    Text(
-                      'Wybierz godzinę',
-                      style: inputLabels,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'od',
-                          style: TextStyle(
-                            color: CustomColors.hintText,
-                            fontSize: 16,
-                            fontFamily: 'Satoshi',
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SelectPicker(
-                          items: hours,
-                          selectWidth: 110,
-                          dropDownWidth: 110,
-                          errorBorder: _nullSince,
-                          onChanged: (value) {
-                            setState(() {
-                              hourSince = value;
-                              _nullSince = false;
-                            });
-                          },
-                        ),
-                        const Text(
-                          'do',
-                          style: TextStyle(
-                            color: CustomColors.hintText,
-                            fontSize: 16,
-                            fontFamily: 'Satoshi',
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SelectPicker(
-                          items: hours,
-                          selectWidth: 110,
-                          dropDownWidth: 110,
-                          errorBorder: _nullTo,
-                          onChanged: (value) {
-                            setState(() {
-                              hourTo = value;
-                              _nullTo = false;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    if (_nullSince || _nullTo)
+                Padding(
+                  padding: const EdgeInsets.all(30),
+                  child: Wrap(
+                    runSpacing: 10,
+                    children: [
+                      Text(
+                        'Wybierz godzinę',
+                        style: inputLabels,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const SizedBox(
-                            width: 10,
+                          const Text(
+                            'od',
+                            style: TextStyle(
+                              color: CustomColors.hintText,
+                              fontSize: 16,
+                              fontFamily: 'Satoshi',
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
-                          _nullSince
-                              ? const Text(
-                                  'Błędna godzina.',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: CustomColors.error,
-                                    fontWeight: FontWeight.w700,
-                                    height: 0.9,
-                                  ),
-                                )
-                              : const SizedBox(width: 100),
-                          const SizedBox(
-                            width: 10,
+                          SelectPicker(
+                            items: hours,
+                            selectWidth: 110,
+                            dropDownWidth: 110,
+                            errorBorder: _nullSince,
+                            onChanged: (value) {
+                              setState(() {
+                                hourSince = value;
+                                _nullSince = false;
+                              });
+                            },
                           ),
-                          _nullTo
-                              ? const Padding(
-                                  padding: EdgeInsets.only(right: 10.0),
-                                  child: Text(
+                          const Text(
+                            'do',
+                            style: TextStyle(
+                              color: CustomColors.hintText,
+                              fontSize: 16,
+                              fontFamily: 'Satoshi',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          SelectPicker(
+                            items: hours,
+                            selectWidth: 110,
+                            dropDownWidth: 110,
+                            errorBorder: _nullTo,
+                            onChanged: (value) {
+                              setState(() {
+                                hourTo = value;
+                                _nullTo = false;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      if (_nullSince || _nullTo)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            _nullSince
+                                ? const Text(
                                     'Błędna godzina.',
                                     style: TextStyle(
                                       fontSize: 12,
@@ -341,151 +321,163 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                       fontWeight: FontWeight.w700,
                                       height: 0.9,
                                     ),
-                                  ),
-                                )
-                              : const SizedBox(width: 104),
-                        ],
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Text(
-                        'Wybierz poziom',
-                        style: inputLabels,
-                      ),
-                    ),
-                    SelectPicker(
-                      items: Level.values.map((e) => e.description).toList(),
-                      selectWidth: double.infinity,
-                      dropDownWidth: 160,
-                      errorText: _nullLevel
-                          ? 'Nie wybrano poziomu. Wybierz poziom.'
-                          : null,
-                      onChanged: (value) {
-                        setState(() {
-                          level = LevelHelper.enumValueByDesc(value!);
-                          _nullLevel = false;
-                        });
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Text(
-                        'Wprowadź opis',
-                        style: inputLabels,
-                      ),
-                    ),
-                    LargeInput(
-                      controller: descController,
-                      hint: 'Opis zajęć...',
-                      errorText:
-                          _badDesc ? 'Nie podano opisu. Wprowadź opis.' : null,
-                      onChanged: (text) {
-                        setState(() {
-                          _badDesc = text.isEmpty;
-                        });
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 20.0,
-                        bottom: 10,
-                      ),
-                      child: Text(
-                        'Dodaj zdjęcie',
-                        style: inputLabels,
-                      ),
-                    ),
-                    Wrap(children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: _image == null
-                            ? [
-                                AddPictureButton(
-                                  onPressed: () async {
-                                    await _onImageButtonPressed(
-                                        ImageSource.gallery,
-                                        context: context);
-                                    setState(() {
-                                      _noImage = _image == null;
-                                    });
-                                  },
-                                  icon: Icons.add_photo_alternate_outlined,
-                                  label: 'Wybierz z biblioteki',
-                                ),
-                                AddPictureButton(
-                                  onPressed: () async {
-                                    await _onImageButtonPressed(
-                                        ImageSource.camera,
-                                        context: context);
-                                    setState(() {
-                                      _noImage = _image == null;
-                                    });
-                                  },
-                                  icon: Icons.add_a_photo_outlined,
-                                  label: 'Zrób zdjęcie',
-                                ),
-                              ]
-                            : [
-                                _pickImageError != null
-                                    ? Center(
-                                        child: Text(
-                                            'Błąd wyboru obrazka: $_pickImageError'))
-                                    : ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Image.file(File(_image!.path),
-                                            fit: BoxFit.cover,
-                                            width: 120,
-                                            height: 120,
-                                            errorBuilder: (context, error,
-                                                    stackTrace) =>
-                                                const Center(
-                                                    child: Text(
-                                                        'Nieprawidłowe zdjęcie'))),
+                                  )
+                                : const SizedBox(width: 100),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            _nullTo
+                                ? const Padding(
+                                    padding: EdgeInsets.only(right: 10.0),
+                                    child: Text(
+                                      'Błędna godzina.',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: CustomColors.error,
+                                        fontWeight: FontWeight.w700,
+                                        height: 0.9,
                                       ),
-                                SizedBox(
-                                  width: 140,
-                                  child: ElevatedButton(
-                                    onPressed: () {
+                                    ),
+                                  )
+                                : const SizedBox(width: 104),
+                          ],
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Text(
+                          'Wybierz poziom',
+                          style: inputLabels,
+                        ),
+                      ),
+                      SelectPicker(
+                        items: Level.values.map((e) => e.description).toList(),
+                        selectWidth: double.infinity,
+                        dropDownWidth: 160,
+                        errorText: _nullLevel
+                            ? 'Nie wybrano poziomu. Wybierz poziom.'
+                            : null,
+                        onChanged: (value) {
+                          setState(() {
+                            level = LevelHelper.enumValueByDesc(value!);
+                            _nullLevel = false;
+                          });
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Text(
+                          'Wprowadź opis',
+                          style: inputLabels,
+                        ),
+                      ),
+                      LargeInput(
+                        controller: _descController,
+                        hint: 'Opis zajęć...',
+                        validator: _validateDesc,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 20.0,
+                          bottom: 10,
+                        ),
+                        child: Text(
+                          'Dodaj zdjęcie',
+                          style: inputLabels,
+                        ),
+                      ),
+                      Wrap(children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: _image == null
+                              ? [
+                                  AddPictureButton(
+                                    onPressed: () async {
+                                      await _onImageButtonPressed(
+                                          ImageSource.gallery,
+                                          context: context);
                                       setState(() {
-                                        _image = null;
+                                        _noImage = _image == null;
                                       });
                                     },
-                                    style: changePictureStyle,
-                                    child: const Text('ZMIEŃ'),
+                                    icon: Icons.add_photo_alternate_outlined,
+                                    label: 'Wybierz z biblioteki',
                                   ),
-                                )
-                              ],
-                      ),
-                      if (_noImage)
-                        const Padding(
-                          padding: EdgeInsets.only(top: 8.0),
-                          child: Center(
-                            child: Text(
-                              'Brak wybranego zdjęcia. Wybierz zdjecie.',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: CustomColors.error,
-                                fontWeight: FontWeight.w700,
-                                height: 0.9,
+                                  AddPictureButton(
+                                    onPressed: () async {
+                                      await _onImageButtonPressed(
+                                          ImageSource.camera,
+                                          context: context);
+                                      setState(() {
+                                        _noImage = _image == null;
+                                      });
+                                    },
+                                    icon: Icons.add_a_photo_outlined,
+                                    label: 'Zrób zdjęcie',
+                                  ),
+                                ]
+                              : [
+                                  _pickImageError != null
+                                      ? Center(
+                                          child: Text(
+                                              'Błąd wyboru obrazka: $_pickImageError'))
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: Image.file(File(_image!.path),
+                                              fit: BoxFit.cover,
+                                              width: 120,
+                                              height: 120,
+                                              errorBuilder: (context, error,
+                                                      stackTrace) =>
+                                                  const Center(
+                                                      child: Text(
+                                                          'Nieprawidłowe zdjęcie'))),
+                                        ),
+                                  SizedBox(
+                                    width: 140,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _image = null;
+                                        });
+                                      },
+                                      style: changePictureStyle,
+                                      child: const Text('ZMIEŃ'),
+                                    ),
+                                  )
+                                ],
+                        ),
+                        if (_noImage)
+                          const Padding(
+                            padding: EdgeInsets.only(top: 8.0),
+                            child: Center(
+                              child: Text(
+                                'Brak wybranego zdjęcia. Wybierz zdjecie.',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: CustomColors.error,
+                                  fontWeight: FontWeight.w700,
+                                  height: 0.9,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                    ]),
-                    const Divider(
-                      height: 30,
-                      color: Color(0xFFE1E1E1),
-                      thickness: 1,
-                    ),
-                    ElevatedButton(
-                      onPressed: _submit,
-                      style: CustomButtonStyle.primary,
-                      child: const Text('DALEJ'),
-                    ),
-                  ],
+                      ]),
+                      const Divider(
+                        height: 30,
+                        color: Color(0xFFE1E1E1),
+                        thickness: 1,
+                      ),
+                      ElevatedButton(
+                        onPressed: _submit,
+                        style: CustomButtonStyle.primary,
+                        child: const Text('DALEJ'),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

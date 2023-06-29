@@ -98,7 +98,7 @@ class ClassItem extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 2.0),
                           child: Text(
-                            classItem.teacher,
+                            classItem.teacher.getFirstName,
                             style: const TextStyle(
                               color: CustomColors.hintText,
                               fontSize: 14,

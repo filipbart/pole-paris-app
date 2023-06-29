@@ -3,13 +3,11 @@ import 'package:pole_paris_app/styles/color.dart';
 
 class FailedScreen extends StatelessWidget {
   final Widget button;
-  final IconData icon;
   final String title;
 
   const FailedScreen({
     super.key,
     required this.button,
-    required this.icon,
     required this.title,
   });
 
@@ -31,10 +29,10 @@ class FailedScreen extends StatelessWidget {
                   Expanded(
                     child: Container(),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 25.0),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 25.0),
                     child: Icon(
-                      icon,
+                      Icons.highlight_off_rounded,
                       color: CustomColors.error,
                       size: 140,
                     ),

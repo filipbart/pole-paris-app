@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/main.dart';
+import 'package:pole_paris_app/pages/home_unlogged.dart';
 import 'package:pole_paris_app/pages/main_teacher.dart';
 import 'package:pole_paris_app/pages/registration.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/screens/forgot_password.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
+import 'package:pole_paris_app/utils/validators.dart';
 import 'package:pole_paris_app/widgets/base/loader.dart';
 import 'package:pole_paris_app/widgets/base/logo.dart';
 import 'package:pole_paris_app/widgets/input.dart';
 
 class LoginTeacherScreen extends StatefulWidget {
+  static const id = 'login_teacher';
   const LoginTeacherScreen({super.key});
 
   @override
@@ -18,27 +21,17 @@ class LoginTeacherScreen extends StatefulWidget {
 }
 
 class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
-  bool _badEmail = false;
-  bool _badPassword = false;
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   _submit() {
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-    final emailText = emailController.value.text.trim();
-    final passwordText = passwordController.value.text;
-    final bool emailValid = RegExp(
-            r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
-        .hasMatch(emailText);
+    final validForm = _formKey.currentState!.validate();
 
-    setState(() {
-      _badEmail = emailText.isEmpty || !emailValid;
-      _badPassword = passwordText.isEmpty;
-    });
-
-    // if (_badEmail || _badPassword) {
-    //   return;
-    // }
+    if (validForm == false) {
+      return;
+    }
 
     showDialog(
             barrierDismissible: false,
@@ -75,8 +68,8 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
 
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -124,32 +117,19 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 15.0),
                   child: Input(
-                    controller: emailController,
+                    controller: _emailController,
                     hint: 'Adres email',
                     inputType: TextInputType.emailAddress,
-                    onChanged: (text) {
-                      setState(() {
-                        _badEmail = text.isEmpty;
-                      });
-                    },
-                    errorText: _badEmail
-                        ? 'Błędny adres e-mail. Spróbuj ponownie.'
-                        : null,
+                    validator: Validators.validateEmail,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Input(
-                    controller: passwordController,
+                    controller: _passwordController,
                     hint: 'Hasło',
                     obscure: true,
-                    onChanged: (text) {
-                      setState(() {
-                        _badPassword = text.isEmpty;
-                      });
-                    },
-                    errorText:
-                        _badPassword ? 'Błędne hasło. Spróbuj ponownie.' : null,
+                    validator: Validators.validatePassword,
                   ),
                 ),
                 SizedBox(
@@ -171,15 +151,8 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                             horizontal: 5.0,
                           )),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const ForgotPasswordScreen(),
-                            ),
-                          );
-                        },
+                        onPressed: () => Navigator.of(context)
+                            .pushNamed(ForgotPasswordScreen.id),
                         child: const Text(
                           'Przypomnij hasło.',
                           style: TextStyle(
@@ -205,11 +178,9 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                 ElevatedButton(
                   style: CustomButtonStyle.additional,
                   onPressed: () {
-                    Navigator.pushAndRemoveUntil(
+                    Navigator.pushReplacementNamed(
                       context,
-                      MaterialPageRoute<void>(
-                          builder: (BuildContext context) => const MainPage()),
-                      ModalRoute.withName('/unlogged'),
+                      HomeUnloggedPage.id,
                     );
                   },
                   child: const Text('ZMIEŃ SPOSÓB LOGOWANIA'),
@@ -232,11 +203,8 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                       padding: EdgeInsets.zero,
                       foregroundColor: CustomColors.hintText,
                     ),
-                    onPressed: () => Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                const RegistrationPage(teacher: true))),
+                    onPressed: () => Navigator.of(context)
+                        .pushReplacementNamed(RegistrationPage.id),
                     child: const Text(
                       'Załóż konto tutaj!',
                       style: TextStyle(

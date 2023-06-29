@@ -19,58 +19,7 @@ class AvailableClassesList extends StatefulWidget {
 
 class _AvailableClassesListState extends State<AvailableClassesList> {
   late List<Class> filteredList;
-  static List<Class> classes = [
-    Class(
-      date: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day, 9, 30),
-      description: '',
-      hourSince: '09:30',
-      hourTo: '10:30',
-      level: Level.primary,
-      name: 'POLE DANCE',
-      teacher: 'Magdalena',
-    ),
-    Class(
-      date: DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, 10, 30),
-      description: '',
-      hourSince: '10:30',
-      hourTo: '11:30',
-      level: Level.all,
-      name: 'STRETCHING',
-      teacher: 'Anna',
-    ),
-    Class(
-      date: DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, 21, 30),
-      description: '',
-      hourSince: '21:30',
-      hourTo: '22:30',
-      level: Level.all,
-      name: 'FITNESS',
-      teacher: 'Oliwia',
-    ),
-    Class(
-      date: DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day + 1, 14, 30),
-      description: '',
-      hourSince: '14:30',
-      hourTo: '15:30',
-      level: Level.intermediate,
-      name: 'HIGH HEELS',
-      teacher: 'Renata',
-    ),
-    Class(
-      date: DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day + 1, 15, 30),
-      description: '',
-      hourSince: '15:30',
-      hourTo: '16:30',
-      level: Level.primary,
-      name: 'POLE DANCE',
-      teacher: 'Magdalena',
-    ),
-  ];
+  static List<Class> classes = [];
 
   _filterList() {
     var tempFilteredList = classes;
@@ -120,8 +69,10 @@ class _AvailableClassesListState extends State<AvailableClassesList> {
     tempLevels.insert(0, 'Wybierz...');
     levels = tempLevels;
 
-    var tempTeachers =
-        groupBy(classes, (p0) => p0.teacher).entries.map((e) => e.key).toList();
+    var tempTeachers = groupBy(classes, (p0) => p0.teacher.fullName)
+        .entries
+        .map((e) => e.key)
+        .toList();
     tempTeachers.insert(0, 'Wybierz...');
     teachers = tempTeachers;
   }

@@ -1,19 +1,17 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/models/class.dart';
-import 'package:pole_paris_app/models/levels.dart';
-import 'package:pole_paris_app/providers/tab_index.dart';
+import 'package:pole_paris_app/pages/home_unlogged.dart';
 import 'package:pole_paris_app/screens/classes_list.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/drawer.dart';
 import 'package:pole_paris_app/widgets/base/logo.dart';
-
 import 'package:pole_paris_app/widgets/teacher/calendar.dart';
 import 'package:pole_paris_app/widgets/teacher/class_item.dart';
-
-import 'package:provider/provider.dart';
 
 class MainScreenTeacher extends StatefulWidget {
   const MainScreenTeacher({super.key});
@@ -24,36 +22,17 @@ class MainScreenTeacher extends StatefulWidget {
 
 class _MainScreenTeacherState extends State<MainScreenTeacher> {
   late Map<String, List<Class>>? mappedClasses;
-  static List<Class> classes = [
-    Class(
-      name: 'HIGH HEELS',
-      date: DateTime.now(),
-      hourSince: '09:30',
-      hourTo: '10:30',
-      level: Level.primary,
-      description: 'Jakiś tam opis',
-      teacher: 'Magdalena',
-    ),
-    Class(
-      name: 'HIGH HEELS',
-      date: DateTime.now().add(const Duration(days: 1)),
-      hourSince: '14:30',
-      hourTo: '15:30',
-      level: Level.intermediate,
-      description: 'Jakiś tam opis',
-      teacher: 'Anna',
-    ),
-  ];
+  static List<Class> classes = [];
 
   late List<DrawerListTileItem> drawerItems = [
     DrawerListTileItem('Dodaj zajęcia', () {
       Navigator.pop(context);
-      Provider.of<TabIndex>(context, listen: false).changeIndex(3);
+      context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 3));
     }),
     DrawerListTileItem('Twoje zajęcia', () {}),
     DrawerListTileItem('Profil instruktora', () {
       Navigator.pop(context);
-      Provider.of<TabIndex>(context, listen: false).changeIndex(2);
+      context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 2));
     }),
     DrawerListTileItem('Ustawienia', () {}),
   ];
@@ -118,8 +97,9 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
                     ),
                     child: ElevatedButton(
                       onPressed: () {
-                        Provider.of<TabIndex>(context, listen: false)
-                            .changeIndex(3);
+                        context
+                            .read<TabIndexBloc>()
+                            .add(const ChangeTab(newIndex: 3));
                       },
                       style: CustomButtonStyle.primary,
                       child: const Text('DODAJ ZAJĘCIA'),
@@ -216,7 +196,11 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
                       horizontal: 15.0,
                     ),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        GetStorage().remove('token');
+                        Navigator.pushReplacementNamed(
+                            context, HomeUnloggedPage.id);
+                      },
                       style: CustomButtonStyle.secondary,
                       child: const Text('WYLOGUJ'),
                     ),

@@ -8,6 +8,7 @@ import 'package:pole_paris_app/screens/profile.dart';
 import 'package:pole_paris_app/screens/teacher/add_class.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
+import 'package:pole_paris_app/utils/validators.dart';
 import 'package:pole_paris_app/widgets/base/app_bar.dart';
 import 'package:pole_paris_app/widgets/base/loader.dart';
 
@@ -29,22 +30,16 @@ TextStyle labelStyle = const TextStyle(
 );
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  final _formKey = GlobalKey<FormState>();
   bool _noImage = false;
-  bool _badUserData = false;
-  bool _badEmail = false;
-  bool _badPhone = false;
-
-  bool _badPassword = false;
-  bool _badSecondPassword = false;
 
   final ImagePicker _picker = ImagePicker();
 
-  final userDataController = TextEditingController();
-  final emailController = TextEditingController();
-  final phoneController = TextEditingController();
-
-  final passwordController = TextEditingController();
-  final secondPasswordController = TextEditingController();
+  final _userDataController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _secondPasswordController = TextEditingController();
   final PhoneInputFormatter _formatter = PhoneInputFormatter();
   XFile? _image;
   dynamic _pickImageError;
@@ -67,41 +62,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
+  String? _validateSecondPassword(String? text) {
+    if (text == null || text.isEmpty) {
+      return 'Hasła nie pasują. Spróbuj ponownie.';
+    }
+
+    final password = _passwordController.value.text;
+    if (password != text) {
+      return 'Hasła nie pasują. Spróbuj ponownie!';
+    }
+
+    return null;
+  }
+
   _submit() {
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-    final userData = userDataController.value.text;
-    final bool userDataValid =
-        RegExp(r"^[a-zA-Z]{4,}(?: [a-zA-Z]+){0,2}$").hasMatch(userData);
+    final validForm = _formKey.currentState!.validate();
 
-    final email = emailController.value.text;
-    final bool emailValid = RegExp(
-            r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
-        .hasMatch(email);
-
-    final phone = phoneController.value.text.trim();
-    final bool phoneValid = RegExp(
-            r"\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$")
-        .hasMatch(phone);
-
-    final password = passwordController.value.text;
-    final secondPassword = secondPasswordController.value.text;
-
-    setState(() {
-      _badUserData = userDataValid || userData.isEmpty;
-      _badEmail = emailValid || email.isEmpty;
-      _badPhone = phoneValid || phone.isEmpty;
-
-      _badPassword = password.isEmpty;
-      _badSecondPassword = secondPassword.isEmpty || password != secondPassword;
-    });
-
-    // if (_badUserData ||
-    //     _badEmail ||
-    //     _badPhone ||
-    //     _badPassword ||
-    //     _badSecondPassword) {
-    //   return;
-    // }
+    if (validForm == false) {
+      return;
+    }
 
     showDialog(
             barrierDismissible: false,
@@ -142,8 +122,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     PhoneInputFormatter.replacePhoneMask(
         countryCode: 'PL', newMask: '+00 000 000 000');
-    userDataController.text = 'Aleksandra jakaśtam';
+    _userDataController.text = 'Aleksandra jakaśtam';
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _userDataController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _passwordController.dispose();
+    _secondPasswordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -258,17 +248,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     runSpacing: 20,
                     children: [
                       Input(
-                        controller: userDataController,
-                        errorText: _badUserData
-                            ? 'Błędne imie i nazwisko. Spróbuj ponownie!'
-                            : null,
+                        controller: _userDataController,
                         hint: 'Imię i nazwisko',
                         labelText: 'Imię i nazwisko',
-                        onChanged: (text) {
-                          setState(() {
-                            _badUserData = text.isEmpty;
-                          });
-                        },
+                        validator: Validators.validateUserData,
                         withBorder: false,
                         suffixIcon: const Icon(
                           Icons.edit_outlined,
@@ -277,17 +260,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ),
                       Input(
-                        controller: emailController,
+                        controller: _emailController,
                         hint: 'Adres e-mail',
                         labelText: 'Adres e-mail',
-                        errorText: _badEmail
-                            ? 'Błędny adres email. Spróbuj ponownie!'
-                            : null,
-                        onChanged: (text) {
-                          setState(() {
-                            _badEmail = text.isEmpty;
-                          });
-                        },
+                        validator: Validators.validateEmail,
                         withBorder: false,
                         inputType: TextInputType.emailAddress,
                         suffixIcon: const Icon(
@@ -297,17 +273,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ),
                       Input(
-                        controller: phoneController,
+                        controller: _phoneController,
                         hint: 'Numer telefonu',
                         labelText: 'Numer telefonu',
-                        errorText: _badPhone
-                            ? 'Błędny numer telefonu. Spróbuj ponownie!'
-                            : null,
-                        onChanged: (text) {
-                          setState(() {
-                            _badPhone = text.isEmpty;
-                          });
-                        },
+                        validator: Validators.validatePhoneNumber,
                         withBorder: false,
                         inputType: TextInputType.number,
                         formatter: _formatter,
@@ -337,32 +306,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     runSpacing: 20,
                     children: [
                       Input(
-                        controller: passwordController,
+                        controller: _passwordController,
                         hint: 'Hasło',
                         labelText: 'Wprowadź hasło',
                         obscure: true,
-                        onChanged: (text) {
-                          setState(() {
-                            _badPassword = text.isEmpty;
-                          });
-                        },
-                        errorText: _badPassword
-                            ? 'Błędne hasło. Spróbuj ponownie.'
-                            : null,
+                        validator: Validators.validatePassword,
                       ),
                       Input(
-                        controller: secondPasswordController,
+                        controller: _secondPasswordController,
                         hint: 'Powtórz hasło',
                         labelText: 'Powtórz hasło',
                         obscure: true,
-                        onChanged: (text) {
-                          setState(() {
-                            _badSecondPassword = text.isEmpty;
-                          });
-                        },
-                        errorText: _badSecondPassword
-                            ? 'Hasła nie pasują. Spróbuj ponownie.'
-                            : null,
+                        validator: _validateSecondPassword,
                       ),
                     ],
                   ),

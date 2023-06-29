@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pole_paris_app/providers/tab_index.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:pole_paris_app/bloc/bloc_exports.dart';
+import 'package:pole_paris_app/pages/home_unlogged.dart';
 import 'package:pole_paris_app/screens/classes_list.dart';
 import 'package:pole_paris_app/screens/edit_profile.dart';
 import 'package:pole_paris_app/screens/student/carnet_list.dart';
@@ -9,7 +11,6 @@ import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/app_bar.dart';
 
 import 'package:pole_paris_app/widgets/circle_avatar.dart';
-import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   final bool teacher;
@@ -153,8 +154,9 @@ class ProfileScreen extends StatelessWidget {
                         if (teacher)
                           ElevatedButton(
                             onPressed: () {
-                              Provider.of<TabIndex>(context, listen: false)
-                                  .changeIndex(3);
+                              context
+                                  .read<TabIndexBloc>()
+                                  .add(const ChangeTab(newIndex: 3));
                             },
                             style: CustomButtonStyle.primary,
                             child: const Text('Dodaj zajęcia'),
@@ -204,7 +206,11 @@ class ProfileScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40.0),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        GetStorage().remove('token');
+                        Navigator.pushReplacementNamed(
+                            context, HomeUnloggedPage.id);
+                      },
                       style: CustomButtonStyle.secondaryTransparent,
                       child: const Text('WYLOGUJ'),
                     ),

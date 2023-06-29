@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:pole_paris_app/pages/home_unlogged.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/circle_avatar.dart';
@@ -122,7 +124,11 @@ class BaseDrawer extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 20.0),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      GetStorage().remove('token');
+                      Navigator.of(context, rootNavigator: true)
+                          .pushReplacementNamed(HomeUnloggedPage.id);
+                    },
                     style: CustomButtonStyle.secondaryWithoutSize,
                     child: const Text('WYLOGUJ'),
                   ),
