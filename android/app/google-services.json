@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "45263791133",
+    "project_id": "pole-paris-app",
+    "storage_bucket": "pole-paris-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45263791133:android:30724acbd6527ee0c992f4",
+        "android_client_info": {
+          "package_name": "com.example.pole_paris_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "45263791133-rh0488hctgpdgdp1juk52v91hfoqd1df.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAH69lR_QprSmVrHvZssjTQZyoQQqFOEK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "45263791133-rh0488hctgpdgdp1juk52v91hfoqd1df.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
