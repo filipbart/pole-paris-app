@@ -46,6 +46,8 @@ class _PoleParisAppState extends State<PoleParisApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => UserBloc()..add(GetMeTask())),
+        BlocProvider(
+            create: (context) => MembershipsBloc()..add(GetAllMemberships())),
       ],
       child: BlocBuilder<UserBloc, UserState>(
         builder: (context, state) => MaterialApp(
@@ -99,6 +101,7 @@ class _MainPageState extends State<MainPage> {
       if (userState.user == null) {
         _getStorage.remove('token');
         Navigator.of(context).pushReplacementNamed(HomeUnloggedPage.id);
+        return;
       }
 
       if (userState.user!.role == Role.teacher) {

@@ -8,13 +8,13 @@ class Membership extends BaseModel {
   final MembershipType type;
   final DateTime expirationDate;
   final int? leftEntries;
-  List<Class> classes;
+  List<Class>? classes;
   Membership({
     required super.id,
     required this.type,
     required this.expirationDate,
     this.leftEntries,
-    required this.classes,
+    this.classes,
     required super.dateCreatedUtc,
   });
 
@@ -41,7 +41,7 @@ class Membership extends BaseModel {
       'type': _$MembershipTypeEnumMap[type],
       'expirationDate': expirationDate.millisecondsSinceEpoch,
       'leftEntries': leftEntries,
-      'classes': classes.map((x) => x.toMap()).toList(),
+      'classes': classes?.map((x) => x.toMap()).toList(),
       'dateCreatedUtc': dateCreatedUtc.millisecondsSinceEpoch,
     };
   }
@@ -54,11 +54,13 @@ class Membership extends BaseModel {
           DateTime.fromMillisecondsSinceEpoch(map['expirationDate'] as int),
       leftEntries:
           map['leftEntries'] != null ? map['leftEntries'] as int : null,
-      classes: List<Class>.from(
-        (map['classes'] as List<int>).map<Class>(
-          (x) => Class.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      classes: map['classes'] != null
+          ? List<Class>.from(
+              (map['classes'] as List<dynamic>).map<Class>(
+                (x) => Class.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : null,
       dateCreatedUtc:
           DateTime.fromMillisecondsSinceEpoch(map['dateCreatedUtc'] as int),
     );

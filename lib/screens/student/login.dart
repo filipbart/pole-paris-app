@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/pages/home_unlogged.dart';
 import 'package:pole_paris_app/pages/main_student.dart';
 import 'package:pole_paris_app/pages/registration.dart';
+import 'package:pole_paris_app/repositories/user_repository.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/screens/failed.dart';
 import 'package:pole_paris_app/screens/forgot_password.dart';
@@ -23,6 +25,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String? _errorText;
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -48,29 +51,44 @@ class _LoginScreenState extends State<LoginScreen> {
         .signInWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text)
         .then(
-      (value) {
+      (value) async {
         GetStorage().write('token', value.user!.uid);
-        Navigator.pop(context);
 
-        Navigator.of(context, rootNavigator: true).pushReplacement(
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) => ConfirmScreen(
-              icon: Icons.celebration_rounded,
-              title: 'Gratulacje!',
-              text: 'Zalogowano pomyślnie :)',
-              widgets: [
-                ElevatedButton(
-                  style: CustomButtonStyle.primary,
-                  onPressed: () => Navigator.pushReplacementNamed(
-                    context,
-                    MainPageStudent.id,
-                  ),
-                  child: const Text('STRONA GŁÓWNA'),
+        await UserRepository.getMe().then(
+          (user) {
+            if (user == null) {
+              throw Exception();
+            }
+
+            context.read<UserBloc>().add(GetMeTask());
+            Navigator.pop(context);
+            Navigator.of(context, rootNavigator: true).pushReplacement(
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => ConfirmScreen(
+                  icon: Icons.celebration_rounded,
+                  title: 'Gratulacje!',
+                  text: 'Zalogowano pomyślnie :)',
+                  widgets: [
+                    ElevatedButton(
+                      style: CustomButtonStyle.primary,
+                      onPressed: () => Navigator.pushReplacementNamed(
+                        context,
+                        MainPageStudent.id,
+                      ),
+                      child: const Text('STRONA GŁÓWNA'),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        );
+              ),
+            );
+          },
+        ).onError((error, stackTrace) {
+          _passwordController.text = '';
+          setState(() {
+            _errorText = 'Nie znaleziono użytkownika w bazie';
+          });
+          Navigator.of(context).pop();
+        });
       },
     ).onError(
       (FirebaseAuthException error, stackTrace) {
@@ -151,6 +169,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 15.0),
                     child: Input(
+                      errorText: _errorText,
+                      onChanged: (_) {
+                        setState(() {
+                          _errorText = null;
+                        });
+                      },
                       controller: _emailController,
                       hint: 'Adres email',
                       inputType: TextInputType.emailAddress,
