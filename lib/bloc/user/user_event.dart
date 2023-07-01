@@ -7,15 +7,32 @@ abstract class UserEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CreateUserTask extends UserEvent {
+class CreateUser extends UserEvent {
   final User newUser;
-  const CreateUserTask({required this.newUser});
+  const CreateUser({required this.newUser});
 
   @override
   List<Object> get props => [newUser];
 }
 
-class GetMeTask extends UserEvent {
+class GetMe extends UserEvent {
   @override
   List<Object> get props => [];
+}
+
+class UpdateUser extends UserEvent {
+  final String fullName;
+  final String email;
+  final String phoneNumber;
+  final String? pictureUrl;
+
+  const UpdateUser(
+      this.fullName, this.email, this.phoneNumber, this.pictureUrl);
+
+  @override
+  List<Object> get props => [
+        fullName,
+        email,
+        phoneNumber,
+      ];
 }

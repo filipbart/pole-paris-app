@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
               throw Exception();
             }
 
-            context.read<UserBloc>().add(GetMeTask());
+            context.read<UserBloc>().add(GetMe());
             Navigator.pop(context);
             Navigator.of(context, rootNavigator: true).pushReplacement(
               MaterialPageRoute<void>(

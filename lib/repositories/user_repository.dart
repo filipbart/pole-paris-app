@@ -57,4 +57,23 @@ class UserRepository {
 
     return result;
   }
+
+  static Future<void> update({
+    required String fullName,
+    required String email,
+    required String phoneNumber,
+    String? pictureUrl,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection(collectionPath)
+        .doc(GetStorage().read('token'))
+        .update({
+      "fullName": fullName,
+      "email": email,
+      "phoneNumber": phoneNumber,
+      "picture": pictureUrl,
+    }).onError((error, stackTrace) {
+      throw Exception(error.toString());
+    });
+  }
 }

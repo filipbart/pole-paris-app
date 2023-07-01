@@ -51,6 +51,7 @@ dependencies:
   table_calendar: ^3.0.9
   get_storage: ^2.1.1
   cloud_firestore: ^4.8.2
+  firebase_storage: ^11.2.4
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"

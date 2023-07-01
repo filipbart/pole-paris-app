@@ -39,10 +39,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final FirebaseAuth.FirebaseAuth _auth = FirebaseAuth.FirebaseAuth.instance;
 
   String? _validateSecondPassword(String? text) {
-    if (text == null || text.isEmpty) {
-      return 'Hasła nie pasują. Spróbuj ponownie.';
-    }
-
     final password = _passwordController.value.text;
     if (password != text) {
       return 'Hasła nie pasują. Spróbuj ponownie!';

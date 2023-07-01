@@ -5,11 +5,13 @@ class LargeInput extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final String? hint;
+  final String? labelText;
   const LargeInput({
     super.key,
     this.validator,
     this.controller,
     this.hint,
+    this.labelText,
   });
 
   @override
@@ -67,6 +69,12 @@ class LargeInput extends StatelessWidget {
           focusedErrorBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: CustomColors.error, width: 1.0),
             borderRadius: BorderRadius.circular(10.0),
+          ),
+          alignLabelWithHint: true,
+          labelText: labelText,
+          labelStyle: const TextStyle(
+            color: CustomColors.buttonAdditional,
+            fontWeight: FontWeight.w400,
           ),
         ),
       ),

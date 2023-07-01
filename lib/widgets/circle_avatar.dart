@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pole_paris_app/bloc/bloc_exports.dart';
 
 class UserPicture extends StatelessWidget {
   final double radius;
@@ -6,11 +7,19 @@ class UserPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundColor: Colors.white,
-      radius: radius,
-      backgroundImage: const NetworkImage(
-          "https://img.freepik.com/darmowe-zdjecie/wewnatrz-portret-atrakcyjnej-mlodej-europejki-o-rudej-kobiecie-z-piegowata-twarza-i-wlosami-w-biala-bluzke-jej-wyglad-i-postawa-wyrazajace-pewnosc-siebie_273609-493.jpg"),
+    return BlocBuilder<UserBloc, UserState>(
+      builder: (context, state) {
+        final user = state.user!;
+        return CircleAvatar(
+          backgroundColor: Colors.white,
+          radius: radius,
+          foregroundImage: user.picture == null
+              ? AssetImage('assets/img/logo.png') //TODO zamienić
+              : null,
+          backgroundImage:
+              user.picture == null ? null : NetworkImage(user.picture!),
+        );
+      },
     );
   }
 }

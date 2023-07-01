@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pole_paris_app/main.dart';
 import 'package:pole_paris_app/pages/home_unlogged.dart';
 import 'package:pole_paris_app/pages/registration.dart';
 import 'package:pole_paris_app/screens/confirm.dart';

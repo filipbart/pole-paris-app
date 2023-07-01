@@ -8,17 +8,27 @@ part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(const UserState()) {
-    on<CreateUserTask>(_onCreateUserTask);
-    on<GetMeTask>(_onGetMeTask);
+    on<CreateUser>(_onCreateUserTask);
+    on<GetMe>(_onGetMeTask);
+    on<UpdateUser>(_onUpdateUser);
   }
 
-  void _onCreateUserTask(CreateUserTask event, Emitter<UserState> emit) async {
+  void _onCreateUserTask(CreateUser event, Emitter<UserState> emit) async {
     await UserRepository.create(event.newUser);
   }
 
-  void _onGetMeTask(GetMeTask event, Emitter<UserState> emit) async {
+  void _onGetMeTask(GetMe event, Emitter<UserState> emit) async {
     await UserRepository.getMe().then((value) {
       emit(UserState(user: value));
-    });
+    }).onError((error, stackTrace) {});
+  }
+
+  void _onUpdateUser(UpdateUser event, Emitter<UserState> emit) async {
+    await UserRepository.update(
+      fullName: event.fullName,
+      email: event.email,
+      phoneNumber: event.phoneNumber,
+      pictureUrl: event.pictureUrl,
+    );
   }
 }

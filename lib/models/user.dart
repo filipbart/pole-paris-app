@@ -6,6 +6,7 @@ import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/models/roles.dart';
 
+//ignore: must_be_immutable
 class User extends BaseModel {
   final String fullName;
   final String email;
@@ -27,6 +28,20 @@ class User extends BaseModel {
     required super.id,
     required super.dateCreatedUtc,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        dateCreatedUtc,
+        fullName,
+        email,
+        phoneNumber,
+        role,
+        picture,
+        description,
+        classes,
+        memberships,
+      ];
 
   User copyWith({
     String? fullName,
