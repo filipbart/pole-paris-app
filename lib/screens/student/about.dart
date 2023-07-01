@@ -12,7 +12,7 @@ class AboutUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(title: 'Kontakt', appBar: AppBar()),
+      appBar: BaseAppBar(title: 'O studio', appBar: AppBar()),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

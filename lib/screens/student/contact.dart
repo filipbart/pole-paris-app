@@ -69,6 +69,11 @@ class ContactScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(
+        const AssetImage(
+          'assets/img/contact-background.jpg',
+        ),
+        context);
     return Scaffold(
       appBar: BaseAppBar(title: 'Kontakt', appBar: AppBar()),
       body: SafeArea(
