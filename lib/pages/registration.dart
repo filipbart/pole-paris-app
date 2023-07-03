@@ -79,7 +79,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         fullName: _userDataController.text,
         email: _emailController.text,
         phoneNumber: _phoneController.text,
-        role: Role.student,
+        role: widget.teacher ? Role.teacher : Role.student,
         id: userId,
         dateCreatedUtc: DateTime.now().toUtc(),
       );
@@ -96,7 +96,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   : Icons.person_2_outlined,
               title: widget.teacher ? 'Udało się!' : 'Gratulacje!',
               text: widget.teacher
-                  ? '''Twoja prośba o rejestracje jako instruktor zostałą przekazana do Pole Paris Studio.\n\nPo weryfikacji dostaniesz od nas wiadomość na adres e-mail'''
+                  ? '''Twoja prośba o rejestracje jako instruktor zostałą przekazana do Pole Paris Studio.\n\nPo weryfikacji dostaniesz od nas wiadomość na adres e-mail.'''
                   : 'Zarejestrowano pomyślnie.',
               widgets: [
                 ElevatedButton(

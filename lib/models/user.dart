@@ -14,8 +14,9 @@ class User extends BaseModel {
   final Role role;
   String? picture;
   String? description;
-  final List<Class>? classes;
-  final List<Membership>? memberships;
+  List<Class>? classes;
+  List<Membership>? memberships;
+  final bool isVerified;
   User({
     required this.fullName,
     required this.email,
@@ -27,6 +28,7 @@ class User extends BaseModel {
     this.memberships,
     required super.id,
     required super.dateCreatedUtc,
+    this.isVerified = false,
   });
 
   @override
@@ -54,6 +56,7 @@ class User extends BaseModel {
     List<Membership>? memberships,
     DateTime? dateCreatedUtc,
     String? id,
+    bool? isVerified,
   }) {
     return User(
       fullName: fullName ?? this.fullName,
@@ -66,6 +69,7 @@ class User extends BaseModel {
       memberships: memberships ?? this.memberships,
       dateCreatedUtc: dateCreatedUtc ?? this.dateCreatedUtc,
       id: id ?? this.id,
+      isVerified: isVerified ?? this.isVerified,
     );
   }
 
@@ -78,9 +82,8 @@ class User extends BaseModel {
       'role': _$RoleEnumMap[role],
       'picture': picture,
       'description': description,
-      'classes': classes?.map((x) => x.toMap()).toList(),
-      'memberships': memberships?.map((x) => x.toMap()).toList(),
       'dateCreatedUtc': dateCreatedUtc.millisecondsSinceEpoch,
+      'isVerified': isVerified,
     };
   }
 
@@ -94,22 +97,9 @@ class User extends BaseModel {
       picture: map['picture'] != null ? map['picture'] as String : null,
       description:
           map['description'] != null ? map['description'] as String : null,
-      classes: map['classes'] != null
-          ? List<Class>.from(
-              (map['classes'] as List<int>).map<Class>(
-                (x) => Class.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
-      memberships: map['memberships'] != null
-          ? List<Membership>.from(
-              (map['memberships'] as List<int>).map<Membership>(
-                (x) => Membership.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
       dateCreatedUtc:
           DateTime.fromMillisecondsSinceEpoch(map['dateCreatedUtc'] as int),
+      isVerified: map['isVerified'] as bool,
     );
   }
 
@@ -121,6 +111,6 @@ class User extends BaseModel {
 }
 
 const _$RoleEnumMap = {
-  Role.teacher: 'instructor',
+  Role.teacher: 'teacher',
   Role.student: 'student',
 };

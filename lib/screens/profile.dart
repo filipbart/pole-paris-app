@@ -213,8 +213,9 @@ class ProfileScreen extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             GetStorage().remove('token');
-                            Navigator.pushReplacementNamed(
-                                context, HomeUnloggedPage.id);
+                            context.read<UserBloc>().close();
+                            Navigator.of(context, rootNavigator: true)
+                                .pushReplacementNamed(HomeUnloggedPage.id);
                           },
                           style: CustomButtonStyle.secondaryTransparent,
                           child: const Text('WYLOGUJ'),

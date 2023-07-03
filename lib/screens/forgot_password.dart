@@ -11,8 +11,9 @@ import 'package:pole_paris_app/widgets/base/loader.dart';
 import 'package:pole_paris_app/widgets/input.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
+  final bool teacher;
   static const id = 'forgot_password';
-  const ForgotPasswordScreen({super.key});
+  const ForgotPasswordScreen({super.key, this.teacher = false});
 
   @override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
@@ -218,8 +219,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           padding: EdgeInsets.zero,
                           foregroundColor: CustomColors.hintText,
                         ),
-                        onPressed: () => Navigator.of(context)
-                            .pushReplacementNamed(RegistrationPage.id),
+                        onPressed: () => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    RegistrationPage(teacher: widget.teacher))),
                         child: const Text(
                           'Zarejestruj się za darmo!',
                           style: TextStyle(

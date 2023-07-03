@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pole_paris_app/screens/student/login.dart';
-import 'package:pole_paris_app/screens/teacher/login.dart';
+import 'package:pole_paris_app/screens/login.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/logo.dart';
@@ -61,8 +60,10 @@ class _HomeUnloggedPageState extends State<HomeUnloggedPage> {
                 ),
                 ElevatedButton(
                   style: CustomButtonStyle.secondary,
-                  onPressed: () => Navigator.of(context)
-                      .pushReplacementNamed(LoginTeacherScreen.id),
+                  onPressed: () => Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const LoginScreen(teacher: true))),
                   child: const Text('INSTRUKTOR'),
                 ),
               ],

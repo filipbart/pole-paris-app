@@ -4,8 +4,7 @@ import 'package:pole_paris_app/pages/main_student.dart';
 import 'package:pole_paris_app/pages/main_teacher.dart';
 import 'package:pole_paris_app/pages/registration.dart';
 import 'package:pole_paris_app/screens/forgot_password.dart';
-import 'package:pole_paris_app/screens/student/login.dart';
-import 'package:pole_paris_app/screens/teacher/login.dart';
+import 'package:pole_paris_app/screens/login.dart';
 
 class AppRouter {
   Route? onGenerateRoute(RouteSettings routeSettings) {
@@ -25,10 +24,6 @@ class AppRouter {
       case LoginScreen.id:
         return MaterialPageRoute(
           builder: (_) => const LoginScreen(),
-        );
-      case LoginTeacherScreen.id:
-        return MaterialPageRoute(
-          builder: (_) => const LoginTeacherScreen(),
         );
       case MainPageStudent.id:
         return MaterialPageRoute(

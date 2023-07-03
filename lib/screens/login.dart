@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pole_paris_app/bloc/bloc_exports.dart';
+import 'package:pole_paris_app/models/roles.dart';
 import 'package:pole_paris_app/pages/home_unlogged.dart';
 import 'package:pole_paris_app/pages/main_student.dart';
+import 'package:pole_paris_app/pages/main_teacher.dart';
 import 'package:pole_paris_app/pages/registration.dart';
 import 'package:pole_paris_app/repositories/user_repository.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
@@ -18,7 +20,8 @@ import 'package:pole_paris_app/widgets/input.dart';
 
 class LoginScreen extends StatefulWidget {
   static const id = 'login_student';
-  const LoginScreen({super.key});
+  final bool teacher;
+  const LoginScreen({super.key, this.teacher = false});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -60,20 +63,27 @@ class _LoginScreenState extends State<LoginScreen> {
               throw Exception();
             }
 
+            if (user.role != Role.teacher && widget.teacher) {
+              _onFailure();
+              return;
+            }
+
             context.read<UserBloc>().add(GetMe());
             Navigator.pop(context);
             Navigator.of(context, rootNavigator: true).pushReplacement(
               MaterialPageRoute<void>(
                 builder: (BuildContext context) => ConfirmScreen(
                   icon: Icons.celebration_rounded,
-                  title: 'Gratulacje!',
+                  title: widget.teacher ? 'Udało się!' : 'Gratulacje!',
                   text: 'Zalogowano pomyślnie :)',
                   widgets: [
                     ElevatedButton(
                       style: CustomButtonStyle.primary,
                       onPressed: () => Navigator.pushReplacementNamed(
                         context,
-                        MainPageStudent.id,
+                        widget.teacher
+                            ? MainPageTeacher.id
+                            : MainPageStudent.id,
                       ),
                       child: const Text('STRONA GŁÓWNA'),
                     ),
@@ -99,20 +109,25 @@ class _LoginScreenState extends State<LoginScreen> {
           return;
         }
 
-        Navigator.of(context).pop();
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => FailedScreen(
-                button: ElevatedButton(
-                  onPressed: () => Navigator.of(context)
-                      .pushReplacementNamed(LoginScreen.id),
-                  style: CustomButtonStyle.primary,
-                  child: const Text('POWRÓT DO LOGOWANIA'),
-                ),
-                title: 'Logowanie nie powiodło się'),
-          ),
-        );
+        _onFailure();
       },
+    );
+  }
+
+  _onFailure() {
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FailedScreen(
+            button: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: CustomButtonStyle.primary,
+              child: const Text('POWRÓT DO LOGOWANIA'),
+            ),
+            title: 'Logowanie nie powiodło się'),
+      ),
     );
   }
 
@@ -143,21 +158,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Logo(
                     width: 150.0,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 15.0, bottom: 25.0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0, bottom: 25.0),
                     child: Column(
                       children: [
                         Text(
-                          'Witamy ponownie!',
-                          style: TextStyle(
+                          widget.teacher ? 'Cześć!' : 'Witamy ponownie!',
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                             color: CustomColors.text,
                           ),
                         ),
                         Text(
-                          'Zaloguj się',
-                          style: TextStyle(
+                          widget.teacher
+                              ? 'Zaloguj się jako instruktor'
+                              : 'Zaloguj się',
+                          style: const TextStyle(
                             color: CustomColors.text2,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -230,7 +247,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: ElevatedButton(
                       style: CustomButtonStyle.primary,
                       onPressed: _submit,
-                      child: const Text('ZALOGUJ'),
+                      child: Text(widget.teacher
+                          ? 'ZALOGUJ JAKO INSTRUKTOR'
+                          : 'ZALOGUJ'),
                     ),
                   ),
                   ElevatedButton(
@@ -241,11 +260,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: const Text('ZMIEŃ SPOSÓB LOGOWANIA'),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 40.0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 40.0),
                     child: Text(
-                      'Nie posiadasz jeszcze konta?',
-                      style: TextStyle(
+                      widget.teacher
+                          ? 'Nie masz konta instruktora?'
+                          : 'Nie posiadasz jeszcze konta?',
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: CustomColors.hintText,
@@ -259,11 +280,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: EdgeInsets.zero,
                         foregroundColor: CustomColors.hintText,
                       ),
-                      onPressed: () => Navigator.of(context)
-                          .pushReplacementNamed(RegistrationPage.id),
-                      child: const Text(
-                        'Zarejestruj się za darmo!',
-                        style: TextStyle(
+                      onPressed: () => Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  RegistrationPage(teacher: widget.teacher))),
+                      child: Text(
+                        widget.teacher
+                            ? 'Załóż konto tutaj!'
+                            : 'Zarejestruj się za darmo!',
+                        style: const TextStyle(
                           fontSize: 14,
                           color: CustomColors.hintText,
                           decoration: TextDecoration.underline,
