@@ -12,7 +12,7 @@ import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/drawer.dart';
 import 'package:pole_paris_app/widgets/base/logo.dart';
 import 'package:pole_paris_app/widgets/teacher/calendar.dart';
-import 'package:pole_paris_app/widgets/teacher/class_item.dart';
+import 'package:pole_paris_app/widgets/class_item.dart';
 
 class MainScreenTeacher extends StatefulWidget {
   const MainScreenTeacher({super.key});

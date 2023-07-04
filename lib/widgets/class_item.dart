@@ -4,6 +4,7 @@ import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/levels.dart';
 import 'package:pole_paris_app/models/roles.dart';
+import 'package:pole_paris_app/screens/student/class_details.dart';
 import 'package:pole_paris_app/screens/teacher/class_details.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/styles/text.dart';
@@ -26,8 +27,9 @@ class ClassItem extends StatelessWidget {
           transitionDuration: const Duration(milliseconds: 500),
           closedShape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          openBuilder: (context, closedContainer) =>
-              ClassDetailsScreen(classDetails: classItem),
+          openBuilder: (context, closedContainer) => isTeacher
+              ? ClassDetailsTeacherScreen(classDetails: classItem)
+              : ClassDetailsStudentScreen(classDetails: classItem),
           closedBuilder: (context, openContainer) => InkWell(
             onTap: () => openContainer(),
             child: Container(

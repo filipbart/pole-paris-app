@@ -350,7 +350,9 @@ class _AddClassSummaryState extends State<AddClassSummary> {
                   bottom: 30.0,
                 ),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                   style: CustomButtonStyle.secondaryTransparent,
                   child: const Text('ANULUJ'),
                 ),

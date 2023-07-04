@@ -15,7 +15,7 @@ import 'package:pole_paris_app/widgets/base/drawer.dart';
 import 'package:pole_paris_app/widgets/base/logo.dart';
 import 'package:pole_paris_app/widgets/student/carnet.dart';
 import 'package:pole_paris_app/widgets/teacher/calendar.dart';
-import 'package:pole_paris_app/widgets/teacher/class_item.dart';
+import 'package:pole_paris_app/widgets/class_item.dart';
 
 class MainScreenStudent extends StatefulWidget {
   const MainScreenStudent({super.key});

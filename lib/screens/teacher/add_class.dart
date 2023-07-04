@@ -155,7 +155,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
       level: _level!,
       description: _descController.text,
       picture: _image!.path,
-      places: _nameController.text.contains("pole") ? 7 : 20,
+      places: _nameController.text.toLowerCase().contains("pole") ? 7 : 20,
       teacher: context.read<UserBloc>().state.user!,
       dateCreatedUtc: DateTime.now().toUtc(),
     );

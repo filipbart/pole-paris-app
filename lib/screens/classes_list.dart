@@ -7,7 +7,7 @@ import 'package:pole_paris_app/models/roles.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/app_bar.dart';
-import 'package:pole_paris_app/widgets/teacher/class_item.dart';
+import 'package:pole_paris_app/widgets/class_item.dart';
 
 class ClassesListScreen extends StatelessWidget {
   const ClassesListScreen({super.key});
