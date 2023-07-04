@@ -95,6 +95,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         builder: (BuildContext context) =>
             const LoadingDialog(text: 'Zapisywanie zmian'));
 
+    bool error = false;
     String? url;
     if (_image != null) {
       final userId = GetStorage().read('token');
@@ -113,19 +114,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           url = null;
         });
       }).onError((error, stackTrace) {
-        _onFailure();
-        return;
+        error = true;
       });
     }
-
-    ;
 
     if (_emailController.text != _auth.currentUser!.email) {
       await _auth.currentUser!
           .updateEmail(_emailController.text)
           .onError((error, stackTrace) {
-        _onFailure();
-        return;
+        error = true;
       });
     }
 
@@ -137,23 +134,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           await _auth.currentUser!
               .updateEmail(_user.email)
               .onError((error, stackTrace) {
-            _onFailure();
-            return;
+            error = true;
           });
         }
-        _onFailure();
+        error = true;
         return;
       });
+    }
+
+    if (error == true) {
+      _onFailure();
+      return;
     }
 
     if (!mounted) return;
     context.read<UserBloc>().add(UpdateUser(_userDataController.text,
         _emailController.text, _phoneController.text, url));
 
-    _onSucces();
+    _onSuccess();
   }
 
-  _onSucces() {
+  _onSuccess() {
     final rootContext = context;
     final role = rootContext.read<UserBloc>().state.user!.role;
 
@@ -191,6 +192,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         builder: (context) => FailedScreen(
             button: ElevatedButton(
               onPressed: () {
+                Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
               style: CustomButtonStyle.primary,

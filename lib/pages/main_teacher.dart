@@ -21,8 +21,15 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => TabIndexBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => TabIndexBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ClassesBloc()..add(GetClasses()),
+        ),
+      ],
       child: BlocBuilder<TabIndexBloc, TabIndexState>(
         builder: (context, state) => Scaffold(
           body: IndexedStack(

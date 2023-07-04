@@ -7,6 +7,7 @@ import 'package:table_calendar/table_calendar.dart';
 class Calendar extends StatefulWidget {
   final DateTime firstDay;
   final List<DateTime>? classDays;
+  final DateTime? focusedDay;
   final Function(DateTime, DateTime)? onDateChanged;
 
   const Calendar({
@@ -14,6 +15,7 @@ class Calendar extends StatefulWidget {
     required this.firstDay,
     this.classDays,
     this.onDateChanged,
+    this.focusedDay,
   });
 
   static TextStyle daysStyle = GoogleFonts.lato(
@@ -71,7 +73,7 @@ class _CalendarState extends State<Calendar> {
           },
         ),
         selectedDayPredicate: (day) {
-          return _focusedDay.isSameDate(day);
+          return (widget.focusedDay ?? _focusedDay).isSameDate(day);
         },
         onDaySelected: (selectedDay, focusedDay) {
           if (widget.onDateChanged != null) {
@@ -86,7 +88,7 @@ class _CalendarState extends State<Calendar> {
         startingDayOfWeek: StartingDayOfWeek.monday,
         firstDay: widget.firstDay,
         lastDay: DateTime.now().add(const Duration(days: 30)),
-        focusedDay: _focusedDay,
+        focusedDay: widget.focusedDay ?? _focusedDay,
         headerStyle: HeaderStyle(
             headerPadding: const EdgeInsets.only(bottom: 12),
             titleCentered: true,

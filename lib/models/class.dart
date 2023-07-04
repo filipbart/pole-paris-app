@@ -5,6 +5,7 @@ import 'package:pole_paris_app/models/levels.dart';
 import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/models/user.dart';
 
+// ignore: must_be_immutable
 class Class extends BaseModel {
   final String name;
   final DateTime date;
@@ -13,9 +14,9 @@ class Class extends BaseModel {
   final Level level;
   final int places;
   final String description;
-  final String picture;
+  String picture;
   final User teacher;
-  final List<Membership> memberships;
+  List<Membership>? memberships;
   Class({
     required this.name,
     required this.date,
@@ -26,7 +27,7 @@ class Class extends BaseModel {
     required this.description,
     required this.picture,
     required this.teacher,
-    required this.memberships,
+    this.memberships,
     required super.id,
     required super.dateCreatedUtc,
   });
@@ -73,7 +74,7 @@ class Class extends BaseModel {
       'description': description,
       'picture': picture,
       'teacher': teacher.toMap(),
-      'memberships': memberships.map((x) => x.toMap()).toList(),
+      'memberships': memberships?.map((x) => x.toMap()).toList(),
       'dateCreatedUtc': dateCreatedUtc.millisecondsSinceEpoch,
     };
   }
@@ -90,11 +91,13 @@ class Class extends BaseModel {
       description: map['description'] as String,
       picture: map['picture'] as String,
       teacher: User.fromMap(map['teacher'] as Map<String, dynamic>),
-      memberships: List<Membership>.from(
-        (map['memberships'] as List<int>).map<Membership>(
-          (x) => Membership.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      memberships: map['memberships'] != null
+          ? List<Membership>.from(
+              (map['memberships'] as List<dynamic>).map<Membership>(
+                (x) => Membership.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : null,
       dateCreatedUtc:
           DateTime.fromMillisecondsSinceEpoch(map['dateCreatedUtc'] as int),
     );

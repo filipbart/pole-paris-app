@@ -41,8 +41,8 @@ class UserCarnet extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  membership.leftEntries != null
-                      ? '${membership.leftEntries} wejścia'
+                  membership.entries != null
+                      ? '${membership.entries} wejścia'
                       : 'Nielimitowane wejścia',
                   style: const TextStyle(
                     color: CustomColors.inputText,

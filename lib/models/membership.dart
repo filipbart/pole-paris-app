@@ -7,13 +7,13 @@ import 'package:pole_paris_app/models/class.dart';
 class Membership extends BaseModel {
   final MembershipType type;
   final DateTime expirationDate;
-  final int? leftEntries;
+  final int? entries;
   List<Class>? classes;
   Membership({
     required super.id,
     required this.type,
     required this.expirationDate,
-    this.leftEntries,
+    this.entries,
     this.classes,
     required super.dateCreatedUtc,
   });
@@ -21,7 +21,7 @@ class Membership extends BaseModel {
   Membership copyWith({
     MembershipType? type,
     DateTime? expirationDate,
-    int? leftEntries,
+    int? entries,
     List<Class>? classes,
     String? id,
     DateTime? dateCreatedUtc,
@@ -30,7 +30,7 @@ class Membership extends BaseModel {
         id: id ?? this.id,
         type: type ?? this.type,
         expirationDate: expirationDate ?? this.expirationDate,
-        leftEntries: leftEntries ?? this.leftEntries,
+        entries: entries ?? this.entries,
         classes: classes ?? this.classes,
         dateCreatedUtc: dateCreatedUtc ?? this.dateCreatedUtc);
   }
@@ -40,7 +40,7 @@ class Membership extends BaseModel {
       'id': id,
       'type': _$MembershipTypeEnumMap[type],
       'expirationDate': expirationDate.millisecondsSinceEpoch,
-      'leftEntries': leftEntries,
+      'entries': entries,
       'classes': classes?.map((x) => x.toMap()).toList(),
       'dateCreatedUtc': dateCreatedUtc.millisecondsSinceEpoch,
     };
@@ -52,8 +52,7 @@ class Membership extends BaseModel {
       type: $enumDecode(_$MembershipTypeEnumMap, map['type']),
       expirationDate:
           DateTime.fromMillisecondsSinceEpoch(map['expirationDate'] as int),
-      leftEntries:
-          map['leftEntries'] != null ? map['leftEntries'] as int : null,
+      entries: map['entries'] != null ? map['entries'] as int : null,
       classes: map['classes'] != null
           ? List<Class>.from(
               (map['classes'] as List<dynamic>).map<Class>(

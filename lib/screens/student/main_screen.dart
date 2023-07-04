@@ -139,7 +139,7 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                         width: 220,
                       ),
                       Text(
-                        'Witaj ponownie\n${state.user?.getFirstName}!',
+                        'Witaj ponownie\n${state.user?.getFirstName ?? ''}!',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 32,

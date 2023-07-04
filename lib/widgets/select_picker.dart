@@ -10,6 +10,7 @@ class SelectPicker extends StatefulWidget {
   final String? errorText;
   final bool? errorBorder;
   final String hintText;
+  final String? value;
   const SelectPicker({
     super.key,
     required this.items,
@@ -19,6 +20,7 @@ class SelectPicker extends StatefulWidget {
     this.errorText,
     this.errorBorder,
     this.hintText = 'Wybierz',
+    this.value,
   });
 
   @override
@@ -142,7 +144,7 @@ class _SelectPickerState extends State<SelectPicker> {
             });
             widget.onChanged(value);
           },
-          value: _value,
+          value: _value ?? widget.value,
         ),
       ),
     );

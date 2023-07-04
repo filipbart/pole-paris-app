@@ -52,6 +52,7 @@ dependencies:
   get_storage: ^2.1.1
   cloud_firestore: ^4.8.2
   firebase_storage: ^11.2.4
+  cloud_functions: ^4.3.3
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"

@@ -6,3 +6,8 @@ abstract class ClassesEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class GetClasses extends ClassesEvent {
+  @override
+  List<Object> get props => [];
+}

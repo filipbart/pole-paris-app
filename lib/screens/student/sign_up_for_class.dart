@@ -184,7 +184,7 @@ class SignUpForClassScreen extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          '${membership.leftEntries} wejście',
+                                          '${membership.entries} wejście',
                                           style: const TextStyle(
                                             color: Color(0xFF404040),
                                             fontSize: 14,

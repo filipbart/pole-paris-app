@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/extensions/dateTime.dart';
+import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/levels.dart';
+import 'package:pole_paris_app/repositories/class_repository.dart';
+import 'package:pole_paris_app/screens/teacher/add_class_summary.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/app_bar.dart';
@@ -61,9 +65,9 @@ class _AddClassScreenState extends State<AddClassScreen> {
   ];
 
   XFile? _image;
-  String? hourSince;
-  String? hourTo;
-  Level? level;
+  String? _hourSince;
+  String? _hourTo;
+  Level? _level;
   dynamic _pickImageError;
 
   bool _nullSince = false;
@@ -111,17 +115,17 @@ class _AddClassScreenState extends State<AddClassScreen> {
     }
   }
 
-  _submit() {
+  _submit() async {
     final validForm = _formKey.currentState!.validate();
 
-    final sinceIndex = hours.indexOf(hourSince ?? '');
-    final toIndex = hours.indexOf(hourTo ?? '');
+    final sinceIndex = hours.indexOf(_hourSince ?? '');
+    final toIndex = hours.indexOf(_hourTo ?? '');
 
     setState(() {
       _nullSince =
-          hourSince == null || (sinceIndex > toIndex || sinceIndex == -1);
-      _nullTo = hourTo == null || (sinceIndex > toIndex || toIndex == -1);
-      _nullLevel = level == null;
+          _hourSince == null || (sinceIndex > toIndex || sinceIndex == -1);
+      _nullTo = _hourTo == null || (sinceIndex > toIndex || toIndex == -1);
+      _nullLevel = _level == null;
       _noImage = _image == null;
     });
 
@@ -129,22 +133,53 @@ class _AddClassScreenState extends State<AddClassScreen> {
       return;
     }
 
-    // final newClass = Class(
-    //   name: name,
-    //   date: _focusedDay,
-    //   hourSince: hourSince!,
-    //   hourTo: hourTo!,
-    //   level: level!,
-    //   description: desc,
-    //   teacher: 'Anna', dateCreatedUtc: DateTime.now().toUtc(),
-    //   //picture: _image!,
-    // );
+    final date = _focusedDay.copyWith(
+      hour: int.parse(_hourSince!.split(':').first),
+      minute: int.parse(_hourSince!.split(':').last),
+    );
 
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) => AddClassSummary(newClass: newClass)),
-    // );
+    if (date.isBefore(DateTime.now())) {
+      setState(() {
+        _nullSince = true;
+      });
+    }
+
+    final classId = ClassRepository.getNewId();
+
+    final newClass = Class(
+      id: classId,
+      name: _nameController.text,
+      date: date,
+      hourSince: _hourSince!,
+      hourTo: _hourTo!,
+      level: _level!,
+      description: _descController.text,
+      picture: _image!.path,
+      places: _nameController.text.contains("pole") ? 7 : 20,
+      teacher: context.read<UserBloc>().state.user!,
+      dateCreatedUtc: DateTime.now().toUtc(),
+    );
+
+    GetStorage().write('saved-class', newClass.toMap());
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => AddClassSummary(newClass: newClass)),
+    );
+  }
+
+  _usePreviousData() {
+    final previousData = Class.fromMap(GetStorage().read('saved-class'));
+    _nameController.text = previousData.name;
+    _descController.text = previousData.description;
+    setState(() {
+      _focusedDay = previousData.date;
+      _hourSince = previousData.hourSince;
+      _hourTo = previousData.hourTo;
+      _level = previousData.level;
+      _image = XFile(previousData.picture);
+    });
   }
 
   @override
@@ -153,12 +188,11 @@ class _AddClassScreenState extends State<AddClassScreen> {
       appBar: BaseAppBar(
         title: 'Dodawanie zajęć',
         appBar: AppBar(),
+        withDrawer: false,
       ),
-      drawer: BaseDrawer(
-        teacher: true,
-        drawerListTileItems: drawerItems,
-      ),
+      drawer: null,
       body: Form(
+        key: _formKey,
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -172,6 +206,15 @@ class _AddClassScreenState extends State<AddClassScreen> {
                   ),
                   child: Column(
                     children: [
+                      if (GetStorage().read('saved-class') != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 30.0),
+                          child: ElevatedButton(
+                            onPressed: _usePreviousData,
+                            style: CustomButtonStyle.secondaryTransparent,
+                            child: const Text('UŻYJ POPRZEDNICH DANYCH'),
+                          ),
+                        ),
                       Wrap(
                         runSpacing: 10,
                         children: [
@@ -182,7 +225,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                           Input(
                             controller: _nameController,
                             hint: 'Wprowadź nazwę',
-                            inputType: TextInputType.emailAddress,
+                            inputType: TextInputType.name,
                             validator: _validateName,
                             withBorder: false,
                           ),
@@ -199,6 +242,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                             ),
                             Calendar(
                               firstDay: DateTime.now(),
+                              focusedDay: _focusedDay,
                               onDateChanged:
                                   (DateTime selectedDay, DateTime focusedDay) {
                                 if (_focusedDay.isSameDate(selectedDay) ==
@@ -271,13 +315,14 @@ class _AddClassScreenState extends State<AddClassScreen> {
                             ),
                           ),
                           SelectPicker(
+                            value: _hourSince,
                             items: hours,
                             selectWidth: 110,
                             dropDownWidth: 110,
                             errorBorder: _nullSince,
                             onChanged: (value) {
                               setState(() {
-                                hourSince = value;
+                                _hourSince = value;
                                 _nullSince = false;
                               });
                             },
@@ -292,13 +337,14 @@ class _AddClassScreenState extends State<AddClassScreen> {
                             ),
                           ),
                           SelectPicker(
+                            value: _hourTo,
                             items: hours,
                             selectWidth: 110,
                             dropDownWidth: 110,
                             errorBorder: _nullTo,
                             onChanged: (value) {
                               setState(() {
-                                hourTo = value;
+                                _hourTo = value;
                                 _nullTo = false;
                               });
                             },
@@ -350,15 +396,16 @@ class _AddClassScreenState extends State<AddClassScreen> {
                         ),
                       ),
                       SelectPicker(
+                        value: _level?.description,
                         items: Level.values.map((e) => e.description).toList(),
                         selectWidth: double.infinity,
-                        dropDownWidth: 160,
+                        dropDownWidth: 180,
                         errorText: _nullLevel
                             ? 'Nie wybrano poziomu. Wybierz poziom.'
                             : null,
                         onChanged: (value) {
                           setState(() {
-                            level = LevelHelper.enumValueByDesc(value!);
+                            _level = LevelHelper.enumValueByDesc(value!);
                             _nullLevel = false;
                           });
                         },

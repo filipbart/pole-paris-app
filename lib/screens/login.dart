@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -58,15 +59,31 @@ class _LoginScreenState extends State<LoginScreen> {
         GetStorage().write('token', value.user!.uid);
 
         await UserRepository.getMe().then(
-          (user) {
+          (user) async {
             if (user == null) {
+              GetStorage().remove('token');
               throw Exception();
             }
 
             if (user.role != Role.teacher && widget.teacher) {
+              GetStorage().remove('token');
               _onFailure();
               return;
             }
+
+            if (user.role == Role.teacher) {
+              await FirebaseFunctions.instance
+                  .httpsCallable('addTeacherRole')
+                  .call(
+                {
+                  "userId": user.id,
+                },
+              ).onError((error, stackTrace) {
+                GetStorage().remove('token');
+                throw Exception("Error");
+              });
+            }
+            if (!mounted) return;
 
             context.read<UserBloc>().add(GetMe());
             Navigator.pop(context);
@@ -93,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           },
         ).onError((error, stackTrace) {
+          GetStorage().remove('token');
           _passwordController.text = '';
           setState(() {
             _errorText = 'Nie znaleziono użytkownika w bazie';
