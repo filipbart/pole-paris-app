@@ -27,7 +27,8 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
           create: (_) => TabIndexBloc(),
         ),
         BlocProvider(
-          create: (context) => ClassesBloc()..add(GetClasses()),
+          create: (context) =>
+              ClassesBloc()..add(const GetClasses(forTeacher: true)),
         ),
       ],
       child: BlocBuilder<TabIndexBloc, TabIndexState>(

@@ -12,7 +12,7 @@ class ClassesBloc extends Bloc<ClassesEvent, ClassesState> {
   }
 
   void _onGetClasses(GetClasses event, Emitter<ClassesState> emit) async {
-    final classes = await ClassRepository.getMyClasses();
+    final classes = await ClassRepository.getMyClasses(event.forTeacher);
     emit(ClassesState(classes: classes));
   }
 }

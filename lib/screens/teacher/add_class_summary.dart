@@ -72,7 +72,7 @@ class _AddClassSummaryState extends State<AddClassSummary> {
     }
 
     if (!mounted) return;
-    context.read<ClassesBloc>().add(GetClasses());
+    context.read<ClassesBloc>().add(const GetClasses(forTeacher: true));
     _onSuccess();
   }
 

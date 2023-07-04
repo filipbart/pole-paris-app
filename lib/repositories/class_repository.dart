@@ -19,7 +19,7 @@ class ClassRepository {
     return FirebaseFirestore.instance.collection('classes').doc().id;
   }
 
-  static Future<List<Class>> getMyClasses() async {
+  static Future<List<Class>> getMyClasses(bool forTeacher) async {
     List<Class> myClasses = [];
     final teacherId = GetStorage().read('token');
     await FirebaseFirestore.instance

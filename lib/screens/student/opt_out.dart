@@ -44,8 +44,7 @@ class _OptOutScreenState extends State<OptOutScreen> {
 
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) =>
-                          const ClassesListScreen(forStudent: true),
+                      builder: (context) => const ClassesListScreen(),
                     ),
                   );
                 },

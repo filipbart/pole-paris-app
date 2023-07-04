@@ -150,8 +150,7 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  const ClassesListScreen(
-                                                      forStudent: false),
+                                                  const ClassesListScreen(),
                                             )),
                                         style: CustomButtonStyle.seeMore,
                                         child: const Text(

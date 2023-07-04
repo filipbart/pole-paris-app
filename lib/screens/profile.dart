@@ -170,8 +170,7 @@ class ProfileScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const ClassesListScreen(
-                                              forStudent: true))),
+                                          const ClassesListScreen())),
                               style: CustomButtonStyle.whiteProfiles,
                               child: const Text('Twoje zajęcia'),
                             ),
