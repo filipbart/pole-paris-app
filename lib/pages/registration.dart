@@ -1,11 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuth;
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
-import 'package:pole_paris_app/repositories/user_repository.dart';
+
 import 'package:pole_paris_app/models/roles.dart';
 import 'package:pole_paris_app/models/user.dart';
 import 'package:pole_paris_app/pages/home_unlogged.dart';
+import 'package:pole_paris_app/repositories/user_repository.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/screens/failed.dart';
 import 'package:pole_paris_app/styles/button.dart';
@@ -36,7 +37,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final _secondPasswordController = TextEditingController();
   final PhoneInputFormatter _formatter = PhoneInputFormatter();
 
-  final FirebaseAuth.FirebaseAuth _auth = FirebaseAuth.FirebaseAuth.instance;
+  final firebase_auth.FirebaseAuth _auth = firebase_auth.FirebaseAuth.instance;
 
   String? _validateSecondPassword(String? text) {
     final password = _passwordController.value.text;
@@ -118,7 +119,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           ),
           ModalRoute.withName('/confirm'),
         );
-      }).onError((FirebaseAuth.FirebaseAuthException error, stackTrace) {
+      }).onError((firebase_auth.FirebaseAuthException error, stackTrace) {
         print(error.code);
       });
     }).onError((error, stackTrace) {

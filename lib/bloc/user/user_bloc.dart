@@ -1,22 +1,21 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pole_paris_app/bloc/bloc_exports.dart';
-import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/models/user.dart';
+import 'package:pole_paris_app/models/user_carnet.dart';
 import 'package:pole_paris_app/repositories/user_repository.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  final MembershipsBloc membershipsBloc;
-  late StreamSubscription membershipSubscription;
-  UserBloc({required this.membershipsBloc}) : super(const UserState()) {
-    membershipSubscription = membershipsBloc.stream.listen((event) {
+  final CarnetsBloc carnetsBloc;
+  late StreamSubscription carnetsSubscription;
+  UserBloc({required this.carnetsBloc}) : super(const UserState()) {
+    carnetsSubscription = carnetsBloc.stream.listen((event) {
       if (state.user != null) {
-        add(UpdateUserMemberships(state.user!, event.userMemberships));
+        add(UpdateUserMemberships(state.user!, event.userCarnets));
       }
     });
 
@@ -47,7 +46,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   void _onUpdateUserMemberships(
       UpdateUserMemberships event, Emitter<UserState> emit) {
-    event.user.memberships = event.memberships;
+    event.user.carnets = event.carnets;
     emit(UserState(user: event.user));
   }
 }

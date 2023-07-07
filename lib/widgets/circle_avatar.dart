@@ -7,6 +7,8 @@ class UserPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(
+        const AssetImage('assets/img/placeholder-avatar.png'), context);
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         final user = state.user!;
@@ -14,7 +16,7 @@ class UserPicture extends StatelessWidget {
           backgroundColor: Colors.white,
           radius: radius,
           foregroundImage: user.picture == null
-              ? AssetImage('assets/img/logo.png') //TODO zamienić
+              ? const AssetImage('assets/img/placeholder-avatar.png')
               : null,
           backgroundImage:
               user.picture == null ? null : NetworkImage(user.picture!),

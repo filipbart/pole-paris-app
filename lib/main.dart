@@ -45,10 +45,10 @@ class _PoleParisAppState extends State<PoleParisApp> {
     precacheImage(const AssetImage('assets/img/logo.png'), context);
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => MembershipsBloc()),
+        BlocProvider(create: (context) => CarnetsBloc()),
         BlocProvider(
             create: (context) =>
-                UserBloc(membershipsBloc: context.read<MembershipsBloc>())
+                UserBloc(carnetsBloc: context.read<CarnetsBloc>())
                   ..add(GetMe())),
       ],
       child: BlocBuilder<UserBloc, UserState>(

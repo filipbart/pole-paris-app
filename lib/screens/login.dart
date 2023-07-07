@@ -110,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           },
         ).onError((error, stackTrace) {
+          print(error.toString());
           GetStorage().remove('token');
           _passwordController.text = '';
           setState(() {

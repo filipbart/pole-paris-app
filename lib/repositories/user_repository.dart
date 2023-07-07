@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/models/user.dart';
+import 'package:pole_paris_app/models/user_carnet.dart';
 
 const collectionPath = 'users';
 
@@ -35,8 +35,8 @@ class UserRepository {
     return result;
   }
 
-  static Future<List<Membership>?> getUserMemberships() async {
-    List<Membership> result = [];
+  static Future<List<UserCarnet>?> getUserCarnets() async {
+    List<UserCarnet> result = [];
     final userId = GetStorage().read('token');
 
     if (userId == null || userId == '') {
@@ -46,12 +46,12 @@ class UserRepository {
     await FirebaseFirestore.instance
         .collection(collectionPath)
         .doc(userId)
-        .collection('memberships')
+        .collection('carnets')
         .get()
         .then((values) {
-      for (var membership in values.docs) {
-        final membershipEntity = Membership.fromMap(membership.data());
-        result.add(membershipEntity);
+      for (var carnet in values.docs) {
+        final carnetEntity = UserCarnet.fromMap(carnet.data());
+        result.add(carnetEntity);
       }
     }, onError: (e) => throw Exception(e.toString()));
 

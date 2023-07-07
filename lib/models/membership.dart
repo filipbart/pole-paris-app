@@ -1,47 +1,56 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pole_paris_app/models/base.dart';
-import 'package:pole_paris_app/models/class.dart';
 
+// ignore: must_be_immutable
 class Membership extends BaseModel {
+  final String name;
   final MembershipType type;
-  final DateTime expirationDate;
-  final int? entries;
-  List<Class>? classes;
+  final int validDays;
+  final int price;
+  final int? poleEntries;
+  final int? fitnessEntries;
   Membership({
     required super.id,
+    required this.name,
     required this.type,
-    required this.expirationDate,
-    this.entries,
-    this.classes,
+    required this.validDays,
+    required this.price,
+    this.poleEntries,
+    this.fitnessEntries,
     required super.dateCreatedUtc,
   });
 
   Membership copyWith({
+    String? name,
     MembershipType? type,
-    DateTime? expirationDate,
-    int? entries,
-    List<Class>? classes,
+    int? validDays,
+    int? price,
+    int? poleEntries,
+    int? fitnessEntries,
     String? id,
     DateTime? dateCreatedUtc,
   }) {
     return Membership(
         id: id ?? this.id,
+        name: name ?? this.name,
         type: type ?? this.type,
-        expirationDate: expirationDate ?? this.expirationDate,
-        entries: entries ?? this.entries,
-        classes: classes ?? this.classes,
+        validDays: validDays ?? this.validDays,
+        price: price ?? this.price,
+        poleEntries: poleEntries ?? this.poleEntries,
+        fitnessEntries: fitnessEntries ?? this.fitnessEntries,
         dateCreatedUtc: dateCreatedUtc ?? this.dateCreatedUtc);
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
+      'name': name,
       'type': _$MembershipTypeEnumMap[type],
-      'expirationDate': expirationDate.millisecondsSinceEpoch,
-      'entries': entries,
-      'classes': classes?.map((x) => x.toMap()).toList(),
+      'validDays': validDays,
+      'price': price,
+      'poleEntries': poleEntries,
+      'fitnessEntries': fitnessEntries,
       'dateCreatedUtc': dateCreatedUtc.millisecondsSinceEpoch,
     };
   }
@@ -49,17 +58,14 @@ class Membership extends BaseModel {
   factory Membership.fromMap(Map<String, dynamic> map) {
     return Membership(
       id: map['id'] as String,
+      name: map['name'] as String,
       type: $enumDecode(_$MembershipTypeEnumMap, map['type']),
-      expirationDate:
-          DateTime.fromMillisecondsSinceEpoch(map['expirationDate'] as int),
-      entries: map['entries'] != null ? map['entries'] as int : null,
-      classes: map['classes'] != null
-          ? List<Class>.from(
-              (map['classes'] as List<dynamic>).map<Class>(
-                (x) => Class.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
+      validDays: map['validDays'] as int,
+      price: map['price'] as int,
+      poleEntries:
+          map['poleEntries'] != null ? map['poleEntries'] as int : null,
+      fitnessEntries:
+          map['fitnessEntries'] != null ? map['fitnessEntries'] as int : null,
       dateCreatedUtc:
           DateTime.fromMillisecondsSinceEpoch(map['dateCreatedUtc'] as int),
     );
@@ -67,31 +73,16 @@ class Membership extends BaseModel {
 }
 
 enum MembershipType {
-  @JsonValue("base")
-  base,
-  @JsonValue("singleUse")
-  singleUse,
-  @JsonValue("premium")
-  premium,
-}
-
-extension MembershipExtension on MembershipType {
-  String get name => describeEnum(this);
-  String get description {
-    switch (this) {
-      case MembershipType.singleUse:
-        return 'Karnet jednorazowy';
-      case MembershipType.premium:
-        return 'Karnet premium';
-      case MembershipType.base:
-      default:
-        return 'Karnet podstawowy';
-    }
-  }
+  @JsonValue("pole")
+  pole,
+  @JsonValue("stretchFitness")
+  stretchFitness,
+  @JsonValue("all")
+  all
 }
 
 const _$MembershipTypeEnumMap = {
-  MembershipType.base: 'base',
-  MembershipType.singleUse: 'singleUse',
-  MembershipType.premium: 'premium',
+  MembershipType.pole: 'pole',
+  MembershipType.stretchFitness: 'stretchFitness',
+  MembershipType.all: 'all',
 };

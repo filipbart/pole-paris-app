@@ -4,10 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/extensions/dateTime.dart';
 import 'package:pole_paris_app/models/class.dart';
-import 'package:pole_paris_app/models/membership.dart';
+import 'package:pole_paris_app/models/user_carnet.dart';
 import 'package:pole_paris_app/pages/home_unlogged.dart';
 import 'package:pole_paris_app/screens/student/about.dart';
 import 'package:pole_paris_app/screens/classes_list.dart';
+import 'package:pole_paris_app/screens/student/buy_carnet.dart';
 import 'package:pole_paris_app/screens/student/contact.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
@@ -32,7 +33,14 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
       Navigator.pop(context);
       context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 3));
     }),
-    DrawerListTileItem('Wykup karnet', () {}),
+    DrawerListTileItem(
+      'Wykup karnet',
+      () {
+        Navigator.of(context).pop();
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const BuyMembershipScreen()));
+      },
+    ),
     DrawerListTileItem('Twoje zajęcia', () {
       Navigator.pop(context);
       Navigator.push(context,
@@ -57,16 +65,11 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
     DrawerListTileItem('Ustawienia', () {}),
   ];
 
-  static List<DateTime> days = [
-    DateTime.now(),
-    DateTime.now().add(const Duration(days: 2)),
-    DateTime.now().add(const Duration(days: 4)),
-    DateTime.now().add(const Duration(days: 5)),
-  ];
+  static List<DateTime> days = [];
 
   @override
   void initState() {
-    context.read<MembershipsBloc>().add(GetAllMemberships());
+    context.read<CarnetsBloc>().add(GetAllCarnets());
     super.initState();
   }
 
@@ -223,8 +226,8 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                                 children: [
                                   //TODO obsługa kiedy brak; do buildera
                                   if (user == null ||
-                                      (user.memberships == null ||
-                                          user.memberships!.isEmpty)) ...[
+                                      (user.carnets == null ||
+                                          user.carnets!.isEmpty)) ...[
                                     const Center(
                                         child: Text(
                                       'Brak zakupionych karnetów',
@@ -236,8 +239,8 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                                       ),
                                     )),
                                   ] else ...[
-                                    ...user.memberships!
-                                        .map((e) => _buildMembership(e))
+                                    // ...user.carnets!
+                                    //     .map((e) => _buildMembership(e))
                                   ],
                                   Center(
                                     child: Padding(
@@ -247,8 +250,7 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                                         left: 15,
                                       ),
                                       child: ElevatedButton(
-                                        onPressed: () =>
-                                            print(user?.memberships),
+                                        onPressed: () => print(user?.carnets),
                                         style: CustomButtonStyle.seeMore,
                                         child: const Text(
                                           'ZOBACZ WIĘCEJ',
@@ -360,14 +362,14 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
     return result;
   }
 
-  Widget _buildMembership(Membership membership) {
+  Widget _buildMembership(UserCarnet carnet) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: CustomColors.line),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: UserCarnet(
-        membership: membership,
+      child: UserCarnetWidget(
+        carnet: carnet,
       ),
     );
   }

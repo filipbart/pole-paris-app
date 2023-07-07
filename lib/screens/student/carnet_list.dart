@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pole_paris_app/models/membership.dart';
+import 'package:pole_paris_app/models/user_carnet.dart';
+import 'package:pole_paris_app/screens/student/buy_carnet.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/app_bar.dart';
 import 'package:pole_paris_app/widgets/input.dart';
 import 'package:pole_paris_app/widgets/student/carnet.dart';
-import 'package:pole_paris_app/widgets/student/expired_carnet.dart';
 
 class CarnetListScreen extends StatefulWidget {
   const CarnetListScreen({super.key});
@@ -15,13 +15,12 @@ class CarnetListScreen extends StatefulWidget {
 }
 
 class _CarnetListScreenState extends State<CarnetListScreen> {
-  List<Membership> memberships = [];
+  List<UserCarnet> carnets = [];
   final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: BaseAppBar(
         title: 'Twoje karnety',
         appBar: AppBar(),
@@ -64,15 +63,31 @@ class _CarnetListScreenState extends State<CarnetListScreen> {
                           ),
                         ),
                       ),
-                      ...memberships
-                          .map(
-                            (e) => Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 5.0),
-                              child: UserCarnet(membership: e),
+                      if (carnets.isEmpty)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 15.0),
+                          child: Center(
+                              child: Text(
+                            'Brak karnetów.',
+                            style: TextStyle(
+                              color: CustomColors.hintText,
+                              fontSize: 16,
+                              fontFamily: 'Satoshi',
+                              fontWeight: FontWeight.w500,
                             ),
-                          )
-                          .toList(),
+                          )),
+                        )
+                      else ...[
+                        ...carnets
+                            .map(
+                              (e) => Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5.0),
+                                child: UserCarnetWidget(carnet: e),
+                              ),
+                            )
+                            .toList(),
+                      ],
                       const Padding(
                         padding:
                             EdgeInsets.only(top: 10, left: 8.0, bottom: 10),
@@ -86,18 +101,68 @@ class _CarnetListScreenState extends State<CarnetListScreen> {
                           ),
                         ),
                       ),
+                      if (carnets.isEmpty)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 15.0),
+                          child: Center(
+                              child: Text(
+                            'Brak wygasłych karnetów.',
+                            style: TextStyle(
+                              color: CustomColors.hintText,
+                              fontSize: 16,
+                              fontFamily: 'Satoshi',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                        )
+                      else
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          // child: UserExpiredCarnet(
+                          //     membership: MembershipType.singleUse),
+                        ),
                       const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5.0),
-                        child: UserExpiredCarnet(
-                            membership: MembershipType.singleUse),
+                        padding:
+                            EdgeInsets.only(top: 10, left: 8.0, bottom: 10),
+                        child: Text(
+                          'Karnety do opłacenia',
+                          style: TextStyle(
+                            color: Color(0xFF404040),
+                            fontSize: 16,
+                            fontFamily: 'Satoshi',
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
+                      if (carnets.isEmpty)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 15.0),
+                          child: Center(
+                              child: Text(
+                            'Brak karnetów do opłacenia karnetów.',
+                            style: TextStyle(
+                              color: CustomColors.hintText,
+                              fontSize: 16,
+                              fontFamily: 'Satoshi',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                        )
+                      else
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          // child: UserExpiredCarnet(
+                          //     membership: MembershipType.singleUse),
+                        ),
                     ],
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40.0),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => const BuyMembershipScreen())),
                     style: CustomButtonStyle.primary,
                     child: const Text('WYKUP NOWY KARNET'),
                   ),

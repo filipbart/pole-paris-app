@@ -1,10 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pole_paris_app/models/base.dart';
 import 'package:pole_paris_app/models/class.dart';
-import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/models/roles.dart';
+import 'package:pole_paris_app/models/user_carnet.dart';
 
 //ignore: must_be_immutable
 class User extends BaseModel {
@@ -15,7 +14,7 @@ class User extends BaseModel {
   String? picture;
   String? description;
   List<Class>? classes;
-  List<Membership>? memberships;
+  List<UserCarnet>? carnets;
   final bool isVerified;
   User({
     required this.fullName,
@@ -25,7 +24,7 @@ class User extends BaseModel {
     this.picture,
     this.description,
     this.classes,
-    this.memberships,
+    this.carnets,
     required super.id,
     required super.dateCreatedUtc,
     this.isVerified = false,
@@ -42,7 +41,7 @@ class User extends BaseModel {
         picture,
         description,
         classes,
-        memberships,
+        carnets,
       ];
 
   User copyWith({
@@ -53,7 +52,7 @@ class User extends BaseModel {
     String? picture,
     String? description,
     List<Class>? classes,
-    List<Membership>? memberships,
+    List<UserCarnet>? carnets,
     DateTime? dateCreatedUtc,
     String? id,
     bool? isVerified,
@@ -66,7 +65,7 @@ class User extends BaseModel {
       picture: picture ?? this.picture,
       description: description ?? this.description,
       classes: classes ?? this.classes,
-      memberships: memberships ?? this.memberships,
+      carnets: carnets ?? this.carnets,
       dateCreatedUtc: dateCreatedUtc ?? this.dateCreatedUtc,
       id: id ?? this.id,
       isVerified: isVerified ?? this.isVerified,

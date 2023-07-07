@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pole_paris_app/models/class.dart';
-import 'package:pole_paris_app/models/membership.dart';
+import 'package:pole_paris_app/models/user_carnet.dart';
 import 'package:pole_paris_app/screens/teacher/class_details.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
@@ -10,11 +10,11 @@ import 'package:pole_paris_app/widgets/teacher/class_base_info.dart';
 
 class SignUpForClassScreen extends StatelessWidget {
   final Class classDetails;
-  final Membership membership;
+  final UserCarnet carnet;
   const SignUpForClassScreen({
     super.key,
     required this.classDetails,
-    required this.membership,
+    required this.carnet,
   });
 
   _submit() {}
@@ -175,7 +175,7 @@ class SignUpForClassScreen extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          membership.type.description,
+                                          carnet.membership.name,
                                           style: const TextStyle(
                                             color: Color(0xFFEE90E4),
                                             fontSize: 16,
@@ -184,7 +184,7 @@ class SignUpForClassScreen extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          '${membership.entries} wejście',
+                                          '${carnet.poleEntries} wejście',
                                           style: const TextStyle(
                                             color: Color(0xFF404040),
                                             fontSize: 14,
@@ -210,8 +210,8 @@ class SignUpForClassScreen extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          DateFormat('dd.MM.yyyy').format(
-                                              membership.expirationDate),
+                                          DateFormat('dd.MM.yyyy')
+                                              .format(carnet.expirationDate),
                                           style: const TextStyle(
                                             color: Color(0xFF404040),
                                             fontSize: 14,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/models/class.dart';
-import 'package:pole_paris_app/models/membership.dart';
+import 'package:pole_paris_app/models/user_carnet.dart';
 import 'package:pole_paris_app/screens/student/sign_up_for_class.dart';
 import 'package:pole_paris_app/screens/teacher/class_details.dart';
 import 'package:pole_paris_app/styles/button.dart';
@@ -18,10 +18,10 @@ class AvailableClassDetails extends StatefulWidget {
 }
 
 class _AvailableClassDetailsState extends State<AvailableClassDetails> {
-  List<Membership> memberships = [];
+  List<UserCarnet> carnets = [];
 
   _chooseCarnet() {
-    showModalBottomSheet<Membership>(
+    showModalBottomSheet<UserCarnet>(
       context: context,
       builder: (context) => Container(
         width: double.infinity,
@@ -63,9 +63,9 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: memberships.isNotEmpty
+                child: carnets.isNotEmpty
                     ? ListView.builder(
-                        itemCount: memberships.length,
+                        itemCount: carnets.length,
                         itemBuilder: (context, index) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5.0),
                           child: Container(
@@ -74,10 +74,10 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
                                 border: Border.all(
                                   color: const Color(0xFFE1E1E1),
                                 )),
-                            child: UserCarnet(
-                              membership: memberships[index],
+                            child: UserCarnetWidget(
+                              carnet: carnets[index],
                               onPressed: () {
-                                Navigator.of(context).pop(memberships[index]);
+                                Navigator.of(context).pop(carnets[index]);
                               },
                             ),
                           ),
@@ -100,11 +100,11 @@ class _AvailableClassDetailsState extends State<AvailableClassDetails> {
         ),
       ),
     ).then((value) {
-      Membership? result = value;
+      UserCarnet? result = value;
       if (result != null) {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => SignUpForClassScreen(
-                classDetails: widget.classDetails, membership: result)));
+                classDetails: widget.classDetails, carnet: result)));
       }
     });
   }

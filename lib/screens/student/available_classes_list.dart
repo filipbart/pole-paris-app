@@ -37,7 +37,7 @@ class _AvailableClassesListState extends State<AvailableClassesList> {
 
     if (_teacher != null) {
       tempFilteredList = tempFilteredList
-          .where((element) => element.teacher == _teacher)
+          .where((element) => element.teacher.fullName == _teacher)
           .toList();
     }
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pole_paris_app/models/membership.dart';
+import 'package:pole_paris_app/models/user_carnet.dart';
 import 'package:pole_paris_app/styles/color.dart';
 
 class UserExpiredCarnet extends StatelessWidget {
-  final MembershipType membership;
+  final UserCarnet expiredCarnet;
   const UserExpiredCarnet({
     super.key,
-    required this.membership,
+    required this.expiredCarnet,
   });
 
   @override
@@ -29,7 +29,7 @@ class UserExpiredCarnet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  membership.description,
+                  expiredCarnet.membership.name,
                   style: const TextStyle(
                     color: CustomColors.hintText,
                     fontSize: 16,

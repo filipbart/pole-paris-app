@@ -5,7 +5,6 @@ import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/app_bar.dart';
 
-import 'package:pole_paris_app/widgets/circle_avatar.dart';
 import 'package:pole_paris_app/widgets/input.dart';
 import 'package:pole_paris_app/widgets/teacher/class_base_info.dart';
 
@@ -34,6 +33,8 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(
+        const AssetImage('assets/img/placeholder-avatar.png'), context);
     return Scaffold(
       appBar: BaseAppBar(
         title: 'Lista kursantów',
@@ -130,7 +131,7 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
                   backgroundColor: Colors.white,
                   radius: 40,
                   foregroundImage: student.picture == null
-                      ? AssetImage('assets/img/logo.png') //TODO zamienić
+                      ? const AssetImage('assets/img/placeholder-avatar.png')
                       : null,
                   backgroundImage: student.picture == null
                       ? null

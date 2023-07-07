@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pole_paris_app/models/membership.dart';
+import 'package:pole_paris_app/models/user_carnet.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 
-class UserCarnet extends StatelessWidget {
-  final Membership membership;
+class UserCarnetWidget extends StatelessWidget {
+  final UserCarnet carnet;
   final Function()? onPressed;
-  const UserCarnet({
+  const UserCarnetWidget({
     super.key,
-    required this.membership,
+    required this.carnet,
     this.onPressed,
   });
 
@@ -33,7 +33,7 @@ class UserCarnet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  membership.type.description,
+                  carnet.membership.name,
                   style: const TextStyle(
                     color: CustomColors.text2,
                     fontSize: 16,
@@ -41,8 +41,8 @@ class UserCarnet extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  membership.entries != null
-                      ? '${membership.entries} wejścia'
+                  carnet.poleEntries != -1
+                      ? '${carnet.poleEntries} wejścia'
                       : 'Nielimitowane wejścia',
                   style: const TextStyle(
                     color: CustomColors.inputText,
@@ -53,7 +53,7 @@ class UserCarnet extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
                   child: Text(
-                    'Ważny do ${DateFormat('dd.MM.yyyy').format(membership.expirationDate)}',
+                    'Ważny do ${DateFormat('dd.MM.yyyy').format(carnet.expirationDate)}',
                     style: const TextStyle(
                       color: CustomColors.hintText,
                       fontSize: 14,

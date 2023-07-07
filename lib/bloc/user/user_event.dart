@@ -39,11 +39,11 @@ class UpdateUser extends UserEvent {
 
 class UpdateUserMemberships extends UserEvent {
   final User user;
-  final List<Membership> memberships;
-  const UpdateUserMemberships(this.user, this.memberships);
+  final List<UserCarnet> carnets;
+  const UpdateUserMemberships(this.user, this.carnets);
 
   @override
   List<Object> get props => [
-        memberships,
+        carnets,
       ];
 }
