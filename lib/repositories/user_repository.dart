@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/models/user.dart';
 import 'package:pole_paris_app/models/user_carnet.dart';
 
@@ -75,5 +76,51 @@ class UserRepository {
     }).onError((error, stackTrace) {
       throw Exception(error.toString());
     });
+  }
+
+  static Future<UserCarnet> addUserCarnet({
+    required Membership membership,
+    required bool paid,
+    required User user,
+  }) async {
+    UserCarnet? result;
+    final carnetId = FirebaseFirestore.instance
+        .collection(collectionPath)
+        .doc(GetStorage().read('token'))
+        .collection("carnets")
+        .doc()
+        .id;
+
+    final userCarnet = UserCarnet(
+      id: carnetId,
+      paid: paid,
+      poleEntries: membership.poleEntries ?? 0,
+      fitnessEntries: membership.fitnessEntries ?? 0,
+      unlimited:
+          membership.fitnessEntries == null && membership.poleEntries == null,
+      expired: false,
+      expirationDate: DateTime.now().add(Duration(days: membership.validDays)),
+      membership: membership,
+      user: user,
+      dateCreatedUtc: DateTime.now().toUtc(),
+    );
+
+    await FirebaseFirestore.instance
+        .collection(collectionPath)
+        .doc(GetStorage().read('token'))
+        .collection("carnets")
+        .doc(userCarnet.id)
+        .set(userCarnet.toMap())
+        .then((value) {
+      result = userCarnet;
+    }).onError((error, stackTrace) {
+      throw Exception(error.toString());
+    });
+
+    if (result == null) {
+      throw Exception("Null user carnet");
+    }
+
+    return result!;
   }
 }

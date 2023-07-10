@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:pole_paris_app/models/membership.dart';
+import 'package:pole_paris_app/models/user.dart';
 import 'package:pole_paris_app/models/user_carnet.dart';
 import 'package:pole_paris_app/repositories/user_repository.dart';
 
@@ -9,6 +11,7 @@ part 'carnets_state.dart';
 class CarnetsBloc extends Bloc<CarnetsEvent, CarnetsState> {
   CarnetsBloc() : super(const CarnetsState()) {
     on<GetAllCarnets>(_getAllCarnets);
+    on<AddNewCarnet>(_addNewCarnet);
   }
 
   void _getAllCarnets(CarnetsEvent event, Emitter<CarnetsState> emit) async {
@@ -20,5 +23,13 @@ class CarnetsBloc extends Bloc<CarnetsEvent, CarnetsState> {
 
       emit(CarnetsState(userCarnets: result));
     });
+  }
+
+  void _addNewCarnet(AddNewCarnet event, Emitter<CarnetsState> emit) async {
+    final carnets = state.userCarnets;
+    final userCarnet = await UserRepository.addUserCarnet(
+        membership: event.membership, paid: event.paid, user: event.user);
+    carnets.add(userCarnet);
+    emit(CarnetsState(userCarnets: carnets));
   }
 }

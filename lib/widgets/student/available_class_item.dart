@@ -36,14 +36,12 @@ class AvailableClassItem extends StatelessWidget {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                    top: 20.0,
-                    bottom: 20.0,
-                    left: 10,
-                    right: 10,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 15,
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Wrap(
@@ -63,40 +61,44 @@ class AvailableClassItem extends StatelessWidget {
                         thickness: 1,
                         color: Color(0xFFE1E1E1),
                       ),
-                      Wrap(
-                        spacing: -3,
-                        crossAxisAlignment: WrapCrossAlignment.start,
-                        direction: Axis.vertical,
-                        children: [
-                          Text(
-                            classItem.name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                      Flexible(
+                        flex: 1,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              classItem.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                          Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            spacing: 3,
-                            children: [
-                              const Icon(
-                                Icons.star_border_rounded,
-                                color: CustomColors.text2,
-                                size: 15,
+                            FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.star_border_rounded,
+                                    color: CustomColors.text2,
+                                    size: 15,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 3.0),
+                                    child: Text(
+                                      classItem.level.description,
+                                      style: const TextStyle(
+                                        color: CustomColors.text2,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                classItem.level.description,
-                                style: const TextStyle(
-                                  color: CustomColors.text2,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2.0),
-                            child: Text(
+                            ),
+                            Text(
                               classItem.teacher.getFirstName,
                               style: const TextStyle(
                                 color: CustomColors.hintText,
@@ -104,18 +106,18 @@ class AvailableClassItem extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(
-                        flex: 3,
-                      ),
-                      const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 30,
+                          ],
+                        ),
                       ),
                     ],
                   ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(right: 2.0),
+                child: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 30,
                 ),
               ),
             ],

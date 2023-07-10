@@ -8,6 +8,7 @@ import 'package:pole_paris_app/models/user.dart';
 // ignore: must_be_immutable
 class Class extends BaseModel {
   final String name;
+  final ClassType type;
   final DateTime date;
   final String hourSince;
   final String hourTo;
@@ -19,6 +20,7 @@ class Class extends BaseModel {
   List<Membership>? memberships;
   Class({
     required this.name,
+    required this.type,
     required this.date,
     required this.hourSince,
     required this.hourTo,
@@ -34,6 +36,7 @@ class Class extends BaseModel {
 
   Class copyWith({
     String? name,
+    ClassType? type,
     DateTime? date,
     String? hourSince,
     String? hourTo,
@@ -48,6 +51,7 @@ class Class extends BaseModel {
   }) {
     return Class(
       name: name ?? this.name,
+      type: type ?? this.type,
       date: date ?? this.date,
       hourSince: hourSince ?? this.hourSince,
       hourTo: hourTo ?? this.hourTo,
@@ -66,6 +70,7 @@ class Class extends BaseModel {
     return <String, dynamic>{
       'id': id,
       'name': name,
+      'type': _$ClassTypeEnumMap[type],
       'date': date.millisecondsSinceEpoch,
       'hourSince': hourSince,
       'hourTo': hourTo,
@@ -83,6 +88,7 @@ class Class extends BaseModel {
     return Class(
       id: map['id'] as String,
       name: map['name'] as String,
+      type: $enumDecode(_$ClassTypeEnumMap, map['type']),
       date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
       hourSince: map['hourSince'] as String,
       hourTo: map['hourTo'] as String,
@@ -107,6 +113,7 @@ class Class extends BaseModel {
   List<Object?> get props => [
         id,
         name,
+        type,
         date,
         hourSince,
         hourTo,
@@ -125,3 +132,14 @@ const _$LevelEnumMap = {
   Level.intermediate: 'intermediate',
   Level.all: 'all',
 };
+const _$ClassTypeEnumMap = {
+  ClassType.fitnessStretching: 'fitnessStretching',
+  ClassType.pole: 'pole'
+};
+
+enum ClassType {
+  @JsonValue("pole")
+  pole,
+  @JsonValue("fitnessStretching")
+  fitnessStretching
+}

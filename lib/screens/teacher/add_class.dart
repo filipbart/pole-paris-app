@@ -13,7 +13,6 @@ import 'package:pole_paris_app/screens/teacher/add_class_summary.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/app_bar.dart';
-import 'package:pole_paris_app/widgets/base/drawer.dart';
 import 'package:pole_paris_app/widgets/input.dart';
 import 'package:pole_paris_app/widgets/large_input.dart';
 import 'package:pole_paris_app/widgets/teacher/add_picture_button.dart';
@@ -49,19 +48,21 @@ class _AddClassScreenState extends State<AddClassScreen> {
     '13:30',
     '14:00',
     '14:30',
-  ];
-
-  late List<DrawerListTileItem> drawerItems = [
-    DrawerListTileItem('Dodaj zajęcia', () {
-      Navigator.pop(context);
-      context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 3));
-    }),
-    DrawerListTileItem('Twoje zajęcia', () {}),
-    DrawerListTileItem('Profil instruktora', () {
-      Navigator.pop(context);
-      context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 2));
-    }),
-    DrawerListTileItem('Ustawienia', () {}),
+    '15:00',
+    '15:30',
+    '16:00',
+    '16:30',
+    '17:00',
+    '17:30',
+    '18:00',
+    '18:30',
+    '19:00',
+    '19:30',
+    '20:00',
+    '20:30',
+    '21:00',
+    '21:30',
+    '22:00'
   ];
 
   XFile? _image;
@@ -149,13 +150,18 @@ class _AddClassScreenState extends State<AddClassScreen> {
     final newClass = Class(
       id: classId,
       name: _nameController.text,
+      type: _nameController.text.toLowerCase().contains("pole")
+          ? ClassType.pole
+          : ClassType.fitnessStretching,
       date: date,
       hourSince: _hourSince!,
       hourTo: _hourTo!,
       level: _level!,
       description: _descController.text,
       picture: _image!.path,
-      places: _nameController.text.toLowerCase().contains("pole") ? 7 : 20,
+      places: _nameController.text.toLowerCase().contains("pole")
+          ? (_nameController.text.toLowerCase().contains("choreo") ? 6 : 7)
+          : 20,
       teacher: context.read<UserBloc>().state.user!,
       dateCreatedUtc: DateTime.now().toUtc(),
     );

@@ -43,7 +43,7 @@ class _BuyMembershipScreenState extends State<BuyMembershipScreen> {
   final Future<List<Membership>> _fetchMemberships =
       MembershipRepository.getAllMemberships();
 
-  _confirmModal(Membership membership) {
+  _confirmModal(Membership membership, BuildContext parentContext) {
     Future.delayed(
       Duration.zero,
       () => showModalBottomSheet<Membership>(
@@ -58,17 +58,19 @@ class _BuyMembershipScreenState extends State<BuyMembershipScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Container(
-                    width: 62,
-                    height: 4,
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFFC4C4C4),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.50),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Container(
+                      width: 62,
+                      height: 4,
+                      decoration: ShapeDecoration(
+                        color: const Color(0xFFC4C4C4),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.50),
+                        ),
                       ),
                     ),
                   ),
@@ -86,7 +88,7 @@ class _BuyMembershipScreenState extends State<BuyMembershipScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 25.0),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Container(
                     width: 290,
                     decoration: ShapeDecoration(
@@ -129,22 +131,40 @@ class _BuyMembershipScreenState extends State<BuyMembershipScreen> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          Text(
-                            '${membership.price} PLN',
-                            style: const TextStyle(
-                              color: Color(0xFFEE90E4),
-                              fontSize: 20,
-                              fontFamily: 'Satoshi',
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
+                const Divider(
+                  color: CustomColors.hintText,
+                  thickness: 0.5,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Kwota to zapłaty',
+                      style: TextStyle(
+                        color: Color(0xFF404040),
+                        fontSize: 16,
+                        fontFamily: 'Satoshi',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${membership.price} PLN',
+                      style: const TextStyle(
+                        color: Color(0xFFEE90E4),
+                        fontSize: 20,
+                        fontFamily: 'Satoshi',
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ],
+                ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 15.0),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   child: ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(membership),
                     style: CustomButtonStyle.primary,
@@ -157,7 +177,7 @@ class _BuyMembershipScreenState extends State<BuyMembershipScreen> {
         ),
       ).then((value) {
         if (value != null) {
-          Navigator.of(context).push(MaterialPageRoute(
+          Navigator.of(parentContext).push(MaterialPageRoute(
               builder: (context) => PaymentScreen(membership: membership)));
         }
       }),
@@ -226,7 +246,7 @@ class _BuyMembershipScreenState extends State<BuyMembershipScreen> {
                           child: BuyMembershipWidget(
                             membership: e,
                             onPressed: () {
-                              _confirmModal(e);
+                              _confirmModal(e, context);
                             },
                           ),
                         ),
