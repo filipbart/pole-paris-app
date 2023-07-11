@@ -1,11 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
 import 'package:pole_paris_app/models/membership.dart';
-import 'package:pole_paris_app/screens/student/buy_carnet.dart';
 import 'package:pole_paris_app/screens/student/payment_type/payment_stationary.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
+import 'package:pole_paris_app/utils/membership_helper.dart';
 import 'package:pole_paris_app/widgets/base/app_bar.dart';
 
 enum PaymentType {
@@ -157,7 +156,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                 ),
                                 Text(
-                                  entriesText(widget.membership),
+                                  MembershipHelper.entriesText(
+                                      widget.membership),
                                   style: const TextStyle(
                                     color: Color(0xFF404040),
                                     fontSize: 14,

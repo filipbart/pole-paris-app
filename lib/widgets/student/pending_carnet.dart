@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/models/user_carnet.dart';
-import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/utils/membership_helper.dart';
 
-class UserCarnetWidget extends StatelessWidget {
-  final UserCarnet carnet;
-  final Function()? onPressed;
-  const UserCarnetWidget({
+class UserPendingCarnet extends StatelessWidget {
+  final UserCarnet pendingCarnet;
+  const UserPendingCarnet({
     super.key,
-    required this.carnet,
-    this.onPressed,
+    required this.pendingCarnet,
   });
 
   @override
@@ -35,15 +32,15 @@ class UserCarnetWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    carnet.membership.name,
+                    pendingCarnet.membership.name,
                     style: const TextStyle(
-                      color: CustomColors.text2,
+                      color: Color(0xFF404040),
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    MembershipHelper.entriesText(carnet.membership),
+                    MembershipHelper.entriesText(pendingCarnet.membership),
                     style: const TextStyle(
                       color: CustomColors.inputText,
                       fontSize: 14,
@@ -53,7 +50,7 @@ class UserCarnetWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 5.0),
                     child: Text(
-                      'Ważny przez ${carnet.membership.validDays} dni od dnia zakupu',
+                      'Ważny przez ${pendingCarnet.membership.validDays} dni od dnia zakupu',
                       style: const TextStyle(
                         color: CustomColors.hintText,
                         fontSize: 14,
@@ -65,25 +62,14 @@ class UserCarnetWidget extends StatelessWidget {
               ),
             ),
             Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${carnet.membership.price} PLN',
-                    style: const TextStyle(
-                      color: Color(0xFFEE90E4),
-                      fontSize: 20,
-                      fontFamily: 'Satoshi',
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  if (onPressed != null)
-                    ElevatedButton(
-                      onPressed: onPressed,
-                      style: CustomButtonStyle.primaryWithoutSize,
-                      child: const Text('UŻYJ'),
-                    ),
-                ],
+              child: Text(
+                '${pendingCarnet.membership.price} PLN',
+                style: const TextStyle(
+                  color: Color(0xFF404040),
+                  fontSize: 20,
+                  fontFamily: 'Satoshi',
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ),
           ],

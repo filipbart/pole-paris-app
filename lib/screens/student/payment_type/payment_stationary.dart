@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/bloc/bloc_exports.dart';
-import 'package:pole_paris_app/main.dart';
 import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/pages/main_student.dart';
+import 'package:pole_paris_app/repositories/user_repository.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/screens/failed.dart';
-import 'package:pole_paris_app/screens/student/buy_carnet.dart';
 import 'package:pole_paris_app/screens/student/carnet_list.dart';
-import 'package:pole_paris_app/screens/student/main_screen.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
+import 'package:pole_paris_app/utils/membership_helper.dart';
 import 'package:pole_paris_app/widgets/base/app_bar.dart';
 import 'package:pole_paris_app/widgets/base/loader.dart';
 
@@ -19,7 +18,7 @@ class PaymentStationaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _submit() {
+    submit() async {
       showDialog(
           barrierDismissible: false,
           context: context,
@@ -29,44 +28,62 @@ class PaymentStationaryScreen extends StatelessWidget {
       final user = context.read<UserBloc>().state.user;
       final rootContext = context;
       try {
-        // context.read<CarnetsBloc>().add(
-//         //     AddNewCarnet(membership: membership, paid: false, user: user!));
+        await UserRepository.addUserCarnet(
+                membership: membership, paid: false, user: user!)
+            .then((value) {
+          context.read<CarnetsBloc>().add(AddNewCarnet(newCarnet: value));
+          Navigator.of(context, rootNavigator: true).pop();
+          Navigator.of(rootContext, rootNavigator: true).pushReplacement(
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => ConfirmScreen(
+                icon: Icons.payment_outlined,
+                title: 'Udało się!',
+                text: 'Zapraszamy do opłacenia karnetu w studio.',
+                widgets: [
+                  ElevatedButton(
+                    style: CustomButtonStyle.primary,
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => const MainPageStudent()),
+                      );
 
-        Navigator.of(context, rootNavigator: true).pop();
-        Navigator.of(rootContext, rootNavigator: true).pushReplacement(
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) => ConfirmScreen(
-              icon: Icons.payment_outlined,
-              title: 'Udało się!',
-              text: 'Zapraszamy do opłacenia karnetu w studio.',
-              widgets: [
-                ElevatedButton(
-                  style: CustomButtonStyle.primary,
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                          builder: (context) => const MainPageStudent()),
-                    );
-
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const CarnetListScreen()));
-                  },
-                  child: const Text('TWOJE KARNETY'),
-                ),
-                ElevatedButton(
-                  style: CustomButtonStyle.secondary,
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true)
-                        .pushReplacementNamed(MainPageStudent.id);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const BuyMembershipScreen()));
-                  },
-                  child: const Text('KONTYNUUJ ZAKUPY'),
-                ),
-              ],
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const CarnetListScreen()));
+                    },
+                    child: const Text('TWOJE KARNETY'),
+                  ),
+                  ElevatedButton(
+                    style: CustomButtonStyle.secondary,
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true)
+                          .pushReplacementNamed(MainPageStudent.id);
+                    },
+                    child: const Text('STRONA GŁÓWNA'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+      } on FormatException catch (_) {
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => FailedScreen(
+              button: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                style: CustomButtonStyle.primary,
+                child: const Text('POWRÓT DO PŁATNOŚCI'),
+              ),
+              title: 'Posiadasz nieopłacony karnet.',
+              desc: 'Opłać karnet w studio.',
             ),
           ),
         );
+        return;
       } on Exception catch (_) {
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
@@ -83,6 +100,7 @@ class PaymentStationaryScreen extends StatelessWidget {
             ),
           ),
         );
+        return;
       }
     }
 
@@ -152,7 +170,7 @@ class PaymentStationaryScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      entriesText(membership),
+                                      MembershipHelper.entriesText(membership),
                                       style: const TextStyle(
                                         color: Color(0xFF404040),
                                         fontSize: 14,
@@ -175,7 +193,7 @@ class PaymentStationaryScreen extends StatelessWidget {
                             ),
                           ),
                           const Text(
-                            'Płatność zostanie wykonana w studio, po wcześniejszej akceptacji karnetu.',
+                            'Akceptacja karnetu nastąpi po potwierdzeniu opłaty w studio.',
                             style: TextStyle(
                               color: Color(0xFF404040),
                               fontSize: 20,
@@ -217,7 +235,7 @@ class PaymentStationaryScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             child: ElevatedButton(
-                              onPressed: _submit,
+                              onPressed: submit,
                               style: CustomButtonStyle.primary,
                               child: const Text('POTWIERDŹ'),
                             ),

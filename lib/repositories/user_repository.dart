@@ -84,12 +84,20 @@ class UserRepository {
     required User user,
   }) async {
     UserCarnet? result;
-    final carnetId = FirebaseFirestore.instance
+    final userId = GetStorage().read('token');
+
+    final carnetsRef = FirebaseFirestore.instance
         .collection(collectionPath)
-        .doc(GetStorage().read('token'))
-        .collection("carnets")
-        .doc()
-        .id;
+        .doc(userId)
+        .collection("carnets");
+
+    final existingUnpaid =
+        await carnetsRef.where("paid", isEqualTo: false).get();
+    if (existingUnpaid.docs.isNotEmpty) {
+      throw const FormatException("unpaid-carnet-exists");
+    }
+
+    final carnetId = carnetsRef.doc().id;
 
     final userCarnet = UserCarnet(
       id: carnetId,
@@ -105,13 +113,7 @@ class UserRepository {
       dateCreatedUtc: DateTime.now().toUtc(),
     );
 
-    await FirebaseFirestore.instance
-        .collection(collectionPath)
-        .doc(GetStorage().read('token'))
-        .collection("carnets")
-        .doc(userCarnet.id)
-        .set(userCarnet.toMap())
-        .then((value) {
+    await carnetsRef.doc(userCarnet.id).set(userCarnet.toMap()).then((value) {
       result = userCarnet;
     }).onError((error, stackTrace) {
       throw Exception(error.toString());

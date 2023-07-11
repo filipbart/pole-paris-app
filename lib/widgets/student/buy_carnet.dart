@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/models/membership.dart';
-import 'package:pole_paris_app/screens/student/buy_carnet.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
+import 'package:pole_paris_app/utils/membership_helper.dart';
 
 class BuyMembershipWidget extends StatelessWidget {
   final Membership membership;
@@ -41,7 +41,7 @@ class BuyMembershipWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    entriesText(membership),
+                    MembershipHelper.entriesText(membership),
                     style: const TextStyle(
                       color: CustomColors.inputText,
                       fontSize: 14,

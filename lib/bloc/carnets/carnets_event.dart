@@ -14,19 +14,13 @@ class GetAllCarnets extends CarnetsEvent {
 }
 
 class AddNewCarnet extends CarnetsEvent {
-  final Membership membership;
-  final bool paid;
-  final User user;
+  final UserCarnet newCarnet;
   const AddNewCarnet({
-    required this.membership,
-    required this.paid,
-    required this.user,
+    required this.newCarnet,
   });
 
   @override
   List<Object> get props => [
-        membership,
-        paid,
-        user,
+        newCarnet,
       ];
 }

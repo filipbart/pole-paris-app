@@ -4,12 +4,10 @@ import 'package:pole_paris_app/styles/color.dart';
 class FailedScreen extends StatelessWidget {
   final Widget button;
   final String title;
+  final String? desc;
 
-  const FailedScreen({
-    super.key,
-    required this.button,
-    required this.title,
-  });
+  const FailedScreen(
+      {super.key, required this.button, required this.title, this.desc});
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +53,10 @@ class FailedScreen extends StatelessWidget {
                             fontSize: 32,
                           ),
                         ),
-                        const Text(
-                          'Spróbuj ponownie.',
+                        Text(
+                          desc ?? 'Spróbuj ponownie.',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             height: 1.6,
                             color: CustomColors.hintText,
                             fontWeight: FontWeight.w500,
