@@ -62,7 +62,6 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
         'Kontakt',
         () => Navigator.push(context,
             MaterialPageRoute(builder: (context) => const ContactScreen()))),
-    DrawerListTileItem('Ustawienia', () {}),
   ];
 
   static List<DateTime> days = [];

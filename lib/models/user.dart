@@ -16,6 +16,7 @@ class User extends BaseModel {
   List<Class>? classes;
   List<UserCarnet>? carnets;
   final bool isVerified;
+  bool? isAdmin;
   User({
     required this.fullName,
     required this.email,
@@ -28,6 +29,7 @@ class User extends BaseModel {
     required super.id,
     required super.dateCreatedUtc,
     this.isVerified = false,
+    this.isAdmin = false,
   });
 
   @override
@@ -99,6 +101,7 @@ class User extends BaseModel {
       dateCreatedUtc:
           DateTime.fromMillisecondsSinceEpoch(map['dateCreatedUtc'] as int),
       isVerified: map['isVerified'] as bool,
+      isAdmin: map['isAdmin'] as bool?,
     );
   }
 

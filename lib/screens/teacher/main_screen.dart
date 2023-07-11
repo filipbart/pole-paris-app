@@ -25,19 +25,6 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
   late Map<String, List<Class>>? mappedClasses;
   static List<Class> classes = [];
 
-  late List<DrawerListTileItem> drawerItems = [
-    DrawerListTileItem('Dodaj zajęcia', () {
-      Navigator.pop(context);
-      context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 3));
-    }),
-    DrawerListTileItem('Twoje zajęcia', () {}),
-    DrawerListTileItem('Profil instruktora', () {
-      Navigator.pop(context);
-      context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 2));
-    }),
-    DrawerListTileItem('Ustawienia', () {}),
-  ];
-
   @override
   void initState() {
     classes.sortBy((element) => element.date);
@@ -60,7 +47,19 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
           ),
           drawer: BaseDrawer(
             teacher: true,
-            drawerListTileItems: drawerItems,
+            drawerListTileItems: [
+              DrawerListTileItem('Dodaj zajęcia', () {
+                Navigator.pop(context);
+                context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 3));
+              }),
+              DrawerListTileItem('Twoje zajęcia', () {}),
+              DrawerListTileItem('Profil instruktora', () {
+                Navigator.pop(context);
+                context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 2));
+              }),
+              if (user?.isAdmin ?? false)
+                DrawerListTileItem('Karnety do akceptacji', () {}),
+            ],
           ),
           body: SafeArea(
             child: SingleChildScrollView(
