@@ -18,10 +18,12 @@ class BuyMembershipScreen extends StatefulWidget {
 
 class _BuyMembershipScreenState extends State<BuyMembershipScreen> {
   List<Membership> _memberships = [];
-  List<Membership> _filteredList = [];
+  List<Membership>? _filteredList;
   final _searchController = TextEditingController();
   final Future<List<Membership>> _fetchMemberships =
       MembershipRepository.getAllMemberships();
+
+  _initFilteredList() => _filteredList ??= _memberships;
 
   _confirmModal(Membership membership, BuildContext parentContext) {
     Future.delayed(
@@ -105,7 +107,7 @@ class _BuyMembershipScreenState extends State<BuyMembershipScreen> {
                           Text(
                             'Ważny przez ${membership.validDays} dni od dnia zakupu',
                             style: const TextStyle(
-                              color: Color(0xFF808080),
+                              color: CustomColors.hintText,
                               fontSize: 14,
                               fontFamily: 'Satoshi',
                               fontWeight: FontWeight.w500,
@@ -165,12 +167,6 @@ class _BuyMembershipScreenState extends State<BuyMembershipScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _filteredList = _memberships;
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBar(
@@ -184,6 +180,7 @@ class _BuyMembershipScreenState extends State<BuyMembershipScreen> {
             Widget result;
             if (snapshot.hasData) {
               _memberships = snapshot.data!;
+              _initFilteredList();
               result = SingleChildScrollView(
                 child: Padding(
                   padding:
@@ -219,8 +216,7 @@ class _BuyMembershipScreenState extends State<BuyMembershipScreen> {
                           ),
                         ),
                       ),
-                      ...(_filteredList.isEmpty ? _memberships : _filteredList)
-                          .map(
+                      ..._filteredList!.map(
                         (e) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
                           child: BuyMembershipWidget(

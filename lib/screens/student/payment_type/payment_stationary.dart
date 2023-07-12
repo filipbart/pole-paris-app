@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/pages/main_student.dart';
-import 'package:pole_paris_app/repositories/user_repository.dart';
+import 'package:pole_paris_app/repositories/user_carnet_repository.dart';
 import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/screens/failed.dart';
 import 'package:pole_paris_app/screens/student/carnet_list.dart';
@@ -28,7 +28,7 @@ class PaymentStationaryScreen extends StatelessWidget {
       final user = context.read<UserBloc>().state.user;
       final rootContext = context;
       try {
-        await UserRepository.addUserCarnet(
+        await UserCarnetRepository.addUserCarnetToAccept(
                 membership: membership, paid: false, user: user!)
             .then((value) {
           context.read<CarnetsBloc>().add(AddNewCarnet(newCarnet: value));
@@ -181,7 +181,7 @@ class PaymentStationaryScreen extends StatelessWidget {
                                     Text(
                                       'Ważny przez ${membership.validDays} dni od dnia zakupu',
                                       style: const TextStyle(
-                                        color: Color(0xFF808080),
+                                        color: CustomColors.hintText,
                                         fontSize: 14,
                                         fontFamily: 'Satoshi',
                                         fontWeight: FontWeight.w500,

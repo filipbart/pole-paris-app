@@ -212,7 +212,6 @@ class ProfileScreen extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             GetStorage().remove('token');
-                            context.read<UserBloc>().close();
                             Navigator.of(context, rootNavigator: true)
                                 .pushReplacementNamed(HomeUnloggedPage.id);
                           },

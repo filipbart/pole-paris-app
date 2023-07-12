@@ -168,7 +168,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 Text(
                                   'Ważny przez ${widget.membership.validDays} dni od dnia zakupu',
                                   style: const TextStyle(
-                                    color: Color(0xFF808080),
+                                    color: CustomColors.hintText,
                                     fontSize: 14,
                                     fontFamily: 'Satoshi',
                                     fontWeight: FontWeight.w500,

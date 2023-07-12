@@ -7,10 +7,12 @@ import 'package:pole_paris_app/utils/membership_helper.dart';
 class UserCarnetWidget extends StatelessWidget {
   final UserCarnet carnet;
   final Function()? onPressed;
+  final String? buttonText;
   const UserCarnetWidget({
     super.key,
     required this.carnet,
     this.onPressed,
+    this.buttonText,
   });
 
   @override
@@ -21,15 +23,14 @@ class UserCarnetWidget extends StatelessWidget {
         border: Border.all(color: Colors.white),
         borderRadius: BorderRadius.circular(20),
       ),
-      height: 130,
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(15.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Flexible(
-              flex: 2,
+              flex: 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -65,6 +66,7 @@ class UserCarnetWidget extends StatelessWidget {
               ),
             ),
             Flexible(
+              flex: 2,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -81,7 +83,14 @@ class UserCarnetWidget extends StatelessWidget {
                     ElevatedButton(
                       onPressed: onPressed,
                       style: CustomButtonStyle.primaryWithoutSize,
-                      child: const Text('UŻYJ'),
+                      child: Text(
+                        buttonText ?? 'UŻYJ',
+                        style: buttonText != null
+                            ? TextStyle(
+                                fontSize: 12.5,
+                              )
+                            : null,
+                      ),
                     ),
                 ],
               ),

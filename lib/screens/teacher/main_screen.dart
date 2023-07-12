@@ -7,6 +7,7 @@ import 'package:pole_paris_app/extensions/dateTime.dart';
 import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/pages/home_unlogged.dart';
 import 'package:pole_paris_app/screens/classes_list.dart';
+import 'package:pole_paris_app/screens/teacher/pending_carnets.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/base/drawer.dart';
@@ -58,7 +59,11 @@ class _MainScreenTeacherState extends State<MainScreenTeacher> {
                 context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 2));
               }),
               if (user?.isAdmin ?? false)
-                DrawerListTileItem('Karnety do akceptacji', () {}),
+                DrawerListTileItem('Karnety do akceptacji', () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const PendingCarnetsScreen()));
+                }),
             ],
           ),
           body: SafeArea(

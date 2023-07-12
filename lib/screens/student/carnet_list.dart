@@ -28,10 +28,13 @@ class CarnetListScreen extends StatelessWidget {
           builder: (context, state) {
             final carnets = state.userCarnets
                 .where((element) =>
-                    element.paid == true && element.expired == false)
+                    element.paymentDateUtc != null && element.expired == false)
                 .toList();
             final pendingCarnets = state.userCarnets
-                .where((element) => element.paid == false)
+                .where((element) =>
+                    element.toAccept == true &&
+                    element.paymentDateUtc == null &&
+                    element.expired == false)
                 .toList();
             final expiredCarnets = state.userCarnets
                 .where((element) => element.expired == true)
@@ -62,7 +65,7 @@ class CarnetListScreen extends StatelessWidget {
                               Text(
                                 'Data zakupu',
                                 style: TextStyle(
-                                  color: Color(0xFF808080),
+                                  color: CustomColors.hintText,
                                   fontSize: 16,
                                   fontFamily: 'Satoshi',
                                   fontWeight: FontWeight.w700,
