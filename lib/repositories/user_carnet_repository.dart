@@ -92,4 +92,17 @@ class UserCarnetRepository {
 
     return result;
   }
+
+  static Future<void> acceptUserCarnet(UserCarnet carnet) async {
+    await FirebaseFirestore.instance
+        .collection(collectionPathParent)
+        .doc(carnet.user.id)
+        .collection(collectionPath)
+        .doc(carnet.id)
+        .set({
+      "paymentDateUtc": DateTime.now().toUtc().millisecondsSinceEpoch
+    }).onError((error, stackTrace) {
+      throw Exception(error);
+    });
+  }
 }

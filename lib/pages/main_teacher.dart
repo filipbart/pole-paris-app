@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/bloc/bloc_exports.dart';
+import 'package:pole_paris_app/services/messaging_service.dart';
 import 'package:pole_paris_app/styles/color.dart';
 import 'package:pole_paris_app/widgets/teacher/tab_navigator.dart';
 
@@ -18,6 +19,12 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    MessagingService.setupToken();
+  }
 
   @override
   Widget build(BuildContext context) {

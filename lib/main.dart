@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,8 +14,31 @@ import 'package:pole_paris_app/pages/home_unlogged.dart';
 import 'package:pole_paris_app/pages/main_student.dart';
 import 'package:pole_paris_app/pages/main_teacher.dart';
 import 'package:pole_paris_app/services/app_router.dart';
+import 'package:pole_paris_app/utils/notification_channels.dart';
 import 'firebase_options.dart';
 import 'package:pole_paris_app/styles/color.dart';
+
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+Future<void> handleBackgroundMessage(RemoteMessage message) async {
+  print("Przyszła wiadomość: ${message.data}");
+  final jsonMessage = json.encode(message.data);
+  final decodedMessage = jsonDecode(jsonMessage);
+  final title = decodedMessage['title'] as String;
+  final body = decodedMessage['body'] as String;
+
+  final androidNotificationDetails = AndroidNotificationDetails(
+      channel.id, channel.name,
+      channelDescription: channel.description,
+      importance: Importance.max,
+      priority: Priority.high,
+      icon: "ic_stat_name",
+      ticker: 'ticker');
+  final notificationDetails =
+      NotificationDetails(android: androidNotificationDetails);
+  await flutterLocalNotificationsPlugin
+      .show(0, title, body, notificationDetails, payload: 'item x');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,9 +49,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestPermission();
+
   HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory: await getApplicationDocumentsDirectory());
-
+  FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
   runApp(PoleParisApp(
     appRouter: AppRouter(),
   ));
