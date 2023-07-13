@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-
-import 'package:pole_paris_app/screens/alerts.dart';
+import 'package:pole_paris_app/models/alert.dart';
 import 'package:pole_paris_app/styles/color.dart';
 
 class AlertItem extends StatefulWidget {

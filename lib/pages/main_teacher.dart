@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/services/messaging_service.dart';
@@ -19,6 +20,21 @@ class _MainPageTeacherState extends State<MainPageTeacher> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
   ];
+
+  Future<void> setupInteractedMessage() async {
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 1));
+  }
 
   @override
   void initState() {

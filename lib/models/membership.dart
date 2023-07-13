@@ -2,7 +2,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pole_paris_app/models/base.dart';
 
-// ignore: must_be_immutable
 class Membership extends BaseModel {
   final String name;
   final MembershipType type;
@@ -10,7 +9,7 @@ class Membership extends BaseModel {
   final int price;
   final int? poleEntries;
   final int? fitnessEntries;
-  Membership({
+  const Membership({
     required super.id,
     required this.name,
     required this.type,

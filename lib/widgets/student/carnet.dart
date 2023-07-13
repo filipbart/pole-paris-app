@@ -86,9 +86,7 @@ class UserCarnetWidget extends StatelessWidget {
                       child: Text(
                         buttonText ?? 'UŻYJ',
                         style: buttonText != null
-                            ? TextStyle(
-                                fontSize: 12.5,
-                              )
+                            ? const TextStyle(fontSize: 12.5)
                             : null,
                       ),
                     ),

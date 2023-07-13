@@ -9,6 +9,7 @@ import 'package:pole_paris_app/pages/home_unlogged.dart';
 import 'package:pole_paris_app/screens/student/about.dart';
 import 'package:pole_paris_app/screens/classes_list.dart';
 import 'package:pole_paris_app/screens/student/buy_carnet.dart';
+import 'package:pole_paris_app/screens/student/carnet_list.dart';
 import 'package:pole_paris_app/screens/student/contact.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
@@ -78,6 +79,10 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         final user = state.user;
+        final userCarnets = state.user?.carnets
+            ?.where((element) =>
+                element.expired == false && element.paymentDateUtc != null)
+            .toList();
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
@@ -223,10 +228,9 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                               child: Wrap(
                                 runSpacing: 15,
                                 children: [
-                                  //TODO obsługa kiedy brak; do buildera
                                   if (user == null ||
-                                      (user.carnets == null ||
-                                          user.carnets!.isEmpty)) ...[
+                                      (userCarnets == null ||
+                                          userCarnets.isEmpty)) ...[
                                     const Center(
                                         child: Text(
                                       'Brak zakupionych karnetów',
@@ -238,8 +242,7 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                                       ),
                                     )),
                                   ] else ...[
-                                    // ...user.carnets!
-                                    //     .map((e) => _buildMembership(e))
+                                    ...userCarnets.map((e) => _buildCarnet(e))
                                   ],
                                   Center(
                                     child: Padding(
@@ -249,7 +252,10 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
                                         left: 15,
                                       ),
                                       child: ElevatedButton(
-                                        onPressed: () => print(user?.carnets),
+                                        onPressed: () => Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const CarnetListScreen())),
                                         style: CustomButtonStyle.seeMore,
                                         child: const Text(
                                           'ZOBACZ WIĘCEJ',
@@ -361,7 +367,7 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
     return result;
   }
 
-  Widget _buildMembership(UserCarnet carnet) {
+  Widget _buildCarnet(UserCarnet carnet) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: CustomColors.line),
@@ -369,6 +375,7 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
       ),
       child: UserCarnetWidget(
         carnet: carnet,
+        onPressed: () {},
       ),
     );
   }

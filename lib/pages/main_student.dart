@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/services/messaging_service.dart';
@@ -20,10 +21,28 @@ class _MainPageStudentState extends State<MainPageStudent> {
     GlobalKey<NavigatorState>(),
   ];
 
+  Future<void> setupChangeTabForNotifications() async {
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+    FirebaseMessaging.onMessage.listen(_handleMessage);
+  }
+
+  _handleMessage(RemoteMessage message) {
+    context.read<AlertsBloc>().add(GetAlerts());
+    context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 1));
+  }
+
   @override
   void initState() {
     super.initState();
     MessagingService.setupToken();
+    setupChangeTabForNotifications();
   }
 
   @override
@@ -31,10 +50,8 @@ class _MainPageStudentState extends State<MainPageStudent> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => TabIndexBloc(),
-        ),
-        BlocProvider(
-          create: (context) => ClassesBloc(),
+          create: (context) =>
+              ClassesBloc()..add(const GetClasses(forTeacher: false)),
         ),
       ],
       child: BlocBuilder<TabIndexBloc, TabIndexState>(

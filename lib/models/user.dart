@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pole_paris_app/models/alert.dart';
 import 'package:pole_paris_app/models/base.dart';
 import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/roles.dart';
@@ -15,6 +16,7 @@ class User extends BaseModel {
   String? description;
   List<Class>? classes;
   List<UserCarnet>? carnets;
+  List<Alert>? alerts;
   final bool isVerified;
   bool? isAdmin;
   User({
@@ -26,6 +28,7 @@ class User extends BaseModel {
     this.description,
     this.classes,
     this.carnets,
+    this.alerts,
     required super.id,
     required super.dateCreatedUtc,
     this.isVerified = false,
@@ -44,6 +47,7 @@ class User extends BaseModel {
         description,
         classes,
         carnets,
+        alerts,
       ];
 
   User copyWith({
@@ -55,6 +59,7 @@ class User extends BaseModel {
     String? description,
     List<Class>? classes,
     List<UserCarnet>? carnets,
+    List<Alert>? alerts,
     DateTime? dateCreatedUtc,
     String? id,
     bool? isVerified,
@@ -68,6 +73,7 @@ class User extends BaseModel {
       description: description ?? this.description,
       classes: classes ?? this.classes,
       carnets: carnets ?? this.carnets,
+      alerts: alerts ?? this.alerts,
       dateCreatedUtc: dateCreatedUtc ?? this.dateCreatedUtc,
       id: id ?? this.id,
       isVerified: isVerified ?? this.isVerified,

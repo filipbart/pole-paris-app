@@ -47,3 +47,15 @@ class UpdateUserMemberships extends UserEvent {
         carnets,
       ];
 }
+
+class UpdateUserAlerts extends UserEvent {
+  final User user;
+  final List<Alert> alerts;
+
+  const UpdateUserAlerts(this.user, this.alerts);
+
+  @override
+  List<Object> get props => [
+        alerts,
+      ];
+}

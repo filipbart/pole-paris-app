@@ -99,7 +99,7 @@ class UserCarnetRepository {
         .doc(carnet.user.id)
         .collection(collectionPath)
         .doc(carnet.id)
-        .set({
+        .update({
       "paymentDateUtc": DateTime.now().toUtc().millisecondsSinceEpoch
     }).onError((error, stackTrace) {
       throw Exception(error);

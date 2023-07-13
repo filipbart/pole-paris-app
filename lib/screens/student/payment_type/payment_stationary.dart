@@ -43,6 +43,7 @@ class PaymentStationaryScreen extends StatelessWidget {
                   ElevatedButton(
                     style: CustomButtonStyle.primary,
                     onPressed: () {
+                      context.read<CarnetsBloc>().add(GetAllCarnets());
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                             builder: (context) => const MainPageStudent()),

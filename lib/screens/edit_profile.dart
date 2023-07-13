@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/models/roles.dart';
+// ignore: library_prefixes
 import 'package:pole_paris_app/models/user.dart' as UserModel;
 import 'package:pole_paris_app/pages/main_student.dart';
 import 'package:pole_paris_app/pages/main_teacher.dart';

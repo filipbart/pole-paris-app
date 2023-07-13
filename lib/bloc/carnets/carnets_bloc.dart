@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import '../bloc_exports.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pole_paris_app/models/user_carnet.dart';
 import 'package:pole_paris_app/repositories/user_repository.dart';

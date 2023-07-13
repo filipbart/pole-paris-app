@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pole_paris_app/models/alert.dart';
 import 'package:pole_paris_app/models/user.dart';
 import 'package:pole_paris_app/models/user_carnet.dart';
 
@@ -43,18 +44,17 @@ class UserRepository {
       return result;
     }
 
-    await FirebaseFirestore.instance
+    final carnetsRef = FirebaseFirestore.instance
         .collection(collectionPath)
         .doc(userId)
-        .collection('carnets')
-        .get()
-        .then((values) {
+        .collection('carnets');
+
+    await carnetsRef.get().then((values) {
       for (var carnet in values.docs) {
         final carnetEntity = UserCarnet.fromMap(carnet.data());
         result.add(carnetEntity);
       }
     }, onError: (e) => throw Exception(e.toString()));
-
     return result;
   }
 
@@ -75,5 +75,30 @@ class UserRepository {
     }).onError((error, stackTrace) {
       throw Exception(error.toString());
     });
+  }
+
+  static Future<List<Alert>> getUserAlerts() async {
+    List<Alert> result = [];
+    final userId = GetStorage().read('token');
+
+    if (userId == null || userId == '') {
+      return result;
+    }
+
+    final alertsRef = FirebaseFirestore.instance
+        .collection(collectionPath)
+        .doc(userId)
+        .collection('alerts');
+
+    await alertsRef.where("dateDeletedUtc", isNull: true).get().then((values) {
+      for (var alert in values.docs) {
+        final alertEntity = Alert.fromMap(alert.data());
+        result.add(alertEntity);
+      }
+    }).onError((error, stackTrace) {
+      throw Exception(error.toString());
+    });
+
+    return result;
   }
 }
