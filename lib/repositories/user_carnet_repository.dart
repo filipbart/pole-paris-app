@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/models/user.dart';
 import 'package:pole_paris_app/models/user_carnet.dart';
@@ -101,6 +103,17 @@ class UserCarnetRepository {
         .doc(carnet.id)
         .update({
       "paymentDateUtc": DateTime.now().toUtc().millisecondsSinceEpoch
+    }).onError((error, stackTrace) {
+      throw Exception(error);
+    });
+  }
+
+  static Future<void> useCarnet(UserCarnet carnet, Class userClass) async {
+    final callable = FirebaseFunctions.instance.httpsCallable("signUpForClass");
+    await callable.call({
+      'userId': carnet.user.id,
+      'carnetId': carnet.id,
+      'classId': userClass.id,
     }).onError((error, stackTrace) {
       throw Exception(error);
     });

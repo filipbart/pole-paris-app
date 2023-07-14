@@ -109,7 +109,11 @@ class ClassDetailsStudentScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      'Pole Room', //TODO lub stretching & fitness room
+                                      classDetails.name
+                                              .toLowerCase()
+                                              .contains("pole")
+                                          ? 'Pole Room'
+                                          : 'Stretching & Fitness Room',
                                       style: dataStyle,
                                     ),
                                   ],

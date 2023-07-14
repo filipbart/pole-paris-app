@@ -17,67 +17,71 @@ class ClassesListScreen extends StatelessWidget {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         final isTeacher = state.user!.role == Role.teacher;
-        return Scaffold(
-          appBar: BaseAppBar(
-            title: isTeacher ? 'Zajęcia, które prowadzisz' : 'Twoje zajęcia',
-            appBar: AppBar(),
-          ),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 25.0),
-                child: BlocBuilder<ClassesBloc, ClassesState>(
-                  builder: (context, state) {
-                    final classes = state.classes;
-                    return Column(
-                      children: [
-                        if (isTeacher == false)
-                          const Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Text(
-                              'Czas wypisania z zajęć to 10 godzin przed zajęciami, w przypadku późniejszego wypisania zajęcia przepadają.',
-                              style: TextStyle(
-                                color: CustomColors.hintText,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ...titlesWithClassList(classes),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 40,
-                            bottom: 10,
-                          ),
-                          child: Column(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(bottom: 15.0),
-                                child: Text('Nie masz więcej zajęć.'),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 40.0),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    context
-                                        .read<TabIndexBloc>()
-                                        .add(const ChangeTab(newIndex: 3));
-                                  },
-                                  style: CustomButtonStyle.primary,
-                                  child: Text(isTeacher
-                                      ? 'DODAJ NOWE ZAJĘCIA'
-                                      : 'ZAPISZ SIĘ NA ZAJĘCIA'),
+        return BlocProvider(
+          create: (context) =>
+              ClassesBloc()..add(GetClasses(forTeacher: isTeacher)),
+          child: Scaffold(
+            appBar: BaseAppBar(
+              title: isTeacher ? 'Zajęcia, które prowadzisz' : 'Twoje zajęcia',
+              appBar: AppBar(),
+            ),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 25.0),
+                  child: BlocBuilder<ClassesBloc, ClassesState>(
+                    builder: (context, state) {
+                      final classes = state.classes;
+                      return Column(
+                        children: [
+                          if (isTeacher == false)
+                            const Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                'Czas wypisania z zajęć to 10 godzin przed zajęciami, w przypadku późniejszego wypisania zajęcia przepadają.',
+                                style: TextStyle(
+                                  color: CustomColors.hintText,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
-                            ],
+                            ),
+                          ...titlesWithClassList(classes),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 40,
+                              bottom: 10,
+                            ),
+                            child: Column(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 15.0),
+                                  child: Text('Nie masz więcej zajęć.'),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 40.0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      context
+                                          .read<TabIndexBloc>()
+                                          .add(const ChangeTab(newIndex: 3));
+                                    },
+                                    style: CustomButtonStyle.primary,
+                                    child: Text(isTeacher
+                                        ? 'DODAJ NOWE ZAJĘCIA'
+                                        : 'ZAPISZ SIĘ NA ZAJĘCIA'),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

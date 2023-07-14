@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/user_carnet.dart';
+import 'package:pole_paris_app/pages/main_student.dart';
+import 'package:pole_paris_app/repositories/user_carnet_repository.dart';
+import 'package:pole_paris_app/screens/classes_list.dart';
+import 'package:pole_paris_app/screens/confirm.dart';
 import 'package:pole_paris_app/screens/teacher/class_details.dart';
 import 'package:pole_paris_app/styles/button.dart';
 import 'package:pole_paris_app/styles/color.dart';
+import 'package:pole_paris_app/utils/membership_helper.dart';
+import 'package:pole_paris_app/widgets/base/loader.dart';
 import 'package:pole_paris_app/widgets/base/picture_background_app_bar.dart';
 import 'package:pole_paris_app/widgets/teacher/class_base_info.dart';
 
-class SignUpForClassScreen extends StatelessWidget {
+class SignUpForClassScreen extends StatefulWidget {
   final Class classDetails;
   final UserCarnet carnet;
   const SignUpForClassScreen({
@@ -17,10 +23,76 @@ class SignUpForClassScreen extends StatelessWidget {
     required this.carnet,
   });
 
-  _submit() {}
+  @override
+  State<SignUpForClassScreen> createState() => _SignUpForClassScreenState();
+}
+
+class _SignUpForClassScreenState extends State<SignUpForClassScreen> {
+  _submit() async {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) =>
+            const LoadingDialog(text: 'Zapisywanie'));
+
+    await UserCarnetRepository.useCarnet(widget.carnet, widget.classDetails)
+        .then((value) {
+      _onSuccess();
+      return;
+    }).onError((error, stackTrace) {
+      print(error.toString());
+      Navigator.of(context, rootNavigator: true).pop();
+    });
+  }
+
+  _onSuccess() {
+    final rootContext = context;
+    Navigator.of(rootContext, rootNavigator: true).pop();
+
+    Navigator.of(rootContext, rootNavigator: true).pushReplacement(
+      MaterialPageRoute(
+        builder: (BuildContext context) => ConfirmScreen(
+          icon: Icons.celebration_rounded,
+          title: 'Gratulacje!',
+          text: 'Zapisano pomyślnie :)',
+          widgets: [
+            ElevatedButton(
+              style: CustomButtonStyle.primary,
+              onPressed: () {
+                context.read<CarnetsBloc>().add(GetAllCarnets());
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const MainPageStudent(),
+                ));
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ClassesListScreen(),
+                  ),
+                );
+              },
+              child: const Text('TWOJE ZAJĘCIA'),
+            ),
+            ElevatedButton(
+              style: CustomButtonStyle.secondary,
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainPageStudent(),
+                  ),
+                );
+              },
+              child: const Text('KONTYNUUJ ZAPISY'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final classDetails = widget.classDetails;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: PictureBackgroundAppBar(
@@ -71,8 +143,7 @@ class SignUpForClassScreen extends StatelessWidget {
                                 padding: const EdgeInsets.only(
                                   top: 8.0,
                                   bottom: 8.0,
-                                  left: 30,
-                                  right: 30,
+                                  left: 20,
                                 ),
                                 child:
                                     ClassBaseInfo(classDetails: classDetails),
@@ -85,9 +156,9 @@ class SignUpForClassScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Row(
+                                  Row(
                                     children: [
-                                      Padding(
+                                      const Padding(
                                         padding: EdgeInsets.only(right: 5.0),
                                         child: Icon(
                                           Icons.group_outlined,
@@ -95,8 +166,8 @@ class SignUpForClassScreen extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        '10 miejsc',
-                                        style: TextStyle(
+                                        '${classDetails.places} miejsc',
+                                        style: const TextStyle(
                                           color: Color(0xFF404040),
                                           fontFamily: 'Satoshi',
                                           fontSize: 14,
@@ -115,7 +186,7 @@ class SignUpForClassScreen extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        'Anna Kowalska',
+                                        classDetails.teacher.fullName,
                                         style: dataStyle,
                                       ),
                                     ],
@@ -130,7 +201,11 @@ class SignUpForClassScreen extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        'Świdnik',
+                                        classDetails.name
+                                                .toLowerCase()
+                                                .contains("pole")
+                                            ? 'Pole Room'
+                                            : 'Stretching & Fitness Room',
                                         style: dataStyle,
                                       ),
                                     ],
@@ -152,7 +227,7 @@ class SignUpForClassScreen extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              height: 90,
+                              width: double.infinity,
                               decoration: ShapeDecoration(
                                 color: Colors.white,
                                 shape: RoundedRectangleBorder(
@@ -163,63 +238,29 @@ class SignUpForClassScreen extends StatelessWidget {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 20.0, horizontal: 30),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                    vertical: 20.0, horizontal: 20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          carnet.membership.name,
-                                          style: const TextStyle(
-                                            color: Color(0xFFEE90E4),
-                                            fontSize: 16,
-                                            fontFamily: 'Satoshi',
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${carnet.poleEntries} wejście',
-                                          style: const TextStyle(
-                                            color: Color(0xFF404040),
-                                            fontSize: 14,
-                                            fontFamily: 'Satoshi',
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ],
+                                    Text(
+                                      widget.carnet.membership.name,
+                                      style: const TextStyle(
+                                        color: Color(0xFFEE90E4),
+                                        fontSize: 16,
+                                        fontFamily: 'Satoshi',
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Ważny do',
-                                          style: TextStyle(
-                                            color: Color(0xFF404040),
-                                            fontSize: 14,
-                                            fontFamily: 'Satoshi',
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        Text(
-                                          DateFormat('dd.MM.yyyy')
-                                              .format(carnet.expirationDate),
-                                          style: const TextStyle(
-                                            color: Color(0xFF404040),
-                                            fontSize: 14,
-                                            fontFamily: 'Satoshi',
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
+                                    Text(
+                                      MembershipHelper.carnetEntriesText(
+                                          widget.carnet),
+                                      style: const TextStyle(
+                                        color: Color(0xFF404040),
+                                        fontSize: 14,
+                                        fontFamily: 'Satoshi',
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -238,7 +279,9 @@ class SignUpForClassScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: 10.0),
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
                                 style: CustomButtonStyle.secondary,
                                 child: const Text('ANULUJ'),
                               ),

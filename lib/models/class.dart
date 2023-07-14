@@ -2,8 +2,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pole_paris_app/models/base.dart';
 import 'package:pole_paris_app/models/levels.dart';
-import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/models/user.dart';
+import 'package:pole_paris_app/models/user_carnet.dart';
 
 // ignore: must_be_immutable
 class Class extends BaseModel {
@@ -17,7 +17,7 @@ class Class extends BaseModel {
   final String description;
   String picture;
   final User teacher;
-  List<Membership>? memberships;
+  List<UserCarnet> carnets;
   Class({
     required this.name,
     required this.type,
@@ -29,42 +29,10 @@ class Class extends BaseModel {
     required this.description,
     required this.picture,
     required this.teacher,
-    this.memberships,
+    this.carnets = const <UserCarnet>[],
     required super.id,
     required super.dateCreatedUtc,
   });
-
-  Class copyWith({
-    String? name,
-    ClassType? type,
-    DateTime? date,
-    String? hourSince,
-    String? hourTo,
-    Level? level,
-    int? places,
-    String? description,
-    String? picture,
-    User? teacher,
-    List<Membership>? memberships,
-    DateTime? dateCreatedUtc,
-    String? id,
-  }) {
-    return Class(
-      name: name ?? this.name,
-      type: type ?? this.type,
-      date: date ?? this.date,
-      hourSince: hourSince ?? this.hourSince,
-      hourTo: hourTo ?? this.hourTo,
-      level: level ?? this.level,
-      places: places ?? this.places,
-      description: description ?? this.description,
-      picture: picture ?? this.picture,
-      teacher: teacher ?? this.teacher,
-      memberships: memberships ?? this.memberships,
-      dateCreatedUtc: dateCreatedUtc ?? this.dateCreatedUtc,
-      id: id ?? this.id,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -79,8 +47,8 @@ class Class extends BaseModel {
       'description': description,
       'picture': picture,
       'teacher': teacher.toMap(),
-      'memberships': memberships?.map((x) => x.toMap()).toList(),
       'dateCreatedUtc': dateCreatedUtc.millisecondsSinceEpoch,
+      'dateDeletecUtc': null,
     };
   }
 
@@ -97,13 +65,6 @@ class Class extends BaseModel {
       description: map['description'] as String,
       picture: map['picture'] as String,
       teacher: User.fromMap(map['teacher'] as Map<String, dynamic>),
-      memberships: map['memberships'] != null
-          ? List<Membership>.from(
-              (map['memberships'] as List<dynamic>).map<Membership>(
-                (x) => Membership.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
       dateCreatedUtc:
           DateTime.fromMillisecondsSinceEpoch(map['dateCreatedUtc'] as int),
     );
@@ -122,7 +83,7 @@ class Class extends BaseModel {
         description,
         picture,
         teacher,
-        memberships,
+        carnets,
       ];
 }
 

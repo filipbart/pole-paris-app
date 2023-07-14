@@ -44,7 +44,7 @@ class UserCarnetWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    MembershipHelper.entriesText(carnet.membership),
+                    MembershipHelper.carnetEntriesText(carnet),
                     style: const TextStyle(
                       color: CustomColors.inputText,
                       fontSize: 14,

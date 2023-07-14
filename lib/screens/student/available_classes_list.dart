@@ -274,6 +274,7 @@ class _AvailableClassesListState extends State<AvailableClassesList> {
                   ),
                 );
               } else if (snapshot.hasError) {
+                print(snapshot.error);
                 return const Center(
                   child: Text('Błąd przy pobieraniu listy zajęć'),
                 );

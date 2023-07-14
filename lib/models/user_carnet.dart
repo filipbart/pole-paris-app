@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:pole_paris_app/models/base.dart';
+import 'package:pole_paris_app/models/class.dart';
 import 'package:pole_paris_app/models/membership.dart';
 import 'package:pole_paris_app/models/user.dart';
 
@@ -14,6 +15,7 @@ class UserCarnet extends BaseModel {
   DateTime? paymentDateUtc;
   final Membership membership;
   final User user;
+  List<Class> classes;
   UserCarnet({
     required super.id,
     required this.poleEntries,
@@ -26,36 +28,8 @@ class UserCarnet extends BaseModel {
     required this.membership,
     required this.user,
     required super.dateCreatedUtc,
+    this.classes = const <Class>[],
   });
-
-  UserCarnet copyWith({
-    String? id,
-    bool? paid,
-    int? poleEntries,
-    int? fitnessEntries,
-    bool? unlimited,
-    bool? expired,
-    bool? toAccept,
-    DateTime? expirationDate,
-    DateTime? paymentDateUtc,
-    Membership? membership,
-    User? user,
-    DateTime? dateCreatedUtc,
-  }) {
-    return UserCarnet(
-      id: id ?? this.id,
-      poleEntries: poleEntries ?? this.poleEntries,
-      fitnessEntries: fitnessEntries ?? this.fitnessEntries,
-      unlimited: unlimited ?? this.unlimited,
-      expired: expired ?? this.expired,
-      toAccept: toAccept ?? this.toAccept,
-      expirationDate: expirationDate ?? this.expirationDate,
-      paymentDateUtc: paymentDateUtc ?? this.paymentDateUtc,
-      membership: membership ?? this.membership,
-      user: user ?? this.user,
-      dateCreatedUtc: dateCreatedUtc ?? this.dateCreatedUtc,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
