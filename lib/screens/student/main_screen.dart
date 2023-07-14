@@ -70,6 +70,7 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
   @override
   void initState() {
     context.read<CarnetsBloc>().add(GetAllCarnets());
+    context.read<AlertsBloc>().add(GetAlerts());
     super.initState();
   }
 
@@ -375,7 +376,8 @@ class _MainScreenStudentState extends State<MainScreenStudent> {
       ),
       child: UserCarnetWidget(
         carnet: carnet,
-        onPressed: () {},
+        onPressed: () =>
+            context.read<TabIndexBloc>().add(const ChangeTab(newIndex: 3)),
       ),
     );
   }

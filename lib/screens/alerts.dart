@@ -12,6 +12,7 @@ class AlertsScreen extends StatelessWidget {
     return BlocBuilder<AlertsBloc, AlertsState>(
       builder: (context, state) {
         final alerts = state.alerts;
+
         return Scaffold(
           appBar: BaseAppBar(
             title: 'Powiadomienia',

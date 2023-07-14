@@ -8,3 +8,21 @@ abstract class AlertsEvent extends Equatable {
 }
 
 class GetAlerts extends AlertsEvent {}
+
+class ReadAlert extends AlertsEvent {
+  final Alert alert;
+
+  const ReadAlert(this.alert);
+
+  @override
+  List<Object> get props => [alert];
+}
+
+class DeleteAlert extends AlertsEvent {
+  final String alertId;
+
+  const DeleteAlert(this.alertId);
+
+  @override
+  List<Object> get props => [alertId];
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:pole_paris_app/bloc/bloc_exports.dart';
 import 'package:pole_paris_app/models/alert.dart';
 import 'package:pole_paris_app/styles/color.dart';
 
@@ -18,6 +19,8 @@ class _AlertItemState extends State<AlertItem> with TickerProviderStateMixin {
     setState(() {
       turns = turns > 0 ? 0.0 : 0.25;
     });
+
+    context.read<AlertsBloc>().add(ReadAlert(widget.alert));
 
     showModalBottomSheet(
       context: context,
@@ -101,6 +104,11 @@ class _AlertItemState extends State<AlertItem> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
+      onDismissed: (direction) {
+        if (direction == DismissDirection.endToStart) {
+          context.read<AlertsBloc>().add(DeleteAlert(widget.alert.id));
+        }
+      },
       direction: DismissDirection.endToStart,
       key: ValueKey(widget.alert),
       background: Container(

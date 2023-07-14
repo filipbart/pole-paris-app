@@ -90,26 +90,41 @@ class _MainPageStudentState extends State<MainPageStudent> {
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
               ),
-              items: const [
-                BottomNavigationBarItem(
+              items: [
+                const BottomNavigationBarItem(
                   icon: Icon(
                     Icons.home_outlined,
                   ),
                   label: 'strona główna',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.notifications_none_rounded,
+                  icon: BlocBuilder<AlertsBloc, AlertsState>(
+                    builder: (context, state) {
+                      final countAlerts = context
+                          .read<AlertsBloc>()
+                          .state
+                          .alerts
+                          .where((element) => element.read == false)
+                          .length;
+                      return Badge(
+                        isLabelVisible: countAlerts != 0,
+                        label: Text(countAlerts.toString()),
+                        backgroundColor: CustomColors.error,
+                        child: const Icon(
+                          Icons.notifications_none_rounded,
+                        ),
+                      );
+                    },
                   ),
                   label: 'powiadomienia',
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: Icon(
                     Icons.person_outline_rounded,
                   ),
                   label: 'twój profil',
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.calendar_month_outlined),
                   label: 'zapisz się',
                 ),

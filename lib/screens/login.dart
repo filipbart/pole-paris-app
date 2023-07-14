@@ -71,6 +71,12 @@ class _LoginScreenState extends State<LoginScreen> {
               return;
             }
 
+            if (user.role == Role.teacher && !widget.teacher) {
+              GetStorage().remove('token');
+              _onFailure();
+              return;
+            }
+
             if (user.role == Role.teacher) {
               await FirebaseFunctions.instance
                   .httpsCallable('addTeacherRole')
